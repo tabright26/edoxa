@@ -1,8 +1,8 @@
 ﻿// Filename: IdentityServerConfig.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 
@@ -11,6 +11,8 @@ using eDoxa.Swagger.Extensions;
 
 using IdentityServer4;
 using IdentityServer4.Models;
+
+using Microsoft.Extensions.Hosting;
 
 using IdentityResources = IdentityServer4.Models.IdentityResources;
 
@@ -62,29 +64,8 @@ namespace eDoxa.Identity.Api.Infrastructure
             yield return ApiResources.CashierWebAggregator;
         }
 
-        public static IEnumerable<Client> GetClients(IdentityAppSettings appSettings)
+        public static IEnumerable<Client> GetClients(IdentityAppSettings appSettings, IHostEnvironment environment)
         {
-            if (appSettings.Swagger.Enabled)
-            {
-                yield return ApiResources.IdentityApi.GetSwaggerClient(appSettings.Swagger.Endpoints.IdentityUrl);
-
-                yield return ApiResources.PaymentApi.GetSwaggerClient(appSettings.Swagger.Endpoints.PaymentUrl);
-
-                yield return ApiResources.CashierApi.GetSwaggerClient(appSettings.Swagger.Endpoints.CashierUrl);
-
-                yield return ApiResources.NotificationsApi.GetSwaggerClient(appSettings.Swagger.Endpoints.NotificationsUrl);
-
-                yield return ApiResources.ChallengesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ChallengesUrl);
-
-                yield return ApiResources.GamesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.GamesUrl);
-
-                yield return ApiResources.ClansApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ClansUrl);
-
-                yield return ApiResources.ChallengesWebAggregator.GetSwaggerClient(appSettings.Swagger.Endpoints.ChallengesWebAggregatorUrl, Scopes.CashierApi, Scopes.GamesApi, Scopes.ChallengesApi);
-                
-                yield return ApiResources.CashierWebAggregator.GetSwaggerClient(appSettings.Swagger.Endpoints.CashierWebAggregatorUrl, Scopes.CashierApi, Scopes.PaymentApi);
-            }
-
             yield return new Client
             {
                 ClientId = "web-spa",
@@ -108,6 +89,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                     "http://127.0.0.1:5300/authentication/login-callback"
                 },
                 RequireConsent = false,
+                AccessTokenType = AccessTokenType.Reference,
                 AllowAccessTokensViaBrowser = true,
                 AccessTokenLifetime = 3600,
                 AllowedGrantTypes = GrantTypes.Implicit,
@@ -130,6 +112,34 @@ namespace eDoxa.Identity.Api.Infrastructure
                     Scopes.CashierWebAggregator.Name
                 }
             };
+
+            if (environment.IsDevelopment())
+            {
+                yield return ApiResources.IdentityApi.GetSwaggerClient(appSettings.Swagger.Endpoints.IdentityUrl);
+
+                yield return ApiResources.PaymentApi.GetSwaggerClient(appSettings.Swagger.Endpoints.PaymentUrl);
+
+                yield return ApiResources.CashierApi.GetSwaggerClient(appSettings.Swagger.Endpoints.CashierUrl);
+
+                yield return ApiResources.NotificationsApi.GetSwaggerClient(appSettings.Swagger.Endpoints.NotificationsUrl);
+
+                yield return ApiResources.ChallengesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ChallengesUrl);
+
+                yield return ApiResources.GamesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.GamesUrl);
+
+                yield return ApiResources.ClansApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ClansUrl);
+
+                yield return ApiResources.ChallengesWebAggregator.GetSwaggerClient(
+                    appSettings.Swagger.Endpoints.ChallengesWebAggregatorUrl,
+                    Scopes.CashierApi,
+                    Scopes.GamesApi,
+                    Scopes.ChallengesApi);
+
+                yield return ApiResources.CashierWebAggregator.GetSwaggerClient(
+                    appSettings.Swagger.Endpoints.CashierWebAggregatorUrl,
+                    Scopes.CashierApi,
+                    Scopes.PaymentApi);
+            }
         }
     }
 }

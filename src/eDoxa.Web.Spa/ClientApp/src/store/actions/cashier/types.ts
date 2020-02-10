@@ -1,43 +1,6 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
-import { Balance, UserTransaction } from "types";
+import { UserTransaction, Promotion } from "types";
 
-export const LOAD_USER_MONEY_ACCOUNT_BALANCE =
-  "LOAD_USER_MONEY_ACCOUNT_BALANCE";
-export const LOAD_USER_MONEY_ACCOUNT_BALANCE_SUCCESS =
-  "LOAD_USER_MONEY_ACCOUNT_BALANCE_SUCCESS";
-export const LOAD_USER_MONEY_ACCOUNT_BALANCE_FAIL =
-  "LOAD_USER_MONEY_ACCOUNT_BALANCE_FAIL";
-
-export type LoadUserMoneyAccountBalanceType =
-  | typeof LOAD_USER_MONEY_ACCOUNT_BALANCE
-  | typeof LOAD_USER_MONEY_ACCOUNT_BALANCE_SUCCESS
-  | typeof LOAD_USER_MONEY_ACCOUNT_BALANCE_FAIL;
-export type LoadUserMoneyAccountBalanceActionCreator = AxiosActionCreator<
-  LoadUserMoneyAccountBalanceType
->;
-export type LoadUserMoneyAccountBalanceAction = AxiosAction<
-  LoadUserMoneyAccountBalanceType,
-  Balance
->;
-
-export const LOAD_USER_TOKEN_ACCOUNT_BALANCE =
-  "LOAD_USER_TOKEN_ACCOUNT_BALANCE";
-export const LOAD_USER_TOKEN_ACCOUNT_BALANCE_SUCCESS =
-  "LOAD_USER_TOKEN_ACCOUNT_BALANCE_SUCCESS";
-export const LOAD_USER_TOKEN_ACCOUNT_BALANCE_FAIL =
-  "LOAD_USER_TOKEN_ACCOUNT_BALANCE_FAIL";
-
-export type LoadUserTokenAccountBalanceType =
-  | typeof LOAD_USER_TOKEN_ACCOUNT_BALANCE
-  | typeof LOAD_USER_TOKEN_ACCOUNT_BALANCE_SUCCESS
-  | typeof LOAD_USER_TOKEN_ACCOUNT_BALANCE_FAIL;
-export type LoadUserTokenAccountBalanceActionCreator = AxiosActionCreator<
-  LoadUserTokenAccountBalanceType
->;
-export type LoadUserTokenAccountBalanceAction = AxiosAction<
-  LoadUserTokenAccountBalanceType,
-  Balance
->;
 export const CREATE_USER_TRANSACTION = "CREATE_USER_TRANSACTION";
 export const CREATE_USER_TRANSACTION_SUCCESS =
   "CREATE_USER_TRANSACTION_SUCCESS";
@@ -84,7 +47,4 @@ export type RedeemPromotionType =
 export type RedeemPromotionActionCreator = AxiosActionCreator<
   RedeemPromotionType
 >;
-export type RedeemPromotionAction = AxiosAction<
-  RedeemPromotionType,
-  UserTransaction
->;
+export type RedeemPromotionAction = AxiosAction<RedeemPromotionType, Promotion>;

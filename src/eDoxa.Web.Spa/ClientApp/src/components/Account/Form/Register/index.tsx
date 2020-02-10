@@ -26,7 +26,11 @@ import InputMask from "react-input-mask";
 import { getTermsOfServicesPath } from "utils/coreui/constants";
 import { Link } from "react-router-dom";
 import { CountryIsoCode, COUNTRY_ISO_CODE_CA } from "types";
-import { EMAIL_REQUIRED, PASSWORD_REQUIRED, DOB_REQUIRED } from "utils/form/validators";
+import {
+  EMAIL_REQUIRED,
+  PASSWORD_REQUIRED,
+  DOB_REQUIRED
+} from "utils/form/validators";
 
 type StateProps = {};
 
@@ -96,7 +100,7 @@ const Register: FunctionComponent<Props> = ({
           <Field
             type="password"
             name="newPassword"
-            placeholder="Repeat password"
+            placeholder="Confirm password"
             size={null}
             autoComplete="new-password"
             component={Input.Password}
@@ -189,7 +193,7 @@ const enhance = compose<InnerProps, OutterProps>(
       if (!values.password) {
         errors.password = PASSWORD_REQUIRED;
       } else if (values.password !== values.newPassword) {
-        errors._error = "Repeat password doesn't match password";
+        errors._error = "Confirm password doesn't match password";
       }
       if (!values.dob) {
         errors.dob = DOB_REQUIRED;

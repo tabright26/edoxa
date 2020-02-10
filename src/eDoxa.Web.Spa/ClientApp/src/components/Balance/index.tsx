@@ -1,37 +1,52 @@
 import React, { FunctionComponent } from "react";
 import Format from "components/Shared/Format";
-import { withUserAccountBalance } from "store/root/user/balance/container";
 import { compose } from "recompose";
-import { UserBalanceState } from "store/root/user/balance/types";
-import { CurrencyType } from "types";
+import { CurrencyType, TransactionStatus, Currency } from "types";
+import { connect, MapStateToProps } from "react-redux";
+import { RootState } from "store/types";
 
-interface InnerProps {
-  balance: UserBalanceState;
-}
-
-interface OutterProps {
-  type: CurrencyType;
-  attribute: "available" | "pending";
+type OwnProps = {
+  currencyType: CurrencyType;
+  transactionStatus: TransactionStatus;
   alignment?: "right" | "left" | "center" | "justify";
-}
+};
+
+type StateProps = {
+  currency: Currency;
+};
+
+type InnerProps = StateProps;
+
+type OutterProps = OwnProps;
 
 type Props = InnerProps & OutterProps;
 
 const Balance: FunctionComponent<Props> = ({
-  type,
-  balance: { data },
-  attribute,
+  currency,
   alignment = "justify"
-}) => (
-  <Format.Currency
-    currency={{
-      type,
-      amount: data[attribute]
-    }}
-    alignment={alignment}
-  />
-);
+}) => <Format.Currency currency={currency} alignment={alignment} />;
 
-const enhance = compose<InnerProps, OutterProps>(withUserAccountBalance);
+const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
+  state,
+  ownProps
+) => {
+  return {
+    currency: {
+      type: ownProps.currencyType,
+      amount: state.root.user.transactionHistory.data
+        .filter(
+          transaction =>
+            transaction.status.toUpperCase() ===
+              ownProps.transactionStatus.toUpperCase() &&
+            transaction.currency.type.toUpperCase() ===
+              ownProps.currencyType.toUpperCase()
+        )
+        .map(transaction => transaction.currency.amount)
+        .reduce((total, amount) => total + amount, 0)
+    }
+  };
+};
+
+const enhance = compose<InnerProps, OutterProps>(connect(mapStateToProps));
 
 export default enhance(Balance);

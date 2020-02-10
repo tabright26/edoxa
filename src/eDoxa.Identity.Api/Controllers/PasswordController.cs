@@ -42,24 +42,19 @@ namespace eDoxa.Identity.Api.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> ForgotPasswordAsync([FromBody] ForgotPasswordRequest request)
         {
-            if (ModelState.IsValid)
+            var user = await _userService.FindByEmailAsync(request.Email);
+
+            // Don't reveal that the user does not exist or is not confirmed
+            if (user != null && await _userService.IsEmailConfirmedAsync(user))
             {
-                var user = await _userService.FindByEmailAsync(request.Email);
+                // For more information on how to enable account confirmation and password reset please 
+                // visit https://go.microsoft.com/fwlink/?LinkID=532713
+                var code = await _userService.GeneratePasswordResetTokenAsync(user);
 
-                // Don't reveal that the user does not exist or is not confirmed
-                if (user != null && await _userService.IsEmailConfirmedAsync(user))
-                {
-                    // For more information on how to enable account confirmation and password reset please 
-                    // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                    var code = await _userService.GeneratePasswordResetTokenAsync(user);
-
-                    await _serviceBusPublisher.PublishUserPasswordResetTokenGeneratedIntegrationEventAsync(user.Id.ConvertTo<UserId>(), code);
-                }
-
-                return this.Ok();
+                await _serviceBusPublisher.PublishUserPasswordResetTokenGeneratedIntegrationEventAsync(user.Id.ConvertTo<UserId>(), code);
             }
 
-            return this.BadRequest(new ValidationProblemDetails(ModelState));
+            return this.Ok();
         }
 
         [HttpPost("reset")]
@@ -68,27 +63,24 @@ namespace eDoxa.Identity.Api.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordRequest request)
         {
-            if (ModelState.IsValid)
+            var user = await _userService.FindByEmailAsync(request.Email);
+
+            if (user == null)
             {
-                var user = await _userService.FindByEmailAsync(request.Email);
+                // Don't reveal that the user does not exist
+                return this.Ok();
+            }
 
-                if (user == null)
-                {
-                    // Don't reveal that the user does not exist
-                    return this.Ok();
-                }
+            var result = await _userService.ResetPasswordAsync(user, request.Code, request.Password);
 
-                var result = await _userService.ResetPasswordAsync(user, request.Code, request.Password);
+            if (result.Succeeded)
+            {
+                return this.Ok();
+            }
 
-                if (result.Succeeded)
-                {
-                    return this.Ok();
-                }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
             }
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));

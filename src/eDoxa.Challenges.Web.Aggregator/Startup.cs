@@ -2,7 +2,7 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -106,14 +106,6 @@ namespace eDoxa.Challenges.Web.Aggregator
                         options.ApiSecret = "secret";
                     });
 
-            services.AddSwagger(
-                XmlCommentsFilePath,
-                AppSettings,
-                AppSettings,
-                Scopes.CashierApi,
-                Scopes.GamesApi,
-                Scopes.ChallengesApi);
-
             services.AddHttpContextAccessor();
 
             services.AddTransient<AccessTokenDelegatingHandler>();
@@ -131,11 +123,12 @@ namespace eDoxa.Challenges.Web.Aggregator
                 .AddCircuitBreakerPolicyHandler();
 
             services.AddGrpcClient<ChallengeService.ChallengeServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.ChallengesUrl}:81"))
-                .ConfigureChannel(options =>
-                {
-                    options.Credentials = ChannelCredentials.Insecure;
-                    options.MaxReceiveMessageSize = 1000000000;
-                })
+                .ConfigureChannel(
+                    options =>
+                    {
+                        options.Credentials = ChannelCredentials.Insecure;
+                        options.MaxReceiveMessageSize = 1000000000;
+                    })
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddRetryPolicyHandler()
                 .AddCircuitBreakerPolicyHandler();
@@ -170,6 +163,27 @@ namespace eDoxa.Challenges.Web.Aggregator
 
                     endpoints.MapCustomHealthChecks();
                 });
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureDevelopmentServices(IServiceCollection services)
+        {
+            this.ConfigureServices(services);
+
+            services.AddSwagger(
+                XmlCommentsFilePath,
+                AppSettings,
+                AppSettings,
+                Scopes.CashierApi,
+                Scopes.GamesApi,
+                Scopes.ChallengesApi);
+        }
+
+        public void ConfigureDevelopment(IApplicationBuilder application)
+        {
+            this.Configure(application);
 
             application.UseSwagger(AppSettings);
         }

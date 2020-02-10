@@ -11,8 +11,6 @@ import {
   LoadStripeAccountAction
 } from "./actions/payment/types";
 import {
-  LoadUserMoneyAccountBalanceAction,
-  LoadUserTokenAccountBalanceAction,
   LoadUserTransactionHistoryAction,
   CreateUserTransactionAction,
   RedeemPromotionAction
@@ -69,8 +67,6 @@ export type RootState = ReturnType<typeof rootReducer>;
 export type RootActions =
   | LoadStripeBankAccountAction
   | UpdateStripeBankAccountAction
-  | LoadUserMoneyAccountBalanceAction
-  | LoadUserTokenAccountBalanceAction
   | LoadUserTransactionHistoryAction
   | CreateUserTransactionAction
   | RedeemPromotionAction

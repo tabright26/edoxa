@@ -15,10 +15,9 @@ const Item: FunctionComponent<Props> = ({
   const isActiveState = currentState.toLowerCase() === state.toLowerCase();
   return (
     <span
-      className={`btn ${
+      className={`btn btn-block btn-sm text-light mt-2 ${
         isActiveState ? "bg-primary" : "bg-secondary"
-      } btn-sm text-light mt-2 rounded-0`}
-      style={{ width: "150px" }}
+      }`}
       title={`${state}${isActiveState ? " (current)" : ""}`}
     >
       {unixTimeSeconds ? (

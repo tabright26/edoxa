@@ -135,7 +135,7 @@ namespace eDoxa.Identity.Api
 
             services.AddMediatR(typeof(Startup));
 
-            services.AddCustomIdentityServer(AppSettings);
+            services.AddCustomIdentityServer(HostingEnvironment, AppSettings);
 
             //services.AddAuthentication().AddIdentityServerJwt();
 
@@ -149,8 +149,6 @@ namespace eDoxa.Identity.Api
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
-
-            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -191,9 +189,24 @@ namespace eDoxa.Identity.Api
                     endpoints.MapCustomHealthChecks();
                 });
 
-            application.UseSwagger(AppSettings);
-
             subscriber.UseIntegrationEventSubscriptions();
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureDevelopmentServices(IServiceCollection services)
+        {
+            this.ConfigureServices(services);
+
+            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+        }
+
+        public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        {
+            this.Configure(application, subscriber);
+
+            application.UseSwagger(AppSettings);
         }
     }
 

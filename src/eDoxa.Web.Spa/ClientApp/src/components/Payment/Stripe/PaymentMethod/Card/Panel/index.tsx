@@ -89,7 +89,7 @@ const Panel: FunctionComponent<any> = ({
 }) => (
   <Card className={`card-accent-primary ${className}`}>
     <CardHeader className="d-flex">
-      <strong className="text-uppercase my-auto">CARDS</strong>
+      <strong className="text-uppercase my-auto">CREDIT CARDS</strong>
       <small className="ml-2 my-auto text-muted">
         ({data.length}/{limit})
       </small>
@@ -101,7 +101,7 @@ const Panel: FunctionComponent<any> = ({
         onClick={() => showCreateStripePaymentMethodModal()}
         disabled={data.length >= limit}
       >
-        ADD A NEW CARD
+        ADD A NEW CREDIT CARD
       </Button.Link>
     </CardHeader>
     <CardBody>

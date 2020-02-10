@@ -8,13 +8,9 @@ import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { throwSubmissionError } from "utils/form/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
-import {
-  redeemPromotion,
-  loadUserTransactionHistory,
-  loadUserBalance
-} from "store/actions/cashier";
+import { redeemPromotion } from "store/actions/cashier";
 import { toastr } from "react-redux-toastr";
-import { CURRENCY_TYPE_MONEY, CURRENCY_TYPE_TOKEN, PromotionOptions } from "types";
+import { PromotionOptions } from "types";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 
@@ -79,17 +75,11 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (_result, dispatch, { reset }) => {
+    onSubmitSuccess: (_result, _dispatch, { reset }) => {
       reset();
-      Promise.all([
-        dispatch(loadUserTransactionHistory()),
-        dispatch(loadUserBalance(CURRENCY_TYPE_MONEY)),
-        dispatch(loadUserBalance(CURRENCY_TYPE_TOKEN))
-      ]).then(() =>
-        toastr.success(
-          "Promotional code",
-          "You have successfully redeemed your promotional code"
-        )
+      toastr.success(
+        "Promotional code",
+        "You have successfully redeemed your promotional code"
       );
     },
     validate: () => {

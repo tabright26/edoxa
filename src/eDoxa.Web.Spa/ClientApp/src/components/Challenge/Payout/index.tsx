@@ -31,7 +31,14 @@ const Payout: FunctionComponent<Props> = ({ payout }) => {
       <CardHeader className="bg-gray-900">
         <strong className="text-uppercase">Payout</strong>
       </CardHeader>
-      <Table striped bordered hover size="sm" variant="dark" className="m-0">
+      <Table
+        striped
+        bordered
+        hover
+        size="sm"
+        color="dark"
+        className="m-0 border-0"
+      >
         <thead>
           <tr>
             <th className="align-middle w-50">Position</th>

@@ -19,9 +19,9 @@ const Login: FunctionComponent = () => (
   <Layout.Background>
     <Container className="h-100">
       <Row className="justify-content-center">
-        <Col md="8">
+        <Col md="8 d-flex">
           <LinkContainer to={getHomePath()}>
-            <CardImg className="my-5" src={logo} />
+            <CardImg className="mt-5 mb-1 w-75 mx-auto" src={logo} />
           </LinkContainer>
         </Col>
       </Row>
@@ -29,10 +29,12 @@ const Login: FunctionComponent = () => (
         <Col md="8">
           <CardGroup className="my-5">
             <Card className="p-4">
-              <CardBody>
-                <h1>Login</h1>
-                <p className="text-muted">Sign In to your account</p>
-                <UserAccountForm.Login />
+              <CardBody className="d-flex">
+                <div className="my-auto w-100">
+                  <h1>Login</h1>
+                  <p className="text-muted">Sign In to your account</p>
+                  <UserAccountForm.Login />
+                </div>
               </CardBody>
             </Card>
             <Card
@@ -40,12 +42,16 @@ const Login: FunctionComponent = () => (
               style={{ width: "44%" }}
             >
               <CardBody className="text-center">
-                <div>
+                <div className="my-auto w-100">
                   <h2>Sign up</h2>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                  <p className="text-justify">
+                    eDoxa wants to help unlock your potential so that you can be
+                    proud to live your eSport dream.
+                  </p>
+                  <p className="text-justify">
+                    Participate to Challenges for the opportunity of making
+                    money and change the perception of eSport a dollar at a
+                    time!
                   </p>
                   <LinkContainer to={getAccountRegisterPath()}>
                     <Button
