@@ -22,6 +22,7 @@ using IdentityServer4.Services;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace eDoxa.Identity.Api.Extensions
 {
@@ -69,7 +70,7 @@ namespace eDoxa.Identity.Api.Extensions
             services.AddScoped<IRoleService, RoleService>();
         }
 
-        public static void AddCustomIdentityServer(this IServiceCollection services, IdentityAppSettings appSettings)
+        public static void AddCustomIdentityServer(this IServiceCollection services, IHostEnvironment environment, IdentityAppSettings appSettings)
         {
             services.AddIdentityServer(
                     options =>
@@ -94,7 +95,7 @@ namespace eDoxa.Identity.Api.Extensions
                         options.ApiResources.AddRange(IdentityServerConfig.GetApiResources().ToArray());
 
                         options.Clients.Clear();
-                        options.Clients.AddRange(IdentityServerConfig.GetClients(appSettings).ToArray());
+                        options.Clients.AddRange(IdentityServerConfig.GetClients(appSettings, environment).ToArray());
                     })
                 .AddProfileService<CustomProfileService>()
                 .AddCorsPolicyService<CustomCorsPolicyService>();

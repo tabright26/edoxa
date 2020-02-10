@@ -119,8 +119,6 @@ namespace eDoxa.Games.Api
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
-
-            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -151,6 +149,21 @@ namespace eDoxa.Games.Api
 
                     endpoints.MapCustomHealthChecks();
                 });
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureDevelopmentServices(IServiceCollection services)
+        {
+            this.ConfigureServices(services);
+
+            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+        }
+
+        public void ConfigureDevelopment(IApplicationBuilder application)
+        {
+            this.Configure(application);
 
             application.UseSwagger(AppSettings);
         }

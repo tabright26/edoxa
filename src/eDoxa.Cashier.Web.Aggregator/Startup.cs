@@ -1,8 +1,8 @@
 // Filename: Startup.cs
-// Date Created: 2019-12-18
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -104,13 +104,6 @@ namespace eDoxa.Cashier.Web.Aggregator
                         options.ApiSecret = "secret";
                     });
 
-            services.AddSwagger(
-                XmlCommentsFilePath,
-                AppSettings,
-                AppSettings,
-                Scopes.CashierApi,
-                Scopes.PaymentApi);
-
             services.AddHttpContextAccessor();
 
             services.AddTransient<AccessTokenDelegatingHandler>();
@@ -157,6 +150,26 @@ namespace eDoxa.Cashier.Web.Aggregator
 
                     endpoints.MapCustomHealthChecks();
                 });
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureDevelopmentServices(IServiceCollection services)
+        {
+            this.ConfigureServices(services);
+
+            services.AddSwagger(
+                XmlCommentsFilePath,
+                AppSettings,
+                AppSettings,
+                Scopes.CashierApi,
+                Scopes.PaymentApi);
+        }
+
+        public void ConfigureDevelopment(IApplicationBuilder application)
+        {
+            this.Configure(application);
 
             application.UseSwagger(AppSettings);
         }

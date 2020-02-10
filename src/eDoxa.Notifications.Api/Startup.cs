@@ -119,8 +119,6 @@ namespace eDoxa.Notifications.Api
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
-
-            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -150,9 +148,24 @@ namespace eDoxa.Notifications.Api
                     endpoints.MapCustomHealthChecks();
                 });
 
-            application.UseSwagger(AppSettings);
-
             subscriber.UseIntegrationEventSubscriptions();
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureDevelopmentServices(IServiceCollection services)
+        {
+            this.ConfigureServices(services);
+
+            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+        }
+
+        public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        {
+            this.Configure(application, subscriber);
+
+            application.UseSwagger(AppSettings);
         }
     }
 

@@ -40,9 +40,6 @@ namespace eDoxa.Identity.Api.Infrastructure
     public sealed class SwaggerOptions
     {
         [Required]
-        public bool Enabled { get; set; }
-
-        [Required]
         public SwaggerEndpointsOptions Endpoints { get; set; }
     }
 
