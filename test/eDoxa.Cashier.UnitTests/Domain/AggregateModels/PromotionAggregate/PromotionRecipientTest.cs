@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
+using System;
+
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.PromotionAggregate;
 using eDoxa.Cashier.TestHelper;
@@ -36,7 +38,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
         {
             var user = GenerateUser();
 
-            var promotionRecipient = new PromotionRecipient(user, new UtcNowDateTimeProvider());
+            var promotionRecipient = new PromotionRecipient(user, new DateTimeProvider(DateTime.Now));
 
             promotionRecipient.ToString().Should().Be(user.Id);
         }

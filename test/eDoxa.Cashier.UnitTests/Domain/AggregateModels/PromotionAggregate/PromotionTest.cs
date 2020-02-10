@@ -34,7 +34,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
 
         [Fact]
 
-        //Francis: Comment je devrais nommer cette methode la ???
+        // Francis: Comment je devrais nommer cette methode la ???
         public void Cancel_IfCanCancel_ShouldCancel()
         {
             var promotion = new Promotion(
@@ -43,7 +43,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
                 TimeSpan.FromDays(30),
                 new DateTimeProvider(DateTime.Now.AddDays(30)));
 
-            var cancelTime = new UtcNowDateTimeProvider();
+            var cancelTime = new DateTimeProvider(DateTime.Now);
 
             promotion.Cancel(cancelTime);
 
@@ -57,9 +57,9 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
                 TestCode,
                 new Money(50),
                 TimeSpan.FromDays(0),
-                new UtcNowDateTimeProvider());
+                new DateTimeProvider(DateTime.Now));
 
-            var cancelTime = new UtcNowDateTimeProvider();
+            var cancelTime = new DateTimeProvider(DateTime.Now);
 
             var action = new Action(() => promotion.Cancel(cancelTime));
             action.Should().Throw<InvalidOperationException>();
@@ -98,7 +98,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
                 TimeSpan.FromDays(30),
                 new DateTimeProvider(DateTime.Now.AddDays(30)));
 
-            promotion.Cancel(new UtcNowDateTimeProvider());
+            promotion.Cancel(new DateTimeProvider(DateTime.Now));
             promotion.IsCanceled().Should().BeTrue();
         }
 
@@ -147,7 +147,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
                 TimeSpan.FromDays(30),
                 new DateTimeProvider(DateTime.Now.AddDays(30)));
 
-            var promotionRecipient = new PromotionRecipient(GenerateUser(), new UtcNowDateTimeProvider());
+            var promotionRecipient = new PromotionRecipient(GenerateUser(), new DateTimeProvider(DateTime.Now));
             promotion.IsRedeemBy(promotionRecipient).Should().BeFalse();
         }
 
@@ -160,7 +160,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
                 TimeSpan.FromDays(30),
                 new DateTimeProvider(DateTime.Now.AddDays(30)));
 
-            var promotionRecipient = new PromotionRecipient(GenerateUser(), new UtcNowDateTimeProvider());
+            var promotionRecipient = new PromotionRecipient(GenerateUser(), new DateTimeProvider(DateTime.Now));
 
             promotion.Redeem(promotionRecipient);
 
@@ -174,9 +174,9 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
                 TestCode,
                 new Money(50),
                 TimeSpan.FromDays(0),
-                new UtcNowDateTimeProvider());
+                new DateTimeProvider(DateTime.Now.AddDays(30)));
 
-            var promotionRecipient = new PromotionRecipient(GenerateUser(), new UtcNowDateTimeProvider());
+            var promotionRecipient = new PromotionRecipient(GenerateUser(), new DateTimeProvider(DateTime.Now));
 
             var action = new Action(() => promotion.Redeem(promotionRecipient));
 
@@ -186,7 +186,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
         [Fact]
         public void Redeem_WithValidPromotion_ShouldHaveCountOfOne()
         {
-            //Francis: Pourquoi est-ce que il y a une duration et une date d<expiration, se serait pas mieux une date de début et une duration ????
+            // Francis: Pourquoi est-ce que il y a une duration et une date d<expiration, se serait pas mieux une date de début et une duration ????
             //Aussi, UtcDateTimeProvider est briser, il est toujours une journée dans le futur.
             var promotion = new Promotion(
                 TestCode,
@@ -194,7 +194,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
                 TimeSpan.FromDays(30),
                 new DateTimeProvider(DateTime.Now.AddDays(30)));
 
-            var promotionRecipient = new PromotionRecipient(GenerateUser(), new UtcNowDateTimeProvider());
+            var promotionRecipient = new PromotionRecipient(GenerateUser(), new DateTimeProvider(DateTime.Now));
 
             promotion.Redeem(promotionRecipient);
 

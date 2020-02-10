@@ -69,7 +69,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
         public async Task LoginAccountAsync_ShouldBeBadRequestObjectResult()
         {
             // Arrange
-            TestMock.InteractionService.Setup(interactionService => interactionService.GetAuthorizationContextAsync(It.IsAny<string>()))
+            TestMock.IdentityServerInteractionService.Setup(interactionService => interactionService.GetAuthorizationContextAsync(It.IsAny<string>()))
                 .ReturnsAsync(new AuthorizationRequest())
                 .Verifiable();
 
@@ -84,13 +84,13 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 .ReturnsAsync(SignInResult.Failed)
                 .Verifiable();
 
-            TestMock.EventService.Setup(eventService => eventService.RaiseAsync(It.IsAny<Event>())).Verifiable();
+            TestMock.EventService.Setup(eventService => eventService.RaiseAsync(It.IsAny<UserLoginFailureEvent>())).Verifiable();
 
             var controller = new AccountController(
                 TestMock.UserService.Object,
                 TestMock.SignInService.Object,
                 TestMock.EventService.Object,
-                TestMock.InteractionService.Object,
+                TestMock.IdentityServerInteractionService.Object,
                 TestMock.ServiceBusPublisher.Object);
 
             var request = new LoginAccountRequest
@@ -106,7 +106,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
-            TestMock.InteractionService.Verify(interactionService => interactionService.GetAuthorizationContextAsync(It.IsAny<string>()), Times.Once);
+            TestMock.IdentityServerInteractionService.Verify(interactionService => interactionService.GetAuthorizationContextAsync(It.IsAny<string>()), Times.Once);
             TestMock.UserService.Verify(userService => userService.FindByEmailAsync(It.IsAny<string>()), Times.Once);
 
             TestMock.SignInService.Verify(
@@ -117,7 +117,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
                     It.IsAny<bool>()),
                 Times.Once);
 
-            TestMock.EventService.Verify(eventService => eventService.RaiseAsync(It.IsAny<Event>()), Times.Once);
+            TestMock.EventService.Verify(eventService => eventService.RaiseAsync(It.IsAny<UserLoginFailureEvent>()), Times.Once);
         }
 
         [Fact]
@@ -126,7 +126,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Arrange
             const string returnUrl = "/";
 
-            TestMock.InteractionService.Setup(interactionService => interactionService.GetAuthorizationContextAsync(It.IsAny<string>()))
+            TestMock.IdentityServerInteractionService.Setup(interactionService => interactionService.GetAuthorizationContextAsync(It.IsAny<string>()))
                 .ReturnsAsync(new AuthorizationRequest())
                 .Verifiable();
 
@@ -141,13 +141,13 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 .ReturnsAsync(SignInResult.Success)
                 .Verifiable();
 
-            TestMock.EventService.Setup(eventService => eventService.RaiseAsync(It.IsAny<Event>())).Verifiable();
+            TestMock.EventService.Setup(eventService => eventService.RaiseAsync(It.IsAny<UserLoginSuccessEvent>())).Verifiable();
 
             var controller = new AccountController(
                 TestMock.UserService.Object,
                 TestMock.SignInService.Object,
                 TestMock.EventService.Object,
-                TestMock.InteractionService.Object,
+                TestMock.IdentityServerInteractionService.Object,
                 TestMock.ServiceBusPublisher.Object);
 
             var request = new LoginAccountRequest
@@ -164,7 +164,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
             result.As<OkObjectResult>().Value.Should().BeEquivalentTo(returnUrl);
-            TestMock.InteractionService.Verify(interactionService => interactionService.GetAuthorizationContextAsync(It.IsAny<string>()), Times.Once);
+            TestMock.IdentityServerInteractionService.Verify(interactionService => interactionService.GetAuthorizationContextAsync(It.IsAny<string>()), Times.Once);
             TestMock.UserService.Verify(userService => userService.FindByEmailAsync(It.IsAny<string>()), Times.Once);
 
             TestMock.SignInService.Verify(
@@ -175,20 +175,20 @@ namespace eDoxa.Identity.UnitTests.Controllers
                     It.IsAny<bool>()),
                 Times.Once);
 
-            TestMock.EventService.Verify(eventService => eventService.RaiseAsync(It.IsAny<Event>()), Times.Once);
+            TestMock.EventService.Verify(eventService => eventService.RaiseAsync(It.IsAny<UserLoginSuccessEvent>()), Times.Once);
         }
 
         [Fact]
         public async Task LoginAccountAsync_ShouldBeUnauthorizedResult()
         {
             // Arrange
-            TestMock.InteractionService.Setup(interactionService => interactionService.GetAuthorizationContextAsync(It.IsAny<string>())).Verifiable();
+            TestMock.IdentityServerInteractionService.Setup(interactionService => interactionService.GetAuthorizationContextAsync(It.IsAny<string>())).Verifiable();
 
             var controller = new AccountController(
                 TestMock.UserService.Object,
                 TestMock.SignInService.Object,
                 TestMock.EventService.Object,
-                TestMock.InteractionService.Object,
+                TestMock.IdentityServerInteractionService.Object,
                 TestMock.ServiceBusPublisher.Object);
 
             var request = new LoginAccountRequest
@@ -204,7 +204,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 
             // Assert
             result.Should().BeOfType<UnauthorizedResult>();
-            TestMock.InteractionService.Verify(interactionService => interactionService.GetAuthorizationContextAsync(It.IsAny<string>()), Times.Once);
+            TestMock.IdentityServerInteractionService.Verify(interactionService => interactionService.GetAuthorizationContextAsync(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
@@ -213,17 +213,17 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Arrange
             var logoutRequest = new LogoutRequest(string.Empty, new LogoutMessage(new ValidatedEndSessionRequest()));
 
-            TestMock.InteractionService.Setup(interactionService => interactionService.GetLogoutContextAsync(It.IsAny<string>()))
+            TestMock.IdentityServerInteractionService.Setup(interactionService => interactionService.GetLogoutContextAsync(It.IsAny<string>()))
                 .ReturnsAsync(logoutRequest)
                 .Verifiable();
 
-            TestMock.InteractionService.Setup(interactionService => interactionService.RevokeTokensForCurrentSessionAsync()).Verifiable();
+            TestMock.IdentityServerInteractionService.Setup(interactionService => interactionService.RevokeTokensForCurrentSessionAsync()).Verifiable();
 
             var controller = new AccountController(
                 TestMock.UserService.Object,
                 TestMock.SignInService.Object,
                 TestMock.EventService.Object,
-                TestMock.InteractionService.Object,
+                TestMock.IdentityServerInteractionService.Object,
                 TestMock.ServiceBusPublisher.Object);
 
             // Act
@@ -232,8 +232,8 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
             result.As<OkObjectResult>().Value.Should().BeOfType<LogoutTokenDto>();
-            TestMock.InteractionService.Verify(interactionService => interactionService.GetLogoutContextAsync(It.IsAny<string>()), Times.Once);
-            TestMock.InteractionService.Verify(interactionService => interactionService.RevokeTokensForCurrentSessionAsync(), Times.Once);
+            TestMock.IdentityServerInteractionService.Verify(interactionService => interactionService.GetLogoutContextAsync(It.IsAny<string>()), Times.Once);
+            TestMock.IdentityServerInteractionService.Verify(interactionService => interactionService.RevokeTokensForCurrentSessionAsync(), Times.Once);
         }
 
         [Fact]
@@ -254,7 +254,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 TestMock.UserService.Object,
                 TestMock.SignInService.Object,
                 TestMock.EventService.Object,
-                TestMock.InteractionService.Object,
+                TestMock.IdentityServerInteractionService.Object,
                 TestMock.ServiceBusPublisher.Object);
 
             var request = new RegisterAccountRequest

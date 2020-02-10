@@ -27,7 +27,7 @@ namespace eDoxa.Identity.TestHelper.Fixtures
             SignInService = new Mock<ISignInService>();
             UserService = new Mock<IUserService>();
             EventService = new Mock<IEventService>();
-            InteractionService = new Mock<IIdentityServerInteractionService>();
+            IdentityServerInteractionService = new Mock<IIdentityServerInteractionService>();
         }
 
         public Mock<IServiceBusPublisher> ServiceBusPublisher { get; }
@@ -48,6 +48,6 @@ namespace eDoxa.Identity.TestHelper.Fixtures
 
         public Mock<IEventService> EventService { get; }
 
-        public Mock<IIdentityServerInteractionService> InteractionService { get; }
+        public Mock<IIdentityServerInteractionService> IdentityServerInteractionService { get; }
     }
 }
