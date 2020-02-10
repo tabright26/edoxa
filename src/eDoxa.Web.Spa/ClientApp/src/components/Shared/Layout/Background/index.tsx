@@ -7,7 +7,7 @@ export const Background: FunctionComponent = ({ children }) => (
     <CardImg
       src={panel}
       className="app"
-      style={{ filter: "brightness(75%)" }}
+      style={{ filter: "brightness(55%)" }}
     />
     <CardImgOverlay className="app flex-row align-items-center">
       {children}
