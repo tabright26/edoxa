@@ -30,7 +30,6 @@ namespace eDoxa.Identity.Api.Infrastructure
         [Required]
         public AuthorityEndpointsOptions Endpoints { get; set; }
 
-        [Required]
         public SwaggerOptions Swagger { get; set; }
 
         [Required]
