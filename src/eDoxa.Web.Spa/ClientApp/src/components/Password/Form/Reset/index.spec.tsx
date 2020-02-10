@@ -2,7 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { ReactWrapper } from "enzyme";
 import Reset from ".";
-import { configureStore } from "store";
+import store from "store";
 import Input from "components/Shared/Input";
 import { EMAIL_REQUIRED } from "utils/form/validators";
 import { MemoryRouter } from "react-router-dom";
@@ -15,8 +15,6 @@ import {
 
 const shallow = global["shallow"];
 const mount = global["mount"];
-
-const store = configureStore();
 
 const createWrapper = (): ReactWrapper | any => {
   return mount(

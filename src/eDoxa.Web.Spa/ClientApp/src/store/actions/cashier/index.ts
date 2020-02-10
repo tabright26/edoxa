@@ -1,10 +1,4 @@
 import {
-  LOAD_USER_MONEY_ACCOUNT_BALANCE,
-  LOAD_USER_MONEY_ACCOUNT_BALANCE_SUCCESS,
-  LOAD_USER_MONEY_ACCOUNT_BALANCE_FAIL,
-  LOAD_USER_TOKEN_ACCOUNT_BALANCE,
-  LOAD_USER_TOKEN_ACCOUNT_BALANCE_SUCCESS,
-  LOAD_USER_TOKEN_ACCOUNT_BALANCE_FAIL,
   LOAD_USER_TRANSACTION_HISTORY,
   LOAD_USER_TRANSACTION_HISTORY_SUCCESS,
   LOAD_USER_TRANSACTION_HISTORY_FAIL,
@@ -16,20 +10,15 @@ import {
   REDEEM_PROMOTION_FAIL,
   CreateUserTransactionActionCreator,
   RedeemPromotionActionCreator,
-  LoadUserMoneyAccountBalanceActionCreator,
-  LoadUserTokenAccountBalanceActionCreator,
   LoadUserTransactionHistoryActionCreator
 } from "./types";
 import {
   CurrencyType,
-  CURRENCY_TYPE_MONEY,
-  CURRENCY_TYPE_TOKEN,
   TransactionType,
   TransactionStatus,
   TransactionBundleId
 } from "types";
 import {
-  AxiosPayload,
   AxiosActionCreatorMeta,
   AXIOS_PAYLOAD_CLIENT_CASHIER
 } from "utils/axios/types";
@@ -77,46 +66,10 @@ export function redeemPromotion(
   };
 }
 
-export function loadUserBalance(
-  currencyType: CurrencyType
-):
-  | LoadUserMoneyAccountBalanceActionCreator
-  | LoadUserTokenAccountBalanceActionCreator {
-  const payload: AxiosPayload = {
-    client: AXIOS_PAYLOAD_CLIENT_CASHIER,
-    request: {
-      method: "GET",
-      url: `/cashier/api/balance/${currencyType}`
-    }
-  };
-  switch (currencyType) {
-    case CURRENCY_TYPE_MONEY: {
-      return {
-        types: [
-          LOAD_USER_MONEY_ACCOUNT_BALANCE,
-          LOAD_USER_MONEY_ACCOUNT_BALANCE_SUCCESS,
-          LOAD_USER_MONEY_ACCOUNT_BALANCE_FAIL
-        ],
-        payload
-      };
-    }
-    case CURRENCY_TYPE_TOKEN: {
-      return {
-        types: [
-          LOAD_USER_TOKEN_ACCOUNT_BALANCE,
-          LOAD_USER_TOKEN_ACCOUNT_BALANCE_SUCCESS,
-          LOAD_USER_TOKEN_ACCOUNT_BALANCE_FAIL
-        ],
-        payload
-      };
-    }
-  }
-}
-
 export function loadUserTransactionHistory(
-  currencyType: CurrencyType | null = null,
-  type: TransactionType | null = null,
-  status: TransactionStatus | null = null
+  currencyType: CurrencyType = null,
+  type: TransactionType = null,
+  status: TransactionStatus = null
 ): LoadUserTransactionHistoryActionCreator {
   return {
     types: [

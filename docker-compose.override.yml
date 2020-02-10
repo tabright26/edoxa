@@ -34,7 +34,6 @@ services:
       - WebSpaUrl=http://${HOST:-localhost}:5300
       - Endpoints__IdentityUrl=http://identity-api
       - Serilog__Sink__Seq=http://seq
-      - Swagger__Enabled=true
       - Swagger__Endpoints__IdentityUrl=http://${HOST:-localhost}:5000
       - Swagger__Endpoints__PaymentUrl=http://${HOST:-localhost}:5001
       - Swagger__Endpoints__CashierUrl=http://${HOST:-localhost}:5002 
@@ -93,7 +92,7 @@ services:
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity-api
       - Serilog__Sink__Seq=http://seq
-      - LeagueOfLegends__ApiKey=RGAPI-3a1a5252-01c3-4942-be2d-b41336a2e52e
+      - LeagueOfLegends__ApiKey=RGAPI-b1432ae8-2b93-4eff-a6ba-35d96d198c0c
     ports:
       - "5005:80"
       - "9005:81"

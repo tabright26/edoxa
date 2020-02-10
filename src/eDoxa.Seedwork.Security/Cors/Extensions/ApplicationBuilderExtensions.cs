@@ -19,9 +19,9 @@ namespace eDoxa.Seedwork.Security.Cors.Extensions
 
             var environment = services.GetRequiredService<IWebHostEnvironment>();
 
-            if (environment.IsProduction())
+            if (!environment.IsDevelopment())
             {
-                return application.UseCors(Environments.Production);
+                return application.UseCors("Kubernetes");
             }
 
             return application.UseCors();

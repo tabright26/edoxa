@@ -1,11 +1,13 @@
 import { combineEpics, ofType, Epic } from "redux-observable";
 import { NEVER } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import { switchMap, map, delay } from "rxjs/operators";
 import {
   CREATE_USER_TRANSACTION_SUCCESS,
   CREATE_USER_TRANSACTION_FAIL,
   REDEEM_PROMOTION_FAIL,
-  REDEEM_PROMOTION_SUCCESS
+  REDEEM_PROMOTION_SUCCESS,
+  CreateUserTransactionAction,
+  RedeemPromotionAction
 } from "store/actions/cashier/types";
 import {
   CREATE_USER_ADDRESS_SUCCESS,
@@ -47,9 +49,53 @@ import {
   UNLINK_GAME_CREDENTIAL_SUCCESS,
   UNLINK_GAME_CREDENTIAL_FAIL
 } from "./actions/game/types";
-import { RootActions } from "./types";
+import { RootActions, RootState } from "./types";
+import { loadUserTransactionHistory } from "./actions/cashier";
+import {
+  REGISTER_CHALLENGE_PARTICIPANT_SUCCESS,
+  RegisterChallengeParticipantAction,
+  REGISTER_CHALLENGE_PARTICIPANT_FAIL
+} from "./actions/challenge/types";
 
-const onSubmitSuccessEpic: Epic<RootActions> = action$ =>
+const createUserTransactionEpic: Epic<
+  CreateUserTransactionAction,
+  any,
+  RootState
+> = action$ =>
+  action$.pipe(
+    ofType(CREATE_USER_TRANSACTION_SUCCESS),
+    delay(2500), // SHOULD BE REMOVED WE SIGNALR WILL BE INSTALL.
+    map(action => loadUserTransactionHistory(action.payload.data.currency.type))
+  );
+
+const registerChallengeParticipantEpic: Epic<
+  RegisterChallengeParticipantAction,
+  any,
+  RootState
+> = (action$, state$) =>
+  action$.pipe(
+    ofType(REGISTER_CHALLENGE_PARTICIPANT_SUCCESS),
+    delay(2500), // SHOULD BE REMOVED WE SIGNALR WILL BE INSTALL.
+    map(action =>
+      loadUserTransactionHistory(
+        state$.value.root.challenge.data.find(
+          challenge => challenge.id === action.payload.data.challengeId
+        ).payout.entryFee.type
+      )
+    )
+  );
+
+const redeemPromotionEpic: Epic<
+  RedeemPromotionAction,
+  any,
+  RootState
+> = action$ =>
+  action$.pipe(
+    ofType(REDEEM_PROMOTION_SUCCESS),
+    map(action => loadUserTransactionHistory(action.payload.data.currency.type))
+  );
+
+const onSubmitSuccessEpic: Epic<RootActions, any, RootState> = action$ =>
   action$.pipe(
     ofType(
       CREATE_USER_ADDRESS_SUCCESS,
@@ -67,7 +113,8 @@ const onSubmitSuccessEpic: Epic<RootActions> = action$ =>
       UNLINK_GAME_CREDENTIAL_SUCCESS,
       REDEEM_PROMOTION_SUCCESS,
       LOGIN_USER_ACCOUNT_SUCCESS,
-      REGISTER_USER_ACCOUNT_SUCCESS
+      REGISTER_USER_ACCOUNT_SUCCESS,
+      REGISTER_CHALLENGE_PARTICIPANT_SUCCESS
     ),
     switchMap(action => {
       const { resolve } = action.meta.previousAction.meta;
@@ -78,7 +125,7 @@ const onSubmitSuccessEpic: Epic<RootActions> = action$ =>
     })
   );
 
-const onSubmitFailEpic: Epic<RootActions> = action$ =>
+const onSubmitFailEpic: Epic<RootActions, any, RootState> = action$ =>
   action$.pipe(
     ofType(
       CREATE_USER_ADDRESS_FAIL,
@@ -96,7 +143,8 @@ const onSubmitFailEpic: Epic<RootActions> = action$ =>
       UNLINK_GAME_CREDENTIAL_FAIL,
       REDEEM_PROMOTION_FAIL,
       LOGIN_USER_ACCOUNT_FAIL,
-      REGISTER_USER_ACCOUNT_FAIL
+      REGISTER_USER_ACCOUNT_FAIL,
+      REGISTER_CHALLENGE_PARTICIPANT_FAIL
     ),
     switchMap(action => {
       const { reject } = action.meta.previousAction.meta;
@@ -107,4 +155,10 @@ const onSubmitFailEpic: Epic<RootActions> = action$ =>
     })
   );
 
-export const epic = combineEpics(onSubmitSuccessEpic, onSubmitFailEpic);
+export const epic = combineEpics<RootActions, any, any, any>(
+  createUserTransactionEpic,
+  registerChallengeParticipantEpic,
+  redeemPromotionEpic,
+  onSubmitSuccessEpic,
+  onSubmitFailEpic
+);

@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace eDoxa.Seedwork.Security.Cors.Extensions
 {
@@ -20,7 +19,7 @@ namespace eDoxa.Seedwork.Security.Cors.Extensions
                         builder => builder.AllowAnyHeader().AllowAnyMethod().AllowCredentials().SetIsOriginAllowed(isOriginAllowed => true));
 
                     options.AddPolicy(
-                        Environments.Production,
+                        "Kubernetes",
                         builder => builder.AllowAnyMethod()
                             .AllowAnyHeader()
                             .WithOrigins("https://*.edoxa.gg")

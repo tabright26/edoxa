@@ -82,6 +82,11 @@ interface Entity<TEntityId> {
   readonly id: TEntityId;
 }
 
+export interface Promotion {
+  promotionalCode: string;
+  currency: Currency;
+}
+
 export interface ChallengesStaticOptions {}
 
 export interface GamesStaticOptions {

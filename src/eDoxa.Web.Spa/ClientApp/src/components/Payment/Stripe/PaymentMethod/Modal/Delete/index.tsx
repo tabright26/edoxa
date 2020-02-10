@@ -24,7 +24,7 @@ const Delete: FunctionComponent<Props> = ({
       className="text-uppercase my-auto bg-gray-900"
       toggle={handleHide}
     >
-      DELETE PAYMENT METHOD
+      DELETE CREDIT CARD
     </ModalHeader>
     <ModalBody>
       {show && (

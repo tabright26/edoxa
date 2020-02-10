@@ -62,6 +62,12 @@ const App = () => (
             component={ApiAuthorizationRoutes}
           />
           <Route<RouteProps> exact path="/home" name="Home" component={Home} />
+          {/* <Route<RouteProps>
+            exact
+            path="/faq"
+            name="FAQ"
+            render={() => <FAQ />}
+          /> */}
           <Route<RouteProps>
             exact
             path={getError401Path()}
