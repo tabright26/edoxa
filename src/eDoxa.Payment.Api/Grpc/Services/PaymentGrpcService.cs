@@ -1,5 +1,5 @@
 ﻿// Filename: PaymentGrpcService.cs
-// Date Created: 2019-12-26
+// Date Created: 2020-01-28
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -11,6 +11,7 @@ using eDoxa.Grpc.Extensions;
 using eDoxa.Grpc.Protos.Payment.Requests;
 using eDoxa.Grpc.Protos.Payment.Responses;
 using eDoxa.Grpc.Protos.Payment.Services;
+using eDoxa.Payment.Api.Extensions;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Paypal.Services.Abstractions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -74,7 +75,7 @@ namespace eDoxa.Payment.Api.Grpc.Services
                 var invoice = await _stripeInvoiceService.CreateInvoiceAsync(
                     customerId,
                     request.Transaction.Id.ParseEntityId<TransactionId>(),
-                    Convert.ToInt64(request.Transaction.Currency.Amount.ToDecimal()),
+                    request.Transaction.Currency.ToCents(),
                     request.Transaction.Description);
 
                 await _serviceBusPublisher.PublishUserDepositSucceededIntegrationEventAsync(userId, request.Transaction);
@@ -108,7 +109,7 @@ namespace eDoxa.Payment.Api.Grpc.Services
                 var payoutBatch = await _paypalPayoutService.CreateAsync(
                     request.Transaction.Id.ParseEntityId<TransactionId>(),
                     request.Email,
-                    Convert.ToInt32(-request.Transaction.Currency.Amount.ToDecimal()),
+                    -request.Transaction.Currency.Amount.ToDecimal(),
                     request.Transaction.Description);
 
                 await _serviceBusPublisher.PublishUserWithdrawalSucceededIntegrationEventAsync(userId, request.Transaction);

@@ -5,7 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
+using eDoxa.Seedwork.Application.HealthChecks.Extensions;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;

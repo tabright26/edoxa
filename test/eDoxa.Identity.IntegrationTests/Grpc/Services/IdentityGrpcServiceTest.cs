@@ -17,9 +17,9 @@ using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;

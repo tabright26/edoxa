@@ -21,6 +21,5 @@
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Domain\eDoxa.Seedwork.Domain.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Seedwork.Security\eDoxa.Seedwork.Security.csproj" />
   </ItemGroup>
 </Project>

@@ -7,8 +7,8 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.Seedwork.Security;
 
 using IdentityModel;
 

@@ -19,7 +19,7 @@ using eDoxa.Grpc.Protos.Games.Requests;
 using eDoxa.Grpc.Protos.Games.Services;
 using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Grpc.Protos.Identity.Services;
-using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Application;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

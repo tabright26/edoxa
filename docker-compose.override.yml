@@ -175,7 +175,6 @@ services:
   web-status:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - Serilog__Sink__Seq=http://seq
       - HealthChecks__Endpoints__0__Name=Identity API
       - HealthChecks__Endpoints__0__Uri=http://identity-api/health
       - HealthChecks__Endpoints__1__Name=Payment API
@@ -200,5 +199,6 @@ services:
       - HealthChecks__Endpoints__10__Uri=http://web-spa/health
       - HealthChecks__EvaluationTimeInSeconds=60
       - HealthChecks__MinimumSecondsBetweenFailureNotifications=300
+      - Serilog__Sink__Seq=http://seq
     ports:
       - "5500:80"

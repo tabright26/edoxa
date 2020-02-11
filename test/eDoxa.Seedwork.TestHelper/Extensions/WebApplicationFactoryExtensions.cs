@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 using Autofac;
 
-using eDoxa.Seedwork.Application.DelegatingHandlers;
+using eDoxa.Seedwork.Application.Http.DelegatingHandlers;
 using eDoxa.Seedwork.TestHelper.Modules;
 
 using Grpc.Net.Client;

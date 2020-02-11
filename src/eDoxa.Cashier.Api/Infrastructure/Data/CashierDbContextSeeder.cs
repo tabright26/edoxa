@@ -18,10 +18,10 @@ using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Extensions;
 using eDoxa.Cashier.Infrastructure.Models;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

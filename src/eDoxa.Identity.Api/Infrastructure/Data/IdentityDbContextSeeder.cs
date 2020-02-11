@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.Infrastructure;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

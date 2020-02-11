@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Games.IntegrationEvents;
 using eDoxa.Identity.Domain.Services;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.Extensions.Logging;
