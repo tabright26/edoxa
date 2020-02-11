@@ -16,6 +16,8 @@ namespace eDoxa.Seedwork.Infrastructure.AzureKeyVault.Extensions
             return hostBuilder.ConfigureAppConfiguration(
                 (context, builder) =>
                 {
+                    context.Configuration = builder.Build();
+
                     var connectionString = new AzureKeyVaultConnectionStringBuilder(context.Configuration.GetConnectionString("AzureKeyVault"));
 
                     builder.AddAzureKeyVault($"https://{connectionString.Name}.vault.azure.net", connectionString.ClientId, connectionString.ClientSecret);
