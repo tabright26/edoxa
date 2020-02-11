@@ -16,7 +16,7 @@ import {
 
 //const Home = React.lazy(() => import("views/Home/Home"));
 const TermsOfServices = React.lazy(() => import("views/TermsOfServices"));
-const FAQ = React.lazy(() => import("views/FAQ"));
+const FAQ = React.lazy(() => import("views/Faq"));
 const NewsFeeds = React.lazy(() => import("views/NewsFeeds"));
 const Profile = React.lazy(() => import("views/Profile"));
 const Challenges = React.lazy(() => import("views/Challenges"));
@@ -50,7 +50,7 @@ export const routes: RouteConfig[] = [
     path: getFaqPath(),
     name: "FAQ",
     component: FAQ,
-    exact: true,
+    exact: false,
     allowAnonymous: true,
     disabled: false,
     scopes: []

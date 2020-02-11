@@ -1,4 +1,5 @@
 import { ChallengeId, ClanId } from "types";
+import { questionGroups, QuestionGroupId } from "views/Faq/types";
 
 export function getHomePath(): string {
   return "/";
@@ -56,8 +57,15 @@ export function getTermsOfServicesPath(): string {
   return "/terms-of-services";
 }
 
-export function getFaqPath(): string {
-  return "/faq";
+export function getFaqPath(questionGroupId: QuestionGroupId = null): string {
+  if (questionGroupId) {
+    var questionGroup = questionGroups.find(
+      questionGroup => questionGroup.id === questionGroupId
+    );
+    return `/faq/${questionGroup.path}`;
+  } else {
+    return "/faq";
+  }
 }
 
 export function getNewsFeedsPath(): string {

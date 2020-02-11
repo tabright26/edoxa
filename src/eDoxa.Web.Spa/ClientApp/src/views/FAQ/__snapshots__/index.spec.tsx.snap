@@ -30,7 +30,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            Why EDOXA WAS CREATED?
+            WHY EDOXA WAS CREATED?
           </h5>
         </button>
       </div>
@@ -43,14 +43,7 @@ exports[`renders without crashing 1`] = `
       >
         <div
           className="card-body"
-        >
-          <p
-            className="mb-0"
-          >
-            We were frustrated as gamers to have a limited number of options to be successful. eDoxa was born from the sear to help unlock every gamer’s potential so that they can be proud to live from their eSport dream. Thus, everything we do and every new feature we develop is required to push our users in their path to success. We believe so strongly in our mission that we will give throughout the year 5%-10% of our revenue back in form of tokens to all participants that won’t make money in our Challenges. This will give them the opportunity to always try and to never lose hope in making it in this cutthroat world.
-             
-          </p>
-        </div>
+        />
       </div>
     </div>
     <div
@@ -84,27 +77,7 @@ exports[`renders without crashing 1`] = `
       >
         <div
           className="card-body"
-        >
-          <p
-            className="mb-0"
-          >
-            We are only at the beginning of our journey to become the #1 enabler of eSport talent in the world. We have a robust road map for the product, and this will change based on the feedback we get from you. Please contact us here or you can contact us
-             
-            <a
-              href="https://discord.gg/SvBUH5Y"
-            >
-              here
-            </a>
-             at
-             
-            <a
-              href="emailto:support@edoxa.gg"
-            >
-              support@edoxa.gg
-            </a>
-            .
-          </p>
-        </div>
+        />
       </div>
     </div>
     <div
@@ -138,27 +111,7 @@ exports[`renders without crashing 1`] = `
       >
         <div
           className="card-body"
-        >
-          <p
-            className="mb-0"
-          >
-            We are only at the beginning of our journey to become the #1 enabler of eSport talent in the world. We have a robust road map for the product, and this will change based on the feedback we get from you. Please contact us here or you can contact us
-             
-            <a
-              href="https://discord.gg/SvBUH5Y"
-            >
-              here
-            </a>
-             at
-             
-            <a
-              href="emailto:support@edoxa.gg"
-            >
-              support@edoxa.gg
-            </a>
-            .
-          </p>
-        </div>
+        />
       </div>
     </div>
     <div
@@ -247,7 +200,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            HOW DO I RESET MY PASSWORD?
+            WHAT’S A DOXATAG?
           </h5>
         </button>
       </div>
@@ -281,7 +234,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            WHAT HAPPENS IF MY OPPONENT OR I GET DISCONNECTED DURING AN ONLINE MATCH?
+            HOW DO I CREATE MY DOXATAG?
           </h5>
         </button>
       </div>
@@ -315,7 +268,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            WHAT IS A CHALLENGE?
+            HOW DO I RESET MY PASSWORD?
           </h5>
         </button>
       </div>
@@ -349,7 +302,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            CAN WE REGISTER TO MULTIPLE CHALLENGES?
+            WHAT HAPPENS IF MY OPPONENT OR I GET DISCONNECTED DURING AN ONLINE MATCH?
           </h5>
         </button>
       </div>
@@ -383,7 +336,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            WHAT GAME MODE NEEDS TO BE PLAYED FOR LEAGUE OF LEGENDS CHALLENGES?
+            WHAT IS A CHALLENGE?
           </h5>
         </button>
       </div>
@@ -417,7 +370,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            WHAT’S A TIMELINE [STATE]?
+            CAN WE REGISTER TO MULTIPLE CHALLENGES?
           </h5>
         </button>
       </div>
@@ -451,7 +404,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            WHAT IS YOUR SCORING LEGEND?
+            WHAT GAME MODE NEEDS TO BE PLAYED FOR LEAGUE OF LEGENDS CHALLENGES?
           </h5>
         </button>
       </div>
@@ -485,7 +438,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            HOW DOES THE SCORECARD WORKS?
+            WHAT’S A TIMELINE STATE?
           </h5>
         </button>
       </div>
@@ -519,7 +472,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            WHAT TYPE OF CHALLENGES DO YOU OFFER?
+            WHAT IS YOUR SCORING LEGEND?
           </h5>
         </button>
       </div>
@@ -553,7 +506,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            IS THERE A MINIMUM NUMBER OF GAMES I MUST PLAY TO GET PAID?
+            DO YOU SUGGEST PLAYING SUPPORT ROLE IN MY GAMES?
           </h5>
         </button>
       </div>
@@ -587,7 +540,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            WHAT ARE THE ENTRY FEES FOR A CHALLENGE?
+            HOW DOES THE SCORECARD WORKS?
           </h5>
         </button>
       </div>
@@ -621,7 +574,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            HOW MANY GAMES DOES EDOXA SUPPORTS?
+            WHAT TYPE OF CHALLENGES DO YOU OFFER?
           </h5>
         </button>
       </div>
@@ -655,7 +608,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            HOW LONG DOES IT TAKE TO SEE MY SCORE IN A CHALLENGE?
+            IS THERE A MINIMUM NUMBER OF GAMES I MUST PLAY TO GET PAID?
           </h5>
         </button>
       </div>
@@ -689,7 +642,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            WHAT IS THE PAYOUT STRUCTURE?
+            WHAT ARE THE ENTRY FEES FOR A CHALLENGE?
           </h5>
         </button>
       </div>
@@ -723,7 +676,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            WHO IS ELIGIBLE TO PLAY ON EDOXA?
+            HOW MANY GAMES DOES EDOXA SUPPORT?
           </h5>
         </button>
       </div>
@@ -757,7 +710,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            HOW TO ADD A CREDIT CARD?
+            HOW LONG DOES IT TAKE TO SEE MY SCORE IN A CHALLENGE?
           </h5>
         </button>
       </div>
@@ -791,7 +744,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            HOW DO I DEPOSIT MONEY IN MY WALLET?
+            WHAT IS THE PAYOUT STRUCTURE?
           </h5>
         </button>
       </div>
@@ -825,7 +778,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            HOW DO I ADD MY BANK ACCOUNT?
+            WHO IS ELIGIBLE TO PLAY ON EDOXA?
           </h5>
         </button>
       </div>
@@ -859,7 +812,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            HOW DO I WITHDRAW MONEY?
+            HOW TO ADD A CREDIT CARD?
           </h5>
         </button>
       </div>
@@ -893,7 +846,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            WHAT ARE THE REQUIREMENTS TO WITHDRAW MONEY?
+            HOW CAN I BE ELLIGIBLE FOR A DEPOSIT?
           </h5>
         </button>
       </div>
@@ -927,7 +880,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            WHAT ARE THE REQUIREMENTS TO DEPOSIT MONEY?
+            HOW DO I DEPOSIT MONEY IN MY WALLET?
           </h5>
         </button>
       </div>
@@ -961,7 +914,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            WHO IS YOUR PLAYMENT PROVIDER?
+            HOW DO I WITHDRAW MONEY?
           </h5>
         </button>
       </div>
@@ -995,7 +948,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            IS EDOXA LEGAL?
+            WHAT ARE THE REQUIREMENTS TO DEPOSIT MONEY?
           </h5>
         </button>
       </div>
@@ -1029,7 +982,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            WHAT IS SKILLED BASED GAMING?
+            WHAT ARE THE REQUIREMENTS TO WITHDRAW MONEY?
           </h5>
         </button>
       </div>
@@ -1063,7 +1016,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            DOES MY STATE OR PROVINCE ALLOW SKILL-BASED GAMING?
+            WHO IS YOUR PLAYMENT PROVIDER?
           </h5>
         </button>
       </div>
@@ -1097,7 +1050,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            WHAT IS THE LEGAL AGE TO PLAY ON eDoxa.gg?
+            IS EDOXA LEGAL?
           </h5>
         </button>
       </div>
@@ -1131,7 +1084,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            ARE YOU A PARTNER OR RIOT?
+            WHAT IS SKILLED BASED GAMING?
           </h5>
         </button>
       </div>
@@ -1165,7 +1118,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            WHAT IS A SMURF?
+            DOES MY STATE OR PROVINCE ALLOW SKILL-BASED GAMING?
           </h5>
         </button>
       </div>
@@ -1199,7 +1152,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            WHAT ARE THE CONSEQUENCES OF HAVING A SMURF ACCOUNT?
+            WHAT IS THE LEGAL AGE TO PLAY ON eDoxa.gg?
           </h5>
         </button>
       </div>
@@ -1233,7 +1186,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            WHAT IS YOUR REFUND POLICY?
+            ARE YOU A PARTNER OR RIOT?
           </h5>
         </button>
       </div>
@@ -1267,7 +1220,7 @@ exports[`renders without crashing 1`] = `
           <h5
             className="m-0 p-0 text-uppercase"
           >
-            IS eDoxa.gg SECURE?
+            WHAT IS A SMURF?
           </h5>
         </button>
       </div>
@@ -1276,6 +1229,108 @@ exports[`renders without crashing 1`] = `
         className="collapse"
         data-parent="#accordion"
         id="collapse-35"
+        style={Object {}}
+      >
+        <div
+          className="card-body"
+        />
+      </div>
+    </div>
+    <div
+      className="my-1 card"
+    >
+      <div
+        className="card-header"
+        id="button-36"
+      >
+        <button
+          aria-controls="collapse-36"
+          aria-expanded={false}
+          aria-label={null}
+          className="text-left m-0 p-0 text-muted btn btn-link btn-block"
+          onClick={[Function]}
+          type="button"
+        >
+          <h5
+            className="m-0 p-0 text-uppercase"
+          >
+            WHAT ARE THE CONSEQUENCES OF HAVING A SMURF ACCOUNT?
+          </h5>
+        </button>
+      </div>
+      <div
+        aria-labelledby="button-36"
+        className="collapse"
+        data-parent="#accordion"
+        id="collapse-36"
+        style={Object {}}
+      >
+        <div
+          className="card-body"
+        />
+      </div>
+    </div>
+    <div
+      className="my-1 card"
+    >
+      <div
+        className="card-header"
+        id="button-37"
+      >
+        <button
+          aria-controls="collapse-37"
+          aria-expanded={false}
+          aria-label={null}
+          className="text-left m-0 p-0 text-muted btn btn-link btn-block"
+          onClick={[Function]}
+          type="button"
+        >
+          <h5
+            className="m-0 p-0 text-uppercase"
+          >
+            WHAT IS YOUR REFUND POLICY?
+          </h5>
+        </button>
+      </div>
+      <div
+        aria-labelledby="button-37"
+        className="collapse"
+        data-parent="#accordion"
+        id="collapse-37"
+        style={Object {}}
+      >
+        <div
+          className="card-body"
+        />
+      </div>
+    </div>
+    <div
+      className="my-1 card"
+    >
+      <div
+        className="card-header"
+        id="button-38"
+      >
+        <button
+          aria-controls="collapse-38"
+          aria-expanded={false}
+          aria-label={null}
+          className="text-left m-0 p-0 text-muted btn btn-link btn-block"
+          onClick={[Function]}
+          type="button"
+        >
+          <h5
+            className="m-0 p-0 text-uppercase"
+          >
+            IS eDoxa.gg SECURE?
+          </h5>
+        </button>
+      </div>
+      <div
+        aria-labelledby="button-38"
+        className="collapse"
+        data-parent="#accordion"
+        id="collapse-38"
         style={Object {}}
       >
         <div

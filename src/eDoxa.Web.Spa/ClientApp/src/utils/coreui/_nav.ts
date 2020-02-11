@@ -30,14 +30,13 @@ const items = [
   {
     divider: true,
     class: "mt-auto",
-    show: false
+    show: true
   },
   {
-    name: "F. A. Q.",
+    name: "FAQs",
     url: getFaqPath(),
     icon: "fa fa-question-circle",
-    variant: "primary",
-    show: false
+    show: true
   }
 ];
 
