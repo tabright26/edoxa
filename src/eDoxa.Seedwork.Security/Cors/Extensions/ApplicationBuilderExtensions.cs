@@ -5,9 +5,8 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace eDoxa.Seedwork.Security.Cors.Extensions
 {
@@ -15,11 +14,9 @@ namespace eDoxa.Seedwork.Security.Cors.Extensions
     {
         public static IApplicationBuilder UseCustomCors(this IApplicationBuilder application)
         {
-            var services = application.ApplicationServices;
+            var configuration = application.ApplicationServices.GetRequiredService<IConfiguration>();
 
-            var environment = services.GetRequiredService<IWebHostEnvironment>();
-
-            if (!environment.IsDevelopment())
+            if (configuration?.GetSection("Kubernetes")?.GetValue<bool>("Enabled") ?? false)
             {
                 return application.UseCors("Kubernetes");
             }

@@ -122,9 +122,7 @@ namespace eDoxa.Cashier.Web.Aggregator
 
             services.AddGrpcClient<PaymentService.PaymentServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.PaymentUrl}:81"))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
-                .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-                .AddRetryPolicyHandler()
-                .AddCircuitBreakerPolicyHandler();
+                .AddHttpMessageHandler<AccessTokenDelegatingHandler>();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
