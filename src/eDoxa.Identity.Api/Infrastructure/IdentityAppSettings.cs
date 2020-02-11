@@ -9,8 +9,8 @@
 using System.ComponentModel.DataAnnotations;
 
 using eDoxa.Grpc.Protos.Identity.Options;
-using eDoxa.Seedwork.Monitoring.AppSettings;
-using eDoxa.Seedwork.Monitoring.AppSettings.Options;
+using eDoxa.Seedwork.Application.AppSettings;
+using eDoxa.Seedwork.Application.AppSettings.Options;
 
 using IdentityServer4.Models;
 

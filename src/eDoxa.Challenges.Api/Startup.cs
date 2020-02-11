@@ -17,18 +17,17 @@ using eDoxa.Challenges.Api.Infrastructure.Data;
 using eDoxa.Challenges.Api.IntegrationEvents.Extensions;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Grpc.Protos.Challenges.Options;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
+using eDoxa.Seedwork.Application.Cors.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
-using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
+using eDoxa.Seedwork.Application.HealthChecks.Extensions;
+using eDoxa.Seedwork.Application.Middlewares.ProblemDetails.Extensions;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
-using eDoxa.Seedwork.Monitoring;
-using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
-using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Extensions;
 using eDoxa.ServiceBus.TestHelper.Extensions;
@@ -47,7 +46,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using static eDoxa.Seedwork.Security.ApiResources;
+using static eDoxa.Seedwork.Application.ApiResources;
 
 namespace eDoxa.Challenges.Api
 {

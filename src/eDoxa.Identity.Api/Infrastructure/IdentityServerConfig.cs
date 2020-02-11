@@ -6,7 +6,7 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Application;
 using eDoxa.Swagger.Extensions;
 
 using IdentityServer4;
@@ -32,15 +32,15 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             yield return new IdentityResources.Address();
 
-            yield return Seedwork.Security.IdentityResources.Country;
+            yield return Seedwork.Application.IdentityResources.Country;
 
-            yield return Seedwork.Security.IdentityResources.Roles;
+            yield return Seedwork.Application.IdentityResources.Roles;
 
-            yield return Seedwork.Security.IdentityResources.Permissions;
+            yield return Seedwork.Application.IdentityResources.Permissions;
 
-            yield return Seedwork.Security.IdentityResources.Games;
+            yield return Seedwork.Application.IdentityResources.Games;
 
-            yield return Seedwork.Security.IdentityResources.Stripe;
+            yield return Seedwork.Application.IdentityResources.Stripe;
         }
 
         public static IEnumerable<ApiResource> GetApiResources()

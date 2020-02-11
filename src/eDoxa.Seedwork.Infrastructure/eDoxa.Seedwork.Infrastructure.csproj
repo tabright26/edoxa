@@ -27,12 +27,15 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="StackExchange.Redis" Version="2.0.601" />
     <PackageReference Include="StackExchange.Redis.Extensions.AspNetCore" Version="5.5.0" />
     <PackageReference Include="StackExchange.Redis.Extensions.Newtonsoft" Version="5.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.AzureKeyVault.HostingStartup" Version="2.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.AzureKeyVault" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Redis" Version="0.4.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\eDoxa.Redis\eDoxa.Redis.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Domain\eDoxa.Seedwork.Domain.csproj" />
   </ItemGroup>
 

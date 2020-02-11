@@ -4,12 +4,11 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Monitoring;
-using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
-using eDoxa.Seedwork.Security.DataProtection.Extensions;
-using eDoxa.Seedwork.Security.Hsts.Extensions;
+using eDoxa.Seedwork.Application.HealthChecks.Extensions;
+using eDoxa.Seedwork.Application.HttpsPolicy.Extensions;
+using eDoxa.Seedwork.Infrastructure.DataProtection.Extensions;
 using eDoxa.Web.Spa.Infrastructure;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;

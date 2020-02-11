@@ -5,8 +5,7 @@
 // Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Grpc.Protos.CustomTypes;
-using eDoxa.Seedwork.Monitoring.AppSettings;
-using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Application.AppSettings;
 using eDoxa.Swagger.Extensions;
 using eDoxa.Swagger.Filters;
 using eDoxa.Swagger.Options;

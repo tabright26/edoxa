@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using eDoxa.Notifications.Api.Infrastructure.Data.Storage;
 using eDoxa.Notifications.Domain.AggregateModels.UserAggregate;
 using eDoxa.Notifications.Infrastructure;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

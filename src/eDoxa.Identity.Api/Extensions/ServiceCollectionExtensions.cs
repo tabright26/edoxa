@@ -14,7 +14,7 @@ using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.Infrastructure;
-using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Application;
 
 using IdentityModel;
 

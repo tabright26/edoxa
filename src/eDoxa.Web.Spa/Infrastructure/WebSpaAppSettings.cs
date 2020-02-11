@@ -8,8 +8,8 @@
 
 using System.ComponentModel.DataAnnotations;
 
-using eDoxa.Seedwork.Monitoring.AppSettings;
-using eDoxa.Seedwork.Monitoring.AppSettings.Options;
+using eDoxa.Seedwork.Application.AppSettings;
+using eDoxa.Seedwork.Application.AppSettings.Options;
 
 namespace eDoxa.Web.Spa.Infrastructure
 {
