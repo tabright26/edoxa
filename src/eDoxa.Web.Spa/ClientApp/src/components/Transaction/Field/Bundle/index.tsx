@@ -11,6 +11,7 @@ import {
 import { connect, MapStateToProps } from "react-redux";
 import { compose } from "recompose";
 import { RootState } from "store/types";
+import produce, { Draft } from "immer";
 
 interface StateProps {
   bundles: TransactionBundle[];
@@ -70,13 +71,22 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   ownProps
 ) => {
   return {
-    bundles: state.static.cashier.transaction.bundles.filter(
-      bundle =>
-        bundle.type.toLowerCase() === ownProps.transactionType.toLowerCase() &&
-        bundle.currency.type.toLowerCase() ===
-          ownProps.currency.toLowerCase() &&
-        !bundle.disabled &&
-        !bundle.deprecated
+    bundles: produce(
+      state.static.cashier.transaction.bundles,
+      (draft: Draft<TransactionBundle[]>) =>
+        draft
+          .filter(
+            bundle =>
+              bundle.type.toUpperCase() ===
+                ownProps.transactionType.toUpperCase() &&
+              bundle.currency.type.toUpperCase() ===
+                ownProps.currency.toUpperCase() &&
+              !bundle.disabled &&
+              !bundle.deprecated
+          )
+          .sort((left, right) =>
+            left.currency.amount < right.currency.amount ? -1 : 1
+          )
     )
   };
 };
