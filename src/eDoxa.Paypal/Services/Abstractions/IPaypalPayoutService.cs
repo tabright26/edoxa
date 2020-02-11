@@ -15,7 +15,7 @@ namespace eDoxa.Paypal.Services.Abstractions
         Task<PayoutBatch> CreateAsync(
             string transactionId,
             string email,
-            int amount,
+            decimal amount,
             string? description = null,
             string? correlationId = null
         );

@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 
 using eDoxa.Paypal.Services.Abstractions;
@@ -34,7 +35,7 @@ namespace eDoxa.Paypal.Services
         public async Task<PayoutBatch> CreateAsync(
             string transactionId,
             string email,
-            int amount,
+            decimal amount,
             string? description = null,
             string? correlationId = null
         )
@@ -54,7 +55,7 @@ namespace eDoxa.Paypal.Services
                         amount = new Currency
                         {
                             currency = Options.Payout.Currency,
-                            value = amount.ToString()
+                            value = amount.ToString(CultureInfo.InvariantCulture)
                         },
                         receiver = email,
                         note = description ?? Options.Payout.Email.Note,

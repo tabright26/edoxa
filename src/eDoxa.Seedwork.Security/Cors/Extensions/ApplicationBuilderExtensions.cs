@@ -16,7 +16,7 @@ namespace eDoxa.Seedwork.Security.Cors.Extensions
         {
             var configuration = application.ApplicationServices.GetRequiredService<IConfiguration>();
 
-            if (configuration?.GetSection("Kubernetes")?.GetValue<bool>("Enabled") ?? false)
+            if (configuration?.GetValue<bool>("Kubernetes_Enabled") ?? false)
             {
                 return application.UseCors("Kubernetes");
             }
