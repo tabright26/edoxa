@@ -23,9 +23,16 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
     {
         public PromotionTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
         {
+            _validPromotionEndDate = new DateTimeProvider(DateTime.UtcNow.AddDays(30));
+            _invalidPromotionEndDate = new DateTimeProvider(DateTime.UtcNow);
+            _promotionTime = TimeSpan.FromDays(30);
         }
 
         private const string TestCode = "TestCode";
+
+        private readonly DateTimeProvider _validPromotionEndDate;
+        private readonly DateTimeProvider _invalidPromotionEndDate;
+        private readonly TimeSpan _promotionTime;
 
         private static User GenerateUser()
         {
@@ -34,16 +41,16 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
 
         [Fact]
 
-        // Francis: Comment je devrais nommer cette methode la ???
-        public void Cancel_IfCanCancel_ShouldCancel()
+        public void Cancel_WhenPromotionIsActive_ShouldCancel()
         {
             var promotion = new Promotion(
                 TestCode,
                 new Money(50),
-                TimeSpan.FromDays(30),
-                new DateTimeProvider(DateTime.Now.AddDays(30)));
+                _promotionTime,
+                _invalidPromotionEndDate
+                );
 
-            var cancelTime = new DateTimeProvider(DateTime.Now);
+            var cancelTime = new DateTimeProvider(DateTime.UtcNow);
 
             promotion.Cancel(cancelTime);
 
@@ -51,116 +58,116 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
         }
 
         [Fact]
-        public void Cancel_IfCantCancel_ShouldThrowInvalidOperationException()
+        public void Cancel_WhenPromotionIsExpired_ShouldThrowInvalidOperationException()
         {
             var promotion = new Promotion(
                 TestCode,
                 new Money(50),
-                TimeSpan.FromDays(0),
-                new DateTimeProvider(DateTime.Now));
+                _promotionTime,
+                _invalidPromotionEndDate);
 
-            var cancelTime = new DateTimeProvider(DateTime.Now);
+            var cancelTime = new DateTimeProvider(DateTime.UtcNow);
 
             var action = new Action(() => promotion.Cancel(cancelTime));
             action.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
-        public void IsActive_WhenActive_ShouldBeTrue()
+        public void IsActive_WhenPromotionIsActive_ShouldBeTrue()
         {
             var promotion = new Promotion(
                 TestCode,
                 new Money(50),
-                TimeSpan.FromDays(30),
-                new DateTimeProvider(DateTime.Now.AddDays(30)));
+                _promotionTime,
+                _validPromotionEndDate);
 
             promotion.IsActive().Should().BeTrue();
         }
 
         [Fact]
-        public void IsActive_WhenNotActive_ShouldBeFalse()
+        public void IsActive_WhenPromotionIsExpired_ShouldBeFalse()
         {
             var promotion = new Promotion(
                 TestCode,
                 new Money(50),
-                TimeSpan.FromDays(5),
-                new DateTimeProvider(DateTime.Now.AddDays(30)));
+                _promotionTime,
+                _invalidPromotionEndDate);
 
             promotion.IsActive().Should().BeFalse();
         }
 
         [Fact]
-        public void IsCanceled_WhenCancelled_ShouldBeTrue()
+        public void IsCanceled_WhenPromotionIsActive_ShouldBeTrue()
         {
             var promotion = new Promotion(
                 TestCode,
                 new Money(50),
-                TimeSpan.FromDays(30),
-                new DateTimeProvider(DateTime.Now.AddDays(30)));
+                _promotionTime,
+                _validPromotionEndDate);
 
-            promotion.Cancel(new DateTimeProvider(DateTime.Now));
+            promotion.Cancel(new DateTimeProvider(DateTime.UtcNow));
             promotion.IsCanceled().Should().BeTrue();
         }
 
         [Fact]
-        public void IsCanceled_WhenNotCancelled_ShouldBeFalse()
+        public void IsCanceled_WhenPromotionIsNew_ShouldBeFalse()
         {
             var promotion = new Promotion(
                 TestCode,
                 new Money(50),
-                TimeSpan.FromDays(30),
-                new DateTimeProvider(DateTime.Now.AddDays(30)));
+                _promotionTime,
+                _validPromotionEndDate);
 
             promotion.IsCanceled().Should().BeFalse();
         }
 
         [Fact]
-        public void IsExpired_WhenExpired_ShouldBeTrue()
+        public void IsExpired_WhenPromotionIsExpired_ShouldBeTrue()
         {
             var promotion = new Promotion(
                 TestCode,
                 new Money(50),
-                TimeSpan.FromDays(2),
-                new DateTimeProvider(DateTime.Now));
+                _promotionTime,
+                _invalidPromotionEndDate);
 
             promotion.IsExpired().Should().BeTrue();
         }
 
         [Fact]
-        public void IsExpired_WhenNotExpired_ShouldBeFalse()
+        public void IsExpired_WhenPromotionIsNew_ShouldBeFalse()
         {
             var promotion = new Promotion(
                 TestCode,
                 new Money(50),
-                TimeSpan.FromDays(30),
-                new DateTimeProvider(DateTime.Now.AddDays(30)));
+                _promotionTime,
+                _validPromotionEndDate);
 
             promotion.IsExpired().Should().BeFalse();
         }
 
         [Fact]
-        public void IsRedeemBy_WhenEmpty_ShouldBeFalse()
+        public void IsRedeemBy_WhenPromotionIsNew_ShouldBeFalse()
         {
             var promotion = new Promotion(
                 TestCode,
                 new Money(50),
-                TimeSpan.FromDays(30),
-                new DateTimeProvider(DateTime.Now.AddDays(30)));
+                _promotionTime,
+                _validPromotionEndDate);
 
-            var promotionRecipient = new PromotionRecipient(GenerateUser(), new DateTimeProvider(DateTime.Now));
+            var promotionRecipient = new PromotionRecipient(GenerateUser(), new DateTimeProvider(DateTime.UtcNow));
             promotion.IsRedeemBy(promotionRecipient).Should().BeFalse();
         }
 
         [Fact]
-        public void IsRedeemBy_WhenRedeemed_ShouldBeTrue()
+        public void IsRedeemBy_WhenAlreadyRedeemed_ShouldBeTrue()
         {
             var promotion = new Promotion(
                 TestCode,
                 new Money(50),
-                TimeSpan.FromDays(30),
-                new DateTimeProvider(DateTime.Now.AddDays(30)));
+                _promotionTime,
+                _validPromotionEndDate);
 
-            var promotionRecipient = new PromotionRecipient(GenerateUser(), new DateTimeProvider(DateTime.Now));
+            var promotionRecipient = new PromotionRecipient(GenerateUser(), new DateTimeProvider(DateTime.UtcNow));
 
             promotion.Redeem(promotionRecipient);
 
@@ -168,15 +175,15 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
         }
 
         [Fact]
-        public void Redeem_WithInvalidPromotion_ShouldThrowInvalidOperationException()
+        public void Redeem_WhenPromotionIsExpired_ShouldThrowInvalidOperationException()
         {
             var promotion = new Promotion(
                 TestCode,
                 new Money(50),
-                TimeSpan.FromDays(0),
-                new DateTimeProvider(DateTime.Now.AddDays(30)));
+                _promotionTime,
+                _invalidPromotionEndDate);
 
-            var promotionRecipient = new PromotionRecipient(GenerateUser(), new DateTimeProvider(DateTime.Now));
+            var promotionRecipient = new PromotionRecipient(GenerateUser(), new DateTimeProvider(DateTime.UtcNow));
 
             var action = new Action(() => promotion.Redeem(promotionRecipient));
 
@@ -184,17 +191,15 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
         }
 
         [Fact]
-        public void Redeem_WithValidPromotion_ShouldHaveCountOfOne()
+        public void Redeem_WhenPromotionIsActive_ShouldHaveCountOfOne()
         {
-            // Francis: Pourquoi est-ce que il y a une duration et une date d<expiration, se serait pas mieux une date de début et une duration ????
-            //Aussi, UtcDateTimeProvider est briser, il est toujours une journée dans le futur.
             var promotion = new Promotion(
                 TestCode,
                 new Money(50),
-                TimeSpan.FromDays(30),
-                new DateTimeProvider(DateTime.Now.AddDays(30)));
+                _promotionTime,
+                _validPromotionEndDate);
 
-            var promotionRecipient = new PromotionRecipient(GenerateUser(), new DateTimeProvider(DateTime.Now));
+            var promotionRecipient = new PromotionRecipient(GenerateUser(), new DateTimeProvider(DateTime.UtcNow));
 
             promotion.Redeem(promotionRecipient);
 
