@@ -31,7 +31,6 @@
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Identity.Infrastructure\eDoxa.Identity.Infrastructure.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
-    <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
   </ItemGroup>
 
   <ItemGroup>

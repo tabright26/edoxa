@@ -6,10 +6,10 @@
 
 using System;
 
-using eDoxa.Seedwork.Monitoring.ApplicationInsights.Extensions;
-using eDoxa.Seedwork.Monitoring.Serilog.Extensions;
-using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
-using eDoxa.Seedwork.Security.Kestrel.Extensions;
+using eDoxa.Seedwork.Application.ApplicationInsights.Extensions;
+using eDoxa.Seedwork.Application.Serilog.Extensions;
+using eDoxa.Seedwork.Application.Server.Kestrel.Extensions;
+using eDoxa.Seedwork.Infrastructure.AzureKeyVault.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;

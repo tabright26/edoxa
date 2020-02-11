@@ -14,12 +14,11 @@ using eDoxa.Challenges.Workers.Infrastructure;
 using eDoxa.Grpc.Protos.Challenges.Services;
 using eDoxa.Grpc.Protos.Games.Enums;
 using eDoxa.Grpc.Protos.Games.Services;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Application.HealthChecks.Extensions;
+using eDoxa.Seedwork.Infrastructure.DataProtection.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
-using eDoxa.Seedwork.Monitoring;
-using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
-using eDoxa.Seedwork.Security.DataProtection.Extensions;
 
 using Grpc.Core;
 

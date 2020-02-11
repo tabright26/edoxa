@@ -15,19 +15,18 @@ using eDoxa.Notifications.Api.Infrastructure;
 using eDoxa.Notifications.Api.Infrastructure.Data;
 using eDoxa.Notifications.Api.IntegrationEvents.Extensions;
 using eDoxa.Notifications.Infrastructure;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Autofac.Extensions;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
+using eDoxa.Seedwork.Application.Cors.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
-using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
+using eDoxa.Seedwork.Application.HealthChecks.Extensions;
+using eDoxa.Seedwork.Application.Middlewares.ProblemDetails.Extensions;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
-using eDoxa.Seedwork.Monitoring;
-using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
-using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.Sendgrid.Extensions;
 using eDoxa.Sendgrid.Services.Abstractions;
 using eDoxa.ServiceBus.Abstractions;
@@ -48,7 +47,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using static eDoxa.Seedwork.Security.ApiResources;
+using static eDoxa.Seedwork.Application.ApiResources;
 
 namespace eDoxa.Notifications.Api
 {

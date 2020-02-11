@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Application.Converters;
+using eDoxa.Seedwork.Application.Json.Converters;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;

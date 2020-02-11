@@ -7,9 +7,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 
-using eDoxa.Seedwork.Monitoring.AppSettings;
-using eDoxa.Seedwork.Monitoring.AppSettings.Options;
-using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Seedwork.Application.AppSettings;
+using eDoxa.Seedwork.Application.AppSettings.Options;
+using eDoxa.Seedwork.Application.Extensions;
 
 using FluentAssertions;
 

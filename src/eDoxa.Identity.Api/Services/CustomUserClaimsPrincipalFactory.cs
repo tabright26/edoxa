@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Domain.Services;
-using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Application;
 
 using IdentityModel;
 

@@ -16,18 +16,16 @@ using eDoxa.Grpc.Protos.Cashier.Services;
 using eDoxa.Grpc.Protos.Challenges.Services;
 using eDoxa.Grpc.Protos.Games.Services;
 using eDoxa.Grpc.Protos.Identity.Services;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
-using eDoxa.Seedwork.Application.DelegatingHandlers;
+using eDoxa.Seedwork.Application.Cors.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
-using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
+using eDoxa.Seedwork.Application.HealthChecks.Extensions;
+using eDoxa.Seedwork.Application.Http.DelegatingHandlers;
+using eDoxa.Seedwork.Application.Middlewares.ProblemDetails.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
-using eDoxa.Seedwork.Monitoring;
-using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
-using eDoxa.Seedwork.Security;
-using eDoxa.Seedwork.Security.Cors.Extensions;
 
 using FluentValidation;
 
@@ -43,7 +41,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using static eDoxa.Seedwork.Security.ApiResources;
+using static eDoxa.Seedwork.Application.ApiResources;
 
 namespace eDoxa.Challenges.Web.Aggregator
 {

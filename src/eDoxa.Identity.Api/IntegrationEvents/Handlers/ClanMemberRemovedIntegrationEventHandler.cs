@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Clans.IntegrationEvents;
 using eDoxa.Identity.Domain.Services;
-using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.Extensions.Logging;

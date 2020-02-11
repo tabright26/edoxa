@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Monitoring.AppSettings;
+using eDoxa.Seedwork.Application.AppSettings;
 using eDoxa.Swagger.Extensions;
 
 using Microsoft.AspNetCore.Builder;

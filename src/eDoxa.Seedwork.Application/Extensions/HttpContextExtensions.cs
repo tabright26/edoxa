@@ -9,7 +9,6 @@ using System.Linq;
 
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.Seedwork.Security;
 
 using IdentityModel;
 
