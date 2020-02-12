@@ -53,8 +53,12 @@ export function getPasswordResetPath(): string {
   return "/password/reset";
 }
 
-export function getTermsOfServicesPath(): string {
-  return "/terms-of-services";
+export function getLegalTermsOfUsePath(): string {
+  return "/legal/terms-of-use";
+}
+
+export function getLegalPrivacyPolicyPath(): string {
+  return "/legal/privacy-policy";
 }
 
 export function getFaqPath(questionGroupId: QuestionGroupId = null): string {

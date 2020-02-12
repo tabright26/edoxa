@@ -39,7 +39,10 @@ const FaqItem: FunctionComponent<FaqItemProps> = ({ questionGroup }) => {
   return (
     <>
       {items.map((question, index) => (
-        <Card className="my-1" key={index}>
+        <Card
+          className={`my-1 ${accordion[index] && "card-accent-primary"}`}
+          key={index}
+        >
           <CardHeader id={`button-${index}`}>
             <Button
               block
@@ -73,7 +76,7 @@ const Faq: FunctionComponent = () => {
     <Row>
       <Col xs="12" sm="12" md="4" lg="3" xl="2">
         <Card className="mt-4">
-          <CardHeader className="bg-gray-900">
+          <CardHeader>
             <strong className="text-uppercase">Table of content</strong>
           </CardHeader>
           <ListGroup flush>

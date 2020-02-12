@@ -318,7 +318,7 @@ const App = () => (
           </Col>
           <Col md={{ size: 4, offset: 2 }}>
             <Card className="card-accent-primary">
-              <CardHeader className="bg-gray-900">
+              <CardHeader>
                 <strong>SCORE WEIGHTING</strong>
               </CardHeader>
               <CardBody>

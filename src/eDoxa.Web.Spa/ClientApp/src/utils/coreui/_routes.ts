@@ -2,7 +2,7 @@ import React from "react";
 import { RouteConfig } from "../router/types";
 import {
   getHomePath,
-  getTermsOfServicesPath,
+  getLegalTermsOfUsePath,
   getFaqPath,
   getNewsFeedsPath,
   getProfilePath,
@@ -11,11 +11,15 @@ import {
   getChallengeHistoryPath,
   getClansPath,
   getClanDetailsPath,
-  getClanDashboardPath
+  getClanDashboardPath,
+  getLegalPrivacyPolicyPath
 } from "utils/coreui/constants";
 
 //const Home = React.lazy(() => import("views/Home/Home"));
-const TermsOfServices = React.lazy(() => import("views/TermsOfServices"));
+const LegalTermsOfUse = React.lazy(() => import("views/Legal/TermsOfUse"));
+const LegalPrivacyPolicy = React.lazy(() =>
+  import("views/Legal/PrivacyPolicy")
+);
 const FAQ = React.lazy(() => import("views/Faq"));
 const NewsFeeds = React.lazy(() => import("views/NewsFeeds"));
 const Profile = React.lazy(() => import("views/Profile"));
@@ -38,9 +42,18 @@ export const routes: RouteConfig[] = [
     scopes: []
   },
   {
-    path: getTermsOfServicesPath(),
-    name: "Terms of Services",
-    component: TermsOfServices,
+    path: getLegalTermsOfUsePath(),
+    name: "Terms of Use",
+    component: LegalTermsOfUse,
+    exact: true,
+    allowAnonymous: true,
+    disabled: false,
+    scopes: []
+  },
+  {
+    path: getLegalPrivacyPolicyPath(),
+    name: "Privacy Policy",
+    component: LegalPrivacyPolicy,
     exact: true,
     allowAnonymous: true,
     disabled: false,

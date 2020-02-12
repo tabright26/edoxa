@@ -23,7 +23,7 @@ import { faFlag, faBirthdayCake } from "@fortawesome/free-solid-svg-icons";
 import { RootState } from "store/types";
 import { connect, MapStateToProps } from "react-redux";
 import InputMask from "react-input-mask";
-import { getTermsOfServicesPath } from "utils/coreui/constants";
+import { getLegalTermsOfUsePath } from "utils/coreui/constants";
 import { Link } from "react-router-dom";
 import { CountryIsoCode, COUNTRY_ISO_CODE_CA } from "types";
 import {
@@ -146,7 +146,7 @@ const Register: FunctionComponent<Props> = ({
     </FormGroup>
     <p className="mb-3">
       By clicking this button, you agree to the{" "}
-      <Link to={getTermsOfServicesPath()}>terms of services</Link>.
+      <Link to={getLegalTermsOfUsePath()}>terms of use</Link>.
     </p>
     <FormGroup className="mb-0">
       <Button.Submit loading={submitting} block>
