@@ -68,8 +68,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers.PromotionController
 
         private async Task<HttpResponseMessage> ExecuteAsync(string promotionalCode)
         {
-            // Francis: Comment je peux faire un post request sans body ???? Ou bien je change le controlleur ?
-            return await _httpClient.PostAsync($"api/promotions/{promotionalCode}", new MultipartContent());
+            return await _httpClient.PostAsJsonAsync($"api/promotions/{promotionalCode}", new {});
         }
 
         [Fact]

@@ -37,7 +37,7 @@ using Xunit;
 namespace eDoxa.Cashier.IntegrationTests.Controllers.PromotionController
 {
     public sealed class
-        CreatePromotionAsyncTest : IntegrationTest // Francis: Je crois que il y a un erreur de JSONTranscript parce que request est corrupted rendu dans la méthode du controlleur
+        CreatePromotionAsyncTest : IntegrationTest
     {
         public CreatePromotionAsyncTest(
             TestHostFixture testHost,
@@ -112,7 +112,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers.PromotionController
                 });
         }
 
-        [Fact]
+        [Fact] // Francis: Json conversion bug when entering controller.
         public async Task ShouldBeHttpStatusCodeOK()
         {
             var user = TestData.FileStorage.GetUsers().First();

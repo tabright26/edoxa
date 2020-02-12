@@ -38,7 +38,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
         {
             var user = GenerateUser();
 
-            var promotionRecipient = new PromotionRecipient(user, new DateTimeProvider(DateTime.Now));
+            var promotionRecipient = new PromotionRecipient(user, new DateTimeProvider(DateTime.UtcNow));
 
             promotionRecipient.ToString().Should().Be(user.Id);
         }

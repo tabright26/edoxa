@@ -40,15 +40,13 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
         }
 
         [Fact]
-
         public void Cancel_WhenPromotionIsActive_ShouldCancel()
         {
             var promotion = new Promotion(
                 TestCode,
                 new Money(50),
                 _promotionTime,
-                _invalidPromotionEndDate
-                );
+                _validPromotionEndDate);
 
             var cancelTime = new DateTimeProvider(DateTime.UtcNow);
 
@@ -146,19 +144,6 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
         }
 
         [Fact]
-        public void IsRedeemBy_WhenPromotionIsNew_ShouldBeFalse()
-        {
-            var promotion = new Promotion(
-                TestCode,
-                new Money(50),
-                _promotionTime,
-                _validPromotionEndDate);
-
-            var promotionRecipient = new PromotionRecipient(GenerateUser(), new DateTimeProvider(DateTime.UtcNow));
-            promotion.IsRedeemBy(promotionRecipient).Should().BeFalse();
-        }
-
-        [Fact]
         public void IsRedeemBy_WhenAlreadyRedeemed_ShouldBeTrue()
         {
             var promotion = new Promotion(
@@ -175,19 +160,16 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
         }
 
         [Fact]
-        public void Redeem_WhenPromotionIsExpired_ShouldThrowInvalidOperationException()
+        public void IsRedeemBy_WhenPromotionIsNew_ShouldBeFalse()
         {
             var promotion = new Promotion(
                 TestCode,
                 new Money(50),
                 _promotionTime,
-                _invalidPromotionEndDate);
+                _validPromotionEndDate);
 
             var promotionRecipient = new PromotionRecipient(GenerateUser(), new DateTimeProvider(DateTime.UtcNow));
-
-            var action = new Action(() => promotion.Redeem(promotionRecipient));
-
-            action.Should().Throw<InvalidOperationException>();
+            promotion.IsRedeemBy(promotionRecipient).Should().BeFalse();
         }
 
         [Fact]
@@ -204,6 +186,22 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.PromotionAggregate
             promotion.Redeem(promotionRecipient);
 
             promotion.Recipients.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void Redeem_WhenPromotionIsExpired_ShouldThrowInvalidOperationException()
+        {
+            var promotion = new Promotion(
+                TestCode,
+                new Money(50),
+                _promotionTime,
+                _invalidPromotionEndDate);
+
+            var promotionRecipient = new PromotionRecipient(GenerateUser(), new DateTimeProvider(DateTime.UtcNow));
+
+            var action = new Action(() => promotion.Redeem(promotionRecipient));
+
+            action.Should().Throw<InvalidOperationException>();
         }
     }
 }

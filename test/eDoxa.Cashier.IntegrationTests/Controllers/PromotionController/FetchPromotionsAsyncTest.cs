@@ -1,6 +1,6 @@
 ﻿// Filename: FetchPromotionsAsyncTest.cs
 // Date Created: 2020-02-04
-// 
+//
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
@@ -17,6 +17,7 @@ using eDoxa.Cashier.Domain.AggregateModels.PromotionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.TestHelper.Extensions;
@@ -96,6 +97,8 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers.PromotionController
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
+            // Arrange
+            var promotions = GenerateValidPromotions();
             var user = TestData.FileStorage.GetUsers().First();
             var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, user.ToString()));
             _httpClient = factory.CreateClient();
@@ -106,7 +109,6 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers.PromotionController
                 async scope =>
                 {
                     var repository = scope.GetRequiredService<IPromotionRepository>();
-                    var promotions = GenerateValidPromotions();
 
                     foreach (var promotion in promotions)
                     {
@@ -122,9 +124,9 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers.PromotionController
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-            // Francis: Ici, comment je devrais cast la reponse ?? Est-ce que je devrais utiliser un JsonMapper ? ou bien c'est juste pas necessaire
-            response.Content.As<List<Promotion>>().Should().BeSameAs(GenerateValidPromotions());
+            var promotionDtos = await response.Content.ReadAsJsonAsync<List<PromotionDto>>();
+            promotionDtos.Should().NotBeNullOrEmpty();
+            promotionDtos.Should().HaveCount(promotions.Count);
         }
     }
 }
