@@ -1,6 +1,6 @@
 ﻿// Filename: AccountController.cs
 // Date Created: 2020-01-28
-// 
+//
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Requests;
+using eDoxa.Identity.Api.Application.ErrorDescribers;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
@@ -83,7 +84,7 @@ namespace eDoxa.Identity.Api.Controllers
                         return this.Ok(request.ReturnUrl);
                     }
 
-                    const string errorMessage = "Invalid email or password";
+                    var errorMessage = AccountErrorDescriber.PasswordInvalid();
 
                     await _eventService.RaiseAsync(new UserLoginFailureEvent(user.UserName, errorMessage));
 

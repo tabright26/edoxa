@@ -1,70 +1,70 @@
-﻿//// Filename: UserAddressChangedIntegrationEventHandlerTEst.cs
-//// Date Created: 2019-11-25
-//// 
-//// ================================================
-//// Copyright © 2020, eDoxa. All rights reserved.
+﻿// Filename: UserAddressChangedIntegrationEventHandlerTEst.cs
+// Date Created: 2019-11-25
+// 
+// ================================================
+// Copyright © 2020, eDoxa. All rights reserved.
 
-//using System;
-//using System.Threading.Tasks;
+using System;
+using System.Threading.Tasks;
 
-//using eDoxa.Grpc.Protos.Identity.Dtos;
-//using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
-//using eDoxa.Payment.Api.IntegrationEvents.Handlers;
-//using eDoxa.Payment.TestHelper;
-//using eDoxa.Payment.TestHelper.Fixtures;
-//using eDoxa.Seedwork.Domain;
-//using eDoxa.Seedwork.Domain.Misc;
-//using eDoxa.Seedwork.TestHelper.Mocks;
+using eDoxa.Grpc.Protos.Identity.Dtos;
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
+using eDoxa.Payment.Api.IntegrationEvents.Handlers;
+using eDoxa.Payment.TestHelper;
+using eDoxa.Payment.TestHelper.Fixtures;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.TestHelper.Mocks;
 
-//using Moq;
+using Moq;
 
-//using Stripe;
+using Stripe;
 
-//using Xunit;
+using Xunit;
 
-//namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
-//{
-//    public sealed class UserAddressChangedIntegrationEventHandlerTest : UnitTest
-//    {
-//        public UserAddressChangedIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
-//        {
-//        }
+namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
+{
+    public sealed class UserAddressChangedIntegrationEventHandlerTest : UnitTest
+    {
+        public UserAddressChangedIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
+        {
+        }
 
-//        [Fact]
-//        public async Task HandleAsync_WhenUserAddressChangedIntegrationEventIsValid_ShouldBeCompletedTask()
-//        {
-//            // Arrange
-//            var mockLogger = new MockLogger<UserAddressChangedIntegrationEventHandler>();
+        [Fact]
+        public async Task HandleAsync_WhenUserAddressChangedIntegrationEventIsValid_ShouldBeCompletedTask()
+        {
+            // Arrange
+            var mockLogger = new MockLogger<UserAddressChangedIntegrationEventHandler>();
 
-//            TestMock.StripeService.Setup(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
+            TestMock.StripeService.Setup(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
 
-//            TestMock.StripeAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId").Verifiable();
+            TestMock.StripeAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId").Verifiable();
 
-//            TestMock.StripeAccountService.Setup(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()))
-//                .ReturnsAsync(new DomainValidationResult<Account>())
-//                .Verifiable();
+            TestMock.StripeAccountService.Setup(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()))
+                .ReturnsAsync(new DomainValidationResult<Account>())
+                .Verifiable();
 
-//            var handler = new UserAddressChangedIntegrationEventHandler(TestMock.StripeService.Object, TestMock.StripeAccountService.Object, mockLogger.Object);
+            var handler = new UserAddressChangedIntegrationEventHandler(TestMock.StripeService.Object, TestMock.StripeAccountService.Object, mockLogger.Object);
 
-//            var integrationEvent = new UserAddressChangedIntegrationEvent
-//            {
-//                UserId = Guid.NewGuid().ToString(),
-//                Address = new AddressDto
-//                {
-//                    Line1 = "This is address",
-//                    City = "Montreal",
-//                    PostalCode = "A1B2C3"
-//                }
-//            };
+            var integrationEvent = new UserAddressChangedIntegrationEvent
+            {
+                UserId = Guid.NewGuid().ToString(),
+                Address = new AddressDto
+                {
+                    Line1 = "This is address",
+                    City = "Montreal",
+                    PostalCode = "A1B2C3"
+                }
+            };
 
-//            // Act
-//            await handler.HandleAsync(integrationEvent);
+            // Act
+            await handler.HandleAsync(integrationEvent);
 
-//            // Assert
-//            TestMock.StripeService.Verify(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
-//            TestMock.StripeAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
-//            TestMock.StripeAccountService.Verify(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()), Times.Once);
-//            mockLogger.Verify(Times.Once());
-//        }
-//    }
-//}
+            // Assert
+            TestMock.StripeService.Verify(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.StripeAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.StripeAccountService.Verify(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()), Times.Once);
+            mockLogger.Verify(Times.Once());
+        }
+    }
+}
