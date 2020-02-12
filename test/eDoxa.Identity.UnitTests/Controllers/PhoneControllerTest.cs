@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -35,21 +35,13 @@ namespace eDoxa.Identity.UnitTests.Controllers
         {
         }
 
-        private const string TestPhoneNumber = "1-800-123-4567";
-
-        private static User GenerateUser()
-        {
-            return new User
-            {
-                Id = Guid.NewGuid()
-            };
-        }
-
         [Fact]
         public async Task ChangePhoneAsync_ShouldBeBadRequestObjectResult()
         {
             // Arrange
-            TestMock.UserService.Setup(userService => userService.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(GenerateUser()).Verifiable();
+            var user = TestData.FileStorage.GetUsers().First();
+
+            TestMock.UserService.Setup(userService => userService.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
             TestMock.UserService.Setup(userService => userService.UpdatePhoneNumberAsync(It.IsAny<User>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Failed())
@@ -59,7 +51,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 
             var request = new ChangePhoneRequest
             {
-                Number = TestPhoneNumber
+                Number = user.PhoneNumber
             };
 
             // Act
@@ -75,7 +67,9 @@ namespace eDoxa.Identity.UnitTests.Controllers
         public async Task ChangePhoneAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            TestMock.UserService.Setup(userService => userService.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(GenerateUser()).Verifiable();
+            var user = TestData.FileStorage.GetUsers().First();
+
+            TestMock.UserService.Setup(userService => userService.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
             TestMock.UserService.Setup(userService => userService.UpdatePhoneNumberAsync(It.IsAny<User>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success)
@@ -85,7 +79,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 
             var request = new ChangePhoneRequest
             {
-                Number = TestPhoneNumber
+                Number = user.PhoneNumber
             };
 
             // Act
@@ -93,7 +87,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<PhoneDto>(TestPhoneNumber));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<PhoneDto>(user));
             TestMock.UserService.Verify(userService => userService.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
             TestMock.UserService.Verify(userService => userService.UpdatePhoneNumberAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Once);
         }
@@ -102,7 +96,9 @@ namespace eDoxa.Identity.UnitTests.Controllers
         public async Task FindPhoneAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
-            TestMock.UserService.Setup(userService => userService.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(GenerateUser()).Verifiable();
+            var user = TestData.FileStorage.GetUsers().First();
+
+            TestMock.UserService.Setup(userService => userService.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
             TestMock.UserService.Setup(userService => userService.GetPhoneNumberAsync(It.IsAny<User>())).Verifiable();
 
@@ -121,9 +117,11 @@ namespace eDoxa.Identity.UnitTests.Controllers
         public async Task FindPhoneAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            TestMock.UserService.Setup(userService => userService.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(GenerateUser()).Verifiable();
+            var user = TestData.FileStorage.GetUsers().First();
 
-            TestMock.UserService.Setup(userService => userService.GetPhoneNumberAsync(It.IsAny<User>())).ReturnsAsync(TestPhoneNumber).Verifiable();
+            TestMock.UserService.Setup(userService => userService.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
+
+            TestMock.UserService.Setup(userService => userService.GetPhoneNumberAsync(It.IsAny<User>())).ReturnsAsync(user.PhoneNumber).Verifiable();
 
             var controller = new PhoneController(TestMock.UserService.Object, TestMapper);
 
@@ -132,7 +130,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<PhoneDto>(TestPhoneNumber));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<PhoneDto>(user));
             TestMock.UserService.Verify(userService => userService.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
             TestMock.UserService.Verify(userService => userService.GetPhoneNumberAsync(It.IsAny<User>()), Times.Once);
         }

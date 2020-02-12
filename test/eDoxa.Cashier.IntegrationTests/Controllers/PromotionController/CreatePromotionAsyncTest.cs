@@ -1,6 +1,6 @@
 ﻿// Filename: CreatePromotionAsyncTest.cs
-// Date Created: 2020-02-04
-//
+// Date Created: 2020-01-28
+// 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
@@ -11,9 +11,6 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using Bogus.DataSets;
-
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
@@ -36,8 +33,7 @@ using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers.PromotionController
 {
-    public sealed class
-        CreatePromotionAsyncTest : IntegrationTest
+    public sealed class CreatePromotionAsyncTest : IntegrationTest
     {
         public CreatePromotionAsyncTest(
             TestHostFixture testHost,
@@ -57,7 +53,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers.PromotionController
 
         private async Task<HttpResponseMessage> ExecuteAsync(CreatePromotionRequest request)
         {
-            return await _httpClient.PostAsJsonAsync("api/promotions", request);
+            return await _httpClient.CustomPostAsJsonAsync("api/promotions", request);
         }
 
         private static CreatePromotionRequest GenerateRequest()
@@ -69,7 +65,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers.PromotionController
                     Amount = new DecimalValue(50),
                     Type = EnumCurrencyType.Money
                 },
-                Duration = new Duration(TimeSpan.FromDays(30).ToDuration()),
+                Duration = TimeSpan.FromDays(30).ToDuration(),
                 ExpiredAt = DateTime.UtcNow.AddDays(30).ToTimestamp(),
                 PromotionalCode = TestCode
             };
@@ -91,7 +87,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers.PromotionController
                 {
                     Amount = new DecimalValue(50)
                 },
-                Duration = new Duration(TimeSpan.FromDays(30).ToDuration()),
+                Duration = TimeSpan.FromDays(30).ToDuration(),
                 ExpiredAt = DateTime.UtcNow.AddDays(30).ToTimestamp()
             };
 
@@ -130,21 +126,12 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers.PromotionController
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var promotion = await response.Content.ReadAsJsonAsync<PromotionDto>();
 
-            await testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var promotionRepository = scope.GetRequiredService<IPromotionRepository>();
-
-                    var promotion = await promotionRepository.FindPromotionOrNullAsync(TestCode);
-
-                    promotion.Should().NotBeNull();
-                    promotion?.Amount.Should().Be(request.Currency.Amount);
-                    promotion?.CurrencyType.Should().Be(request.Currency.Type);
-                    promotion?.PromotionalCode.Should().BeSameAs(request.PromotionalCode);
-                    promotion?.Duration.Should().Be(request.Duration.ToTimeSpan());
-                    promotion?.ExpiredAt.Should().Be(request.ExpiredAt.ToDateTime());
-                });
+            promotion.Should().NotBeNull();
+            promotion.Currency.Amount.Should().Be(request.Currency.Amount);
+            promotion.Currency.Type.Should().Be(request.Currency.Type);
+            promotion.PromotionalCode.Should().Be(request.PromotionalCode);
         }
     }
 }

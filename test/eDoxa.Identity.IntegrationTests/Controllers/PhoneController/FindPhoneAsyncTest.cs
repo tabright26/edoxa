@@ -42,11 +42,21 @@ namespace eDoxa.Identity.IntegrationTests.Controllers.PhoneController
         public async Task ShouldBeHttpStatusCodeNotFound()
         {
             var user = TestData.FileStorage.GetUsers().First();
-            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            user.PhoneNumber = null;
+            user.PhoneNumberConfirmed = false;
+            var factory = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
 
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var service = scope.GetRequiredService<IUserService>();
+
+                    await service.CreateAsync(user);
+                });
 
             // Act
             using var response = await this.ExecuteAsync();
@@ -59,7 +69,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers.PhoneController
         public async Task ShouldBeHttpStatusCodeOK()
         {
             var user = TestData.FileStorage.GetUsers().First();
-            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            var factory = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
 
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
@@ -79,8 +89,8 @@ namespace eDoxa.Identity.IntegrationTests.Controllers.PhoneController
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var phoneNumber = await response.Content.ReadAsJsonAsync<PhoneDto>();
-            phoneNumber.Should().Be(user.PhoneNumber);
+            var phone = await response.Content.ReadAsJsonAsync<PhoneDto>();
+            phone.Number.Should().Be(user.PhoneNumber);
         }
     }
 }

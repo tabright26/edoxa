@@ -13,7 +13,6 @@ using eDoxa.Identity.Api.Controllers;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
-using eDoxa.ServiceBus.Abstractions;
 
 using FluentAssertions;
 

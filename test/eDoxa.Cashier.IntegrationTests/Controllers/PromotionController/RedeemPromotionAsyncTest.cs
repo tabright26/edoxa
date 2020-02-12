@@ -12,6 +12,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.PromotionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.TestHelper;
@@ -130,6 +131,16 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers.PromotionController
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var repository = scope.GetRequiredService<IAccountRepository>();
+
+                    repository.Create(new Account(user));
+
+                    await repository.CommitAsync();
+                });
 
             await testServer.UsingScopeAsync(
                 async scope =>

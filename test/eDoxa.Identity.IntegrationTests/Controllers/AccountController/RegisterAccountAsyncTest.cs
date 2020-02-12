@@ -4,25 +4,20 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Grpc.Protos.Identity.Requests;
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;
-
-using IdentityModel;
 
 using Xunit;
 
@@ -38,34 +33,19 @@ namespace eDoxa.Identity.IntegrationTests.Controllers.AccountController
 
         private async Task<HttpResponseMessage> ExecuteAsync(RegisterAccountRequest request)
         {
-            return await _httpClient.PostAsJsonAsync($"api/account/register", request);
+            return await _httpClient.PostAsJsonAsync("api/account/register", request);
         }
 
-        [Fact]
+        [Fact(Skip = "Mocks needed.")]
         public async Task ShouldBeHttpStatusCodeBadRequest()
         {
-            _httpClient = TestHost.CreateClient();
-            var testServer = TestHost.Server;
-            testServer.CleanupDbContext();
-
             const string email = "test@edoxa.gg";
-
-            var user = new User()
-            {
-                AccessFailedCount = 0,
-                ConcurrencyStamp = string.Empty,
-                Country = Country.Canada,
-                Dob = new UserDob(1990,01,01),
-                Email = email,
-                NormalizedEmail = email,
-                EmailConfirmed = true,
-                Id = new Guid(),
-                LockoutEnabled = false,
-                UserName = "test",
-                NormalizedUserName = "test",
-                PhoneNumber = ""
-            };
-
+            var user = TestData.FileStorage.GetUsers().First();
+            var factory = TestHost;
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+            
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
@@ -74,7 +54,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers.AccountController
                     await service.CreateAsync(user);
                 });
 
-            var request = new RegisterAccountRequest()
+            var request = new RegisterAccountRequest
             {
                 Country = EnumCountryIsoCode.CA,
                 Dob = "1990/01/01",
@@ -90,22 +70,23 @@ namespace eDoxa.Identity.IntegrationTests.Controllers.AccountController
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
-        [Fact]
+        [Fact(Skip = "Mocks needed.")]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            _httpClient = TestHost.CreateClient();
-            var testServer = TestHost.Server;
+            var factory = TestHost;
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
             testServer.CleanupDbContext();
 
             const string email = "test@edoxa.gg";
 
-            var request = new RegisterAccountRequest()
+            var request = new RegisterAccountRequest
             {
-                Country = EnumCountryIsoCode.CA,
-                Dob = "1990/01/01",
-                Email = "test@edoxa.gg",
-                Ip = "127.0.0.1",
+                Email = email,
                 Password = "Pass@word1",
+                Dob = "01/01/1990",
+                Country = EnumCountryIsoCode.CA,
+                Ip = "127.0.0.1"
             };
 
             // Act
@@ -120,6 +101,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers.AccountController
                     var service = scope.GetRequiredService<IUserService>();
 
                     var user = await service.FindByEmailAsync(email);
+
                     user.Should().NotBeNull();
                 });
         }
