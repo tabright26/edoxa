@@ -10,7 +10,6 @@ message StripeOptions {
   
   message InvoiceOptions {
     string currency = 1;
-    repeated string taxRates = 2;
   }
 
   message PaymentMethodOptions {

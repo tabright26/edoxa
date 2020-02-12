@@ -11,7 +11,6 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Grpc.Protos.Payment.Options;
 using eDoxa.Payment.Api.Grpc.Services;
 using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
@@ -78,8 +77,6 @@ namespace eDoxa.Payment.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppSettings<PaymentAppSettings>(Configuration);
-
-            services.Configure<PaymentApiOptions>(Configuration.GetSection("Api"));
 
             services.AddStripe(Configuration);
 
@@ -174,8 +171,6 @@ namespace eDoxa.Payment.Api
         public void ConfigureTestServices(IServiceCollection services)
         {
             services.AddAppSettings<PaymentAppSettings>(Configuration);
-
-            services.Configure<PaymentApiOptions>(Configuration.GetSection("Api"));
 
             services.AddCustomCors();
 
