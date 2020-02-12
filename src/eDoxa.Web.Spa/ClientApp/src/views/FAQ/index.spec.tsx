@@ -1,7 +1,7 @@
-import React from "react";
-import renderer from "react-test-renderer";
-import { Provider } from "react-redux";
-import FAQ from ".";
+import React from "views/Faq/node_modules/react";
+import renderer from "views/Faq/node_modules/react-test-renderer";
+import { Provider } from "views/Faq/node_modules/react-redux";
+import Faq from ".";
 
 it("renders without crashing", () => {
   // Arrange
@@ -15,7 +15,7 @@ it("renders without crashing", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <FAQ />
+        <Faq />
       </Provider>
     )
     .toJSON();

@@ -1,4 +1,5 @@
 import { ChallengeId, ClanId } from "types";
+import { questionGroups, QuestionGroupId } from "views/Faq/types";
 
 export function getHomePath(): string {
   return "/";
@@ -52,12 +53,23 @@ export function getPasswordResetPath(): string {
   return "/password/reset";
 }
 
-export function getTermsOfServicesPath(): string {
-  return "/terms-of-services";
+export function getLegalTermsOfUsePath(): string {
+  return "/legal/terms-of-use";
 }
 
-export function getFaqPath(): string {
-  return "/faq";
+export function getLegalPrivacyPolicyPath(): string {
+  return "/legal/privacy-policy";
+}
+
+export function getFaqPath(questionGroupId: QuestionGroupId = null): string {
+  if (questionGroupId) {
+    var questionGroup = questionGroups.find(
+      questionGroup => questionGroup.id === questionGroupId
+    );
+    return `/faq/${questionGroup.path}`;
+  } else {
+    return "/faq";
+  }
 }
 
 export function getNewsFeedsPath(): string {

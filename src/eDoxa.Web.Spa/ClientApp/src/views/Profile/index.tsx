@@ -38,7 +38,7 @@ const Profile: FunctionComponent = () => (
   <Row>
     <Col xs="12" sm="12" md="4" lg="3" xl="2">
       <Card className="mt-4">
-        <CardHeader className="bg-gray-900">
+        <CardHeader>
           <strong className="text-uppercase">Profile</strong>
         </CardHeader>
         <ListGroup flush>
@@ -56,7 +56,7 @@ const Profile: FunctionComponent = () => (
         </ListGroup>
       </Card>
       <Card>
-        <CardHeader className="bg-gray-900">
+        <CardHeader>
           <strong className="text-uppercase">Arena</strong>
         </CardHeader>
         <ListGroup flush>
@@ -66,7 +66,7 @@ const Profile: FunctionComponent = () => (
         </ListGroup>
       </Card>
       <Card>
-        <CardHeader className="bg-gray-900">
+        <CardHeader>
           <strong className="text-uppercase">Cashier</strong>
         </CardHeader>
         <ListGroup flush>
@@ -82,7 +82,7 @@ const Profile: FunctionComponent = () => (
         </ListGroup>
       </Card>
       <Card>
-        <CardHeader className="bg-gray-900">
+        <CardHeader>
           <strong className="text-uppercase">Connections</strong>
         </CardHeader>
         <ListGroup flush>

@@ -1,7 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import TermsOfServices from ".";
+import TermsOfUse from ".";
 
 it("renders without crashing", () => {
   // Arrange
@@ -15,7 +15,7 @@ it("renders without crashing", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <TermsOfServices />
+        <TermsOfUse />
       </Provider>
     )
     .toJSON();
