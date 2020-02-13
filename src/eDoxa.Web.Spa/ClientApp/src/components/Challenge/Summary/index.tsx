@@ -12,7 +12,7 @@ import {
 } from "types";
 import { compose } from "recompose";
 import Format from "components/Shared/Format";
-import moment from "moment";
+import humanizeDuration from "humanize-duration";
 
 type Params = {
   readonly challengeId?: ChallengeId;
@@ -78,7 +78,7 @@ const Summary: FunctionComponent<Props> = ({
             <dd className="col-5 text-muted">Duration</dd>
             <dt className="col-7 text-right">
               <Badge color="dark" pill className="w-100">
-                <span>{moment.duration(duration, "seconds").humanize()}</span>
+                <span>{humanizeDuration(duration, { units: "h" })}</span>
               </Badge>
             </dt>
           </dl>

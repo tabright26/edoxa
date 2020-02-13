@@ -58,7 +58,6 @@ const CustomForm: FunctionComponent<Props> = ({
       <Button.Submit loading={submitting} className="mr-2" size="sm">
         Save
       </Button.Submit>
-      <Button.Cancel onClick={handleCancel} />
     </FormGroup>
   </Form>
 );

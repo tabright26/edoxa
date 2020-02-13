@@ -10,7 +10,7 @@ import {
   CardImg
 } from "reactstrap";
 import UserAccountForm from "components/Account/Form";
-import { getAccountRegisterPath, getHomePath } from "utils/coreui/constants";
+import { getAccountRegisterPath, getDefaultPath } from "utils/coreui/constants";
 import { LinkContainer } from "react-router-bootstrap";
 import Layout from "components/Shared/Layout";
 import logo from "assets/img/brand/logo.png";
@@ -20,7 +20,7 @@ const Login: FunctionComponent = () => (
     <Container className="h-100">
       <Row className="justify-content-center">
         <Col md="8 d-flex">
-          <LinkContainer to={getHomePath()}>
+          <LinkContainer to={getDefaultPath()}>
             <CardImg className="mt-5 mb-1 w-75 mx-auto" src={logo} />
           </LinkContainer>
         </Col>

@@ -1,7 +1,6 @@
 import React from "react";
 import { RouteConfig } from "../router/types";
 import {
-  getHomePath,
   getLegalTermsOfUsePath,
   getFaqPath,
   getNewsFeedsPath,
@@ -15,7 +14,7 @@ import {
   getLegalPrivacyPolicyPath
 } from "utils/coreui/constants";
 
-//const Home = React.lazy(() => import("views/Home/Home"));
+//const Home = React.lazy(() => import("views/Home"));
 const LegalTermsOfUse = React.lazy(() => import("views/Legal/TermsOfUse"));
 const LegalPrivacyPolicy = React.lazy(() =>
   import("views/Legal/PrivacyPolicy")
@@ -32,15 +31,15 @@ const ClanDetails = React.lazy(() => import("views/Clans/Details"));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 export const routes: RouteConfig[] = [
-  {
-    path: getHomePath(),
-    name: "Home",
-    component: Challenges,
-    exact: true,
-    allowAnonymous: true,
-    disabled: false,
-    scopes: []
-  },
+  // {
+  //   path: getHomePath(),
+  //   name: "Home",
+  //   component: Home,
+  //   exact: true,
+  //   allowAnonymous: true,
+  //   disabled: false,
+  //   scopes: []
+  // },
   {
     path: getLegalTermsOfUsePath(),
     name: "Terms of Use",

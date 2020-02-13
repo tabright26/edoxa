@@ -41,12 +41,13 @@ import { Loading } from "components/Shared/Loading";
 import { LinkContainer } from "react-router-bootstrap";
 import {
   getAccountRegisterPath,
-  getHomePath,
   getChallengesPath,
-  getProfileTransactionHistoryPath
+  getProfileTransactionHistoryPath,
+  getDefaultPath
 } from "utils/coreui/constants";
 import { ApplicationPaths } from "utils/oidc/ApiAuthorizationConstants";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import YouTube from "react-youtube";
 
 const Footer = React.lazy(() => import("components/App/Footer"));
 
@@ -191,13 +192,18 @@ const GameIcon: FunctionComponent<GameIconProps> = ({
   );
 };
 
+const opts = {
+  height: "200",
+  width: "350"
+};
+
 const App = () => (
   <>
     <Layout.Background>
       <Container className="text-center my-5 h-100">
         <header className="mb-5 bg-transparent border-0 navbar nav">
           <NavbarBrand>
-            <LinkContainer to={getHomePath()}>
+            <LinkContainer to={getDefaultPath()}>
               <img src={logo} width={150} height={60} alt="brand" />
             </LinkContainer>
           </NavbarBrand>
@@ -215,8 +221,6 @@ const App = () => (
             <LinkContainer to={getAccountRegisterPath()}>
               <Button
                 size="lg"
-                href={`${process.env.REACT_APP_AUTHORITY}/Identity/Account/Register`}
-                tag="a"
                 className="d-inline ml-2"
                 color="primary"
                 outline
@@ -262,21 +266,30 @@ const App = () => (
       style={{ height: "350px" }}
     >
       <Container>
-        <h3 className="text-uppercase mb-5">How does it work?</h3>
-        <div className="text-muted mt-5 d-flex justify-content-around">
-          <LinkContainer to={getChallengesPath()}>
-            <GameIcon icon={faTrophy} title="JOIN" subtitle="A CHALLENGE" />
-          </LinkContainer>
-          <LinkContainer to={getChallengesPath()}>
-            <GameIcon icon={faArchway} title="PLAY" subtitle="THE GAME" />
-          </LinkContainer>
-          <LinkContainer to={getProfileTransactionHistoryPath()}>
-            <GameIcon
-              icon={faCoins}
-              title="COLLECT"
-              subtitle="WIN AND AUTOMATICALLY GET YOUR MONEY"
-            />
-          </LinkContainer>
+        <h3 className="text-uppercase">How does it work?</h3>
+        <div className="d-flex">
+          <YouTube opts={opts} className="mr-auto" videoId="tGvo3PmSRUc" />
+          <div className="text-muted d-flex ml-auto w-100">
+            <LinkContainer to={getChallengesPath()}>
+              <div className="m-auto">
+                <GameIcon icon={faTrophy} title="JOIN" subtitle="A CHALLENGE" />
+              </div>
+            </LinkContainer>
+            <LinkContainer to={getChallengesPath()}>
+              <div className="m-auto">
+                <GameIcon icon={faArchway} title="PLAY" subtitle="THE GAME" />
+              </div>
+            </LinkContainer>
+            <LinkContainer to={getProfileTransactionHistoryPath()}>
+              <div className="m-auto">
+                <GameIcon
+                  icon={faCoins}
+                  title="COLLECT"
+                  subtitle="WIN AND AUTOMATICALLY GET YOUR MONEY"
+                />
+              </div>
+            </LinkContainer>
+          </div>
         </div>
       </Container>
     </div>

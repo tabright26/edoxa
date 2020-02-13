@@ -6,7 +6,7 @@ import { compose } from "recompose";
 import queryString from "query-string";
 import { RootState } from "store/types";
 import { LogoutToken } from "types";
-import { getHomePath } from "utils/coreui/constants";
+import { getDefaultPath } from "utils/coreui/constants";
 import { Loading } from "components/Shared/Loading";
 
 type StateProps = {
@@ -45,7 +45,7 @@ const Logout: FunctionComponent<Props> = ({ token, logoutUserAccount }) => {
         {token.postLogoutRedirectUri ? (
           <Redirect to={token.postLogoutRedirectUri} />
         ) : (
-          <Redirect to={getHomePath()} />
+          <Redirect to={getDefaultPath()} />
         )}
       </>
     );

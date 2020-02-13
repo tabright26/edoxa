@@ -1,5 +1,5 @@
 import "./index.scss";
-import React, { Suspense } from "react";
+import React, { Suspense, FunctionComponent } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { ConnectedRouter as Router } from "connected-react-router";
 import { history } from "utils/router/history";
@@ -21,7 +21,8 @@ import {
   getPasswordResetPath,
   getAccountRegisterPath,
   getAccountLogoutPath,
-  getAccountLoginPath
+  getAccountLoginPath,
+  getDefaultPath
 } from "utils/coreui/constants";
 
 initializeReactGA();
@@ -47,7 +48,7 @@ const Login = React.lazy(() => import("views/Account/Login"));
 const Logout = React.lazy(() => import("views/Account/Logout"));
 const Register = React.lazy(() => import("views/Account/Register"));
 
-const App = () => (
+const App: FunctionComponent = () => (
   <>
     <StripePaymentMethodModal.Create />
     <StripePaymentMethodModal.Update />
@@ -61,13 +62,6 @@ const App = () => (
             path={ApplicationPaths.ApiAuthorizationPrefix}
             component={ApiAuthorizationRoutes}
           />
-          <Route<RouteProps> exact path="/home" name="Home" component={Home} />
-          {/* <Route<RouteProps>
-            exact
-            path="/faq"
-            name="FAQ"
-            render={() => <FAQ />}
-          /> */}
           <Route<RouteProps>
             exact
             path={getError401Path()}
@@ -147,8 +141,14 @@ const App = () => (
             )}
           />
           <Route<RouteProps>
+            exact
             path={getHomePath()}
             name="Home"
+            component={Home}
+          />
+          <Route<RouteProps>
+            path={getDefaultPath()}
+            name="Default"
             render={() => <DefaultLayout />}
           />
           <Redirect to={getError404Path()} />

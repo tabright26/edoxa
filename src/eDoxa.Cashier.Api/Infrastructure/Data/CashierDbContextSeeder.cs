@@ -6,9 +6,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Api.Application.Factories;
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
@@ -21,7 +24,9 @@ using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.Infrastructure.CsvHelper.Extensions;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -60,7 +65,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
             await this.SeedTestAccountsAsync();
 
-            await this.SeedTestChallengesAsync();
+            //await this.SeedTestChallengesAsync();
+
+            await this.SeedProductionAsync();
         }
 
         protected override async Task SeedStagingAsync()
@@ -75,6 +82,71 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
         protected override async Task SeedProductionAsync()
         {
             await this.SeedAdministratorAccountAsync();
+
+            var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+
+            var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/Challenges.Production.csv"));
+
+            using var csvReader = file.OpenCsvReader();
+
+            Challenges.AddRange(
+                csvReader.GetRecords(
+                        new
+                        {
+                            Id = default(Guid),
+                            EntryFeeCurrency = default(int),
+                            EntryFeeAmount = default(decimal),
+                            PayoutEntries = default(int)
+                        })
+                    .Select(
+                        record =>
+                        {
+                            var payoutStrategy = new ChallengePayoutFactory().CreateInstance();
+
+                            var payoutEntries = new ChallengePayoutEntries(record.PayoutEntries);
+
+                            var currency = CurrencyType.FromValue(record.EntryFeeCurrency)!;
+
+                            var entryFee = new EntryFee(record.EntryFeeAmount, currency);
+
+                            var payout = payoutStrategy.GetChallengePayout(payoutEntries, entryFee);
+
+                            return new Challenge(record.Id.ConvertTo<ChallengeId>(), payout);
+                        })
+                    .Where(challenge => Challenges.All(x => x.Id != challenge.Id))
+                    .Select(challenge => challenge.ToModel()));
+
+            await this.CommitAsync();
+
+            var startedAt = DateTimeOffset.FromUnixTimeMilliseconds(1581656400000).UtcDateTime;
+
+            var duration = TimeSpan.FromDays(3);
+
+            var promotion1 = new Promotion(
+                "LANETS20REDCUP",
+                new Money(5),
+                duration,
+                new DateTimeProvider(startedAt + duration));
+
+            promotion1.SetEntityId(PromotionId.Parse("ff5cd605-0209-4f5d-8dec-88673286416c"));
+
+            var promotion2 = new Promotion(
+                "LANETS20TOK",
+                new Token(250),
+                duration,
+                new DateTimeProvider(startedAt + duration));
+
+            promotion2.SetEntityId(PromotionId.Parse("313ff1de-2432-40d3-b9e3-f319a001a979"));
+
+            var promotions = new List<Promotion>
+            {
+                promotion1,
+                promotion2
+            };
+
+            Promotions.AddRange(promotions.Where(promotion => Promotions.All(x => x.Id != promotion.Id)).Select(promotion => promotion.ToModel()));
+
+            await this.CommitAsync();
         }
 
         private async Task SeedTestPromotionsAsync()
