@@ -1,8 +1,12 @@
 import { ChallengeId, ClanId } from "types";
 import { questionGroups, QuestionGroupId } from "views/Faq/types";
 
-export function getHomePath(): string {
+export function getDefaultPath(): string {
   return "/";
+}
+
+export function getHomePath(): string {
+  return "/home";
 }
 
 function getErrorPath(httpCode: number): string {

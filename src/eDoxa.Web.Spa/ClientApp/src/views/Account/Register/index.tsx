@@ -4,14 +4,14 @@ import UserAccountForm from "components/Account/Form";
 import logo from "assets/img/brand/logo.png";
 import Layout from "components/Shared/Layout";
 import { LinkContainer } from "react-router-bootstrap";
-import { getHomePath } from "utils/coreui/constants";
+import { getDefaultPath } from "utils/coreui/constants";
 
 const Register: FunctionComponent = () => (
   <Layout.Background>
     <Container>
       <Row className="justify-content-center">
         <Col md="9" lg="7" xl="6">
-          <LinkContainer to={getHomePath()}>
+          <LinkContainer to={getDefaultPath()}>
             <CardImg className="my-5" src={logo} />
           </LinkContainer>
         </Col>
