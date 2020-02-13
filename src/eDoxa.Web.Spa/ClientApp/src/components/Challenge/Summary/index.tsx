@@ -78,7 +78,7 @@ const Summary: FunctionComponent<Props> = ({
             <dd className="col-5 text-muted">Duration</dd>
             <dt className="col-7 text-right">
               <Badge color="dark" pill className="w-100">
-                <span>{humanizeDuration(duration, { units: "h" })}</span>
+                <span>{humanizeDuration(duration, { units: ["h"] })}</span>
               </Badge>
             </dt>
           </dl>
