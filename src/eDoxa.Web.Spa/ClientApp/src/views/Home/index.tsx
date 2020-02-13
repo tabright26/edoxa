@@ -221,8 +221,6 @@ const App = () => (
             <LinkContainer to={getAccountRegisterPath()}>
               <Button
                 size="lg"
-                href={`${process.env.REACT_APP_AUTHORITY}/Identity/Account/Register`}
-                tag="a"
                 className="d-inline ml-2"
                 color="primary"
                 outline
@@ -272,25 +270,25 @@ const App = () => (
         <div className="d-flex">
           <YouTube opts={opts} className="mr-auto" videoId="tGvo3PmSRUc" />
           <div className="text-muted d-flex ml-auto w-100">
-            <div className="m-auto">
-              <LinkContainer to={getChallengesPath()}>
+            <LinkContainer to={getChallengesPath()}>
+              <div className="m-auto">
                 <GameIcon icon={faTrophy} title="JOIN" subtitle="A CHALLENGE" />
-              </LinkContainer>
-            </div>
-            <div className="m-auto">
-              <LinkContainer to={getChallengesPath()}>
+              </div>
+            </LinkContainer>
+            <LinkContainer to={getChallengesPath()}>
+              <div className="m-auto">
                 <GameIcon icon={faArchway} title="PLAY" subtitle="THE GAME" />
-              </LinkContainer>
-            </div>
-            <div className="m-auto">
-              <LinkContainer to={getProfileTransactionHistoryPath()}>
+              </div>
+            </LinkContainer>
+            <LinkContainer to={getProfileTransactionHistoryPath()}>
+              <div className="m-auto">
                 <GameIcon
                   icon={faCoins}
                   title="COLLECT"
                   subtitle="WIN AND AUTOMATICALLY GET YOUR MONEY"
                 />
-              </LinkContainer>
-            </div>
+              </div>
+            </LinkContainer>
           </div>
         </div>
       </Container>
