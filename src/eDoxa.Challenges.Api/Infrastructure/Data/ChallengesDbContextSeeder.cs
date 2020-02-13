@@ -101,7 +101,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data
                     });
 
             Challenges.AddRange(
-                challenges.Where(challenge => /*challenge.Timeline.CreatedAt <= DateTime.UtcNow &&*/ Challenges.All(x => x.Id != challenge.Id))
+                challenges.Where(challenge => Challenges.All(x => x.Id != challenge.Id))
                     .Select(challenge => challenge.ToModel()));
 
             await this.CommitAsync();

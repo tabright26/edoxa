@@ -12,7 +12,6 @@ import {
 } from "types";
 import { compose } from "recompose";
 import Format from "components/Shared/Format";
-import moment from "moment";
 import humanizeDuration from "humanize-duration";
 
 type Params = {

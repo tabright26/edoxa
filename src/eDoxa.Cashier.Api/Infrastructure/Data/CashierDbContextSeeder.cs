@@ -115,6 +115,36 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
                     .Select(challenge => challenge.ToModel()));
 
             await this.CommitAsync();
+
+            var startedAt = DateTimeOffset.FromUnixTimeMilliseconds(1581656400000).UtcDateTime;
+
+            var duration = TimeSpan.FromDays(3);
+
+            var promotion1 = new Promotion(
+                "LANETS20REDCUP",
+                new Money(5),
+                duration,
+                new DateTimeProvider(startedAt + duration));
+
+            promotion1.SetEntityId(PromotionId.Parse("ff5cd605-0209-4f5d-8dec-88673286416c"));
+
+            var promotion2 = new Promotion(
+                "LANETS20TOK",
+                new Token(250),
+                duration,
+                new DateTimeProvider(startedAt + duration));
+
+            promotion2.SetEntityId(PromotionId.Parse("313ff1de-2432-40d3-b9e3-f319a001a979"));
+
+            var promotions = new List<Promotion>
+            {
+                promotion1,
+                promotion2
+            };
+
+            Promotions.AddRange(promotions.Where(promotion => Promotions.All(x => x.Id != promotion.Id)).Select(promotion => promotion.ToModel()));
+
+            await this.CommitAsync();
         }
 
         private async Task SeedTestPromotionsAsync()
