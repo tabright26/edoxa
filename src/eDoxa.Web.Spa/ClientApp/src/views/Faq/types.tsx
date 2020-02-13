@@ -464,7 +464,7 @@ export const questions: Question[] = [
   },
   {
     groupId: CASHIER_GROUP_ID,
-    title: "WHO IS YOUR PLAYMENT PROVIDER?",
+    title: "WHO IS YOUR PAYMENT PROVIDER?",
     content: [
       <p className="mb-0">
         All financial data and transactions are handled by Stripe and PAYPAL.
