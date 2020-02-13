@@ -10,7 +10,8 @@ import {
   UserId,
   CURRENCY_TYPE_MONEY,
   CURRENCY_TYPE_TOKEN,
-  CurrencyType
+  CurrencyType,
+  CHALLENGE_STATE_INSCRIPTION
 } from "types";
 import produce, { Draft } from "immer";
 import { HocUserProfileUserIdStateProps } from "utils/oidc/containers/types";
@@ -40,7 +41,9 @@ const lanetsChallenges = (
       .filter(
         challenge =>
           challenge.payout.entryFee.type.toUpperCase() ===
-          currencyType.toUpperCase()
+            currencyType.toUpperCase() &&
+          challenge.state.toUpperCase() ===
+            CHALLENGE_STATE_INSCRIPTION.toUpperCase()
       )
       .sort(
         (left, right) =>
