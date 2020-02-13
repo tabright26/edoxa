@@ -139,4 +139,12 @@ namespace eDoxa.Challenges.Workers
                 });
         }
     }
+
+    public partial class Startup
+    {
+        public void ConfigureStaging(IApplicationBuilder application)
+        {
+            this.ConfigureProduction(application);
+        }
+    }
 }
