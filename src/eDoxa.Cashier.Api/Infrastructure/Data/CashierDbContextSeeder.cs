@@ -65,7 +65,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
             await this.SeedTestAccountsAsync();
 
-            await this.SeedTestChallengesAsync();
+            //await this.SeedTestChallengesAsync();
+
+            await this.SeedProductionAsync();
         }
 
         protected override async Task SeedStagingAsync()

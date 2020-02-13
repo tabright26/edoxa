@@ -13,7 +13,7 @@ import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { push } from "connected-react-router";
 import { toastr } from "react-redux-toastr";
 import { LinkContainer } from "react-router-bootstrap";
-import { getHomePath } from "utils/coreui/constants";
+import { getDefaultPath } from "utils/coreui/constants";
 
 interface FormData {
   email: string;
@@ -68,7 +68,7 @@ const enhance = compose<InnerProps, OutterProps>(
       }
     },
     onSubmitSuccess: (_result, dispatch) => {
-      dispatch(push(getHomePath()));
+      dispatch(push(getDefaultPath()));
       setTimeout(function() {
         toastr.success(
           "Email sent",

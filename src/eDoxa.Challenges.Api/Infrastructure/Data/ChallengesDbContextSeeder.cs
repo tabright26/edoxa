@@ -42,7 +42,9 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data
 
         protected override async Task SeedDevelopmentAsync()
         {
-            await this.SeedTestChallengesAsync();
+            //await this.SeedTestChallengesAsync();
+
+            await this.SeedProductionAsync();
         }
 
         protected override async Task SeedStagingAsync()
@@ -87,7 +89,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data
                     record =>
                     {
                         var timeline = new ChallengeTimeline(
-                            new DateTimeProvider(DateTimeOffset.FromUnixTimeSeconds(record.TimelineCreatedAt).UtcDateTime),
+                            new UtcNowDateTimeProvider(), 
                             new ChallengeDuration(TimeSpan.FromSeconds(record.Duration)));
 
                         return new Challenge(

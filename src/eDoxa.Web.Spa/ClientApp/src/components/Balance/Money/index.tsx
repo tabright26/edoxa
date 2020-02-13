@@ -3,7 +3,11 @@ import { Badge, Popover, PopoverBody, PopoverHeader } from "reactstrap";
 import Balance from "components/Balance";
 import DepositMoney from "./Deposit";
 import WithdrawMoney from "./Withdraw";
-import { CURRENCY_TYPE_MONEY, TRANSACTION_STATUS_SUCCEEDED, TRANSACTION_STATUS_PENDING } from "types";
+import {
+  CURRENCY_TYPE_MONEY,
+  TRANSACTION_STATUS_SUCCEEDED,
+  TRANSACTION_STATUS_PENDING
+} from "types";
 
 const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
   const [open, setOpen] = useState(false);
@@ -55,8 +59,8 @@ const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
             transaction stay for longer than 5 minutes please contact{" "}
             <a href="mailto:support@edoxa.gg">support@edoxa.gg</a>.
           </p>
-          <DepositMoney />
-          <WithdrawMoney />
+          {process.env.NODE_ENV !== "production" && <DepositMoney />}
+          {process.env.NODE_ENV !== "production" && <WithdrawMoney />}
         </PopoverBody>
       </Popover>
     </div>
