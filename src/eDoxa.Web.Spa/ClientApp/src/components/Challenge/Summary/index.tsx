@@ -13,6 +13,7 @@ import {
 import { compose } from "recompose";
 import Format from "components/Shared/Format";
 import moment from "moment";
+import humanizeDuration from "humanize-duration";
 
 type Params = {
   readonly challengeId?: ChallengeId;
@@ -48,72 +49,75 @@ const Summary: FunctionComponent<Props> = ({
   prizePool,
   duration,
   participantCount
-}) => (
-  <Row>
-    <Col>
-      <CardTitle className="mt-2 pb-2 border-bottom border-primary">
-        <strong className="text-uppercase">{name}</strong>
-      </CardTitle>
-      <Row>
-        <Col>
-          <dl className="row mb-0">
-            <dd className="col-5 text-muted">Game</dd>
-            <dt className="col-7 text-right">
-              <Badge color="dark" pill className="w-100">
-                {game}
-              </Badge>
-            </dt>
-            <dd className="col-5 text-muted">Entry fee</dd>
-            <dt className="col-7 text-right">
-              <Badge color="dark" pill className="w-100">
-                <Format.Currency alignment="center" currency={entryFee} />
-              </Badge>
-            </dt>
-            <dd className="col-5 text-muted">State</dd>
-            <dt className="col-7 text-right">
-              <Badge color="dark" pill className="w-100">
-                {state}
-              </Badge>
-            </dt>
-            <dd className="col-5 text-muted">Duration</dd>
-            <dt className="col-7 text-right">
-              <Badge color="dark" pill className="w-100">
-                <span>{moment.duration(duration, "seconds").humanize()}</span>
-              </Badge>
-            </dt>
-          </dl>
-        </Col>
-        <Col>
-          <dl className="row mb-0">
-            <dd className="col-5 text-muted">Participants</dd>
-            <dt className="col-7 text-right">
-              <Progress
-                color="dark"
-                value={participantCount}
-                max={entries}
-                style={{ borderRadius: "10rem" }}
-              >
-                {`${participantCount}/${entries}`}
-              </Progress>
-            </dt>
-            <dd className="col-5 text-muted">Prize pool</dd>
-            <dt className="col-7 text-right">
-              <Badge color="dark" pill className="w-100">
-                <Format.Currency alignment="center" currency={prizePool} />
-              </Badge>
-            </dt>
-            <dd className="col-5 text-muted">Best of</dd>
-            <dt className="col-7 text-right">
-              <Badge color="dark" pill className="w-100">
-                {bestOf}
-              </Badge>
-            </dt>
-          </dl>
-        </Col>
-      </Row>
-    </Col>
-  </Row>
-);
+}) => {
+  console.log(duration);
+  return (
+    <Row>
+      <Col>
+        <CardTitle className="mt-2 pb-2 border-bottom border-primary">
+          <strong className="text-uppercase">{name}</strong>
+        </CardTitle>
+        <Row>
+          <Col>
+            <dl className="row mb-0">
+              <dd className="col-5 text-muted">Game</dd>
+              <dt className="col-7 text-right">
+                <Badge color="dark" pill className="w-100">
+                  {game}
+                </Badge>
+              </dt>
+              <dd className="col-5 text-muted">Entry fee</dd>
+              <dt className="col-7 text-right">
+                <Badge color="dark" pill className="w-100">
+                  <Format.Currency alignment="center" currency={entryFee} />
+                </Badge>
+              </dt>
+              <dd className="col-5 text-muted">State</dd>
+              <dt className="col-7 text-right">
+                <Badge color="dark" pill className="w-100">
+                  {state}
+                </Badge>
+              </dt>
+              <dd className="col-5 text-muted">Duration</dd>
+              <dt className="col-7 text-right">
+                <Badge color="dark" pill className="w-100">
+                  <span>{humanizeDuration(duration, { units: "h" })}</span>
+                </Badge>
+              </dt>
+            </dl>
+          </Col>
+          <Col>
+            <dl className="row mb-0">
+              <dd className="col-5 text-muted">Participants</dd>
+              <dt className="col-7 text-right">
+                <Progress
+                  color="dark"
+                  value={participantCount}
+                  max={entries}
+                  style={{ borderRadius: "10rem" }}
+                >
+                  {`${participantCount}/${entries}`}
+                </Progress>
+              </dt>
+              <dd className="col-5 text-muted">Prize pool</dd>
+              <dt className="col-7 text-right">
+                <Badge color="dark" pill className="w-100">
+                  <Format.Currency alignment="center" currency={prizePool} />
+                </Badge>
+              </dt>
+              <dd className="col-5 text-muted">Best of</dd>
+              <dt className="col-7 text-right">
+                <Badge color="dark" pill className="w-100">
+                  {bestOf}
+                </Badge>
+              </dt>
+            </dl>
+          </Col>
+        </Row>
+      </Col>
+    </Row>
+  );
+};
 
 const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   state,

@@ -15,16 +15,16 @@ using Newtonsoft.Json.Linq;
 
 namespace eDoxa.Seedwork.TestHelper.Extensions
 {
-    public static class HttpContextExtensions
+    public static class HttpClientExtensions
     {
-        public static async Task<HttpResponseMessage> CustomPostAsJsonAsync<T>(this HttpClient client, string requestUri, T value)
+        public static async Task<HttpResponseMessage> CustomPostAsJsonAsync<T>(this HttpClient httpClient, string requestUri, T value)
         where T : class
         {
             var formatter = new JsonMediaTypeFormatter();
 
             formatter.SerializerSettings.IncludeCustomConverters();
             
-            return await client.PostAsJsonAsync(requestUri, JToken.FromObject(value, JsonSerializer.Create(formatter.SerializerSettings)));
+            return await httpClient.PostAsJsonAsync(requestUri, JToken.FromObject(value, JsonSerializer.Create(formatter.SerializerSettings)));
         }
     }
 }

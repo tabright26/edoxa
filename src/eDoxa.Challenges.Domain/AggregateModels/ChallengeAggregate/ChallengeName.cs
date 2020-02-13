@@ -22,11 +22,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeName(string name)
         {
-            if (string.IsNullOrWhiteSpace(name) || !name.All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '(' || c == ')' || c == '$'))
-            {
-                throw new ArgumentException(nameof(name));
-            }
-
             _name = name;
         }
 

@@ -35,45 +35,6 @@ namespace eDoxa.Identity.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task ForgotPasswordAsync_ShouldBeBadRequestObjectResult()
-        {
-            // Arrange
-            TestMock.UserService.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).Verifiable();
-
-            TestMock.UserService.Setup(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>())).Verifiable();
-
-            TestMock.UserService.Setup(userManager => userManager.GeneratePasswordResetTokenAsync(It.IsAny<User>())).Verifiable();
-
-            TestMock.ServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<UserPasswordResetTokenGeneratedIntegrationEvent>()))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
-
-            var controller = new PasswordController(TestMock.UserService.Object, TestMock.ServiceBusPublisher.Object);
-
-            controller.ModelState.AddModelError("error", "error");
-
-            // Act
-            var result = await controller.ForgotPasswordAsync(
-                new ForgotPasswordRequest
-                {
-                    Email = "admin@edoxa.gg"
-                });
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-
-            TestMock.UserService.Verify(userManager => userManager.FindByEmailAsync(It.IsAny<string>()), Times.Never);
-
-            TestMock.UserService.Verify(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>()), Times.Never);
-
-            TestMock.UserService.Verify(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>()), Times.Never);
-
-            TestMock.ServiceBusPublisher.Verify(
-                serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<UserPasswordResetTokenGeneratedIntegrationEvent>()),
-                Times.Never);
-        }
-
-        [Fact]
         public async Task ForgotPasswordAsync_ShouldBeOkResult()
         {
             // Arrange
