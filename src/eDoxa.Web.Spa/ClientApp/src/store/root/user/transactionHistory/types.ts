@@ -1,4 +1,4 @@
 import { AxiosState } from "utils/axios/types";
-import { UserTransaction } from "types";
+import { Transaction } from "types";
 
-export type UserTransactionState = AxiosState<UserTransaction[]>;
+export type UserTransactionState = AxiosState<Transaction[]>;

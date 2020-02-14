@@ -19,7 +19,7 @@ interface StateProps {
 
 interface OwnProps {
   name: string;
-  currency: CurrencyType;
+  currencyType: CurrencyType;
   transactionType: TransactionType;
 }
 
@@ -80,7 +80,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
               bundle.type.toUpperCase() ===
                 ownProps.transactionType.toUpperCase() &&
               bundle.currency.type.toUpperCase() ===
-                ownProps.currency.toUpperCase() &&
+                ownProps.currencyType.toUpperCase() &&
               !bundle.disabled &&
               !bundle.deprecated
           )

@@ -123,6 +123,7 @@ const CustomForm: FunctionComponent<Props> = ({
         Save
       </Button.Submit>
       <Button.Cancel
+        size="sm"
         onClick={() => {
           handleCancel();
           reset();

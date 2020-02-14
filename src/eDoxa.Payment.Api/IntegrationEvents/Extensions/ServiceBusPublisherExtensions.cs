@@ -26,27 +26,46 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Extensions
             await publisher.PublishAsync(integrationEvent);
         }
 
-        public static async Task PublishUserDepositSucceededIntegrationEventAsync(
+        public static async Task PublishUserStripePaymentIntentCanceledIntegrationEventAsync(
             this IServiceBusPublisher publisher,
             UserId userId,
-            TransactionDto transaction
+            TransactionId transactionId
         )
         {
-            var integrationEvent = new UserDepositSucceededIntegrationEvent
+            var integrationEvent = new UserStripePaymentIntentCanceledIntegrationEvent
             {
                 UserId = userId,
-                Transaction = transaction
+                TransactionId = transactionId
             };
 
             await publisher.PublishAsync(integrationEvent);
         }
 
-        public static async Task PublishUserDepositFailedIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, TransactionDto transaction)
+        public static async Task PublishUserStripePaymentIntentSucceededIntegrationEventAsync(
+            this IServiceBusPublisher publisher,
+            UserId userId,
+            TransactionId transactionId
+        )
         {
-            var integrationEvent = new UserDepositFailedIntegrationEvent
+            var integrationEvent = new UserStripePaymentIntentSucceededIntegrationEvent
             {
                 UserId = userId,
-                Transaction = transaction
+                TransactionId = transactionId
+            };
+
+            await publisher.PublishAsync(integrationEvent);
+        }
+
+        public static async Task PublishUserStripePaymentIntentPaymentFailedIntegrationEventAsync(
+            this IServiceBusPublisher publisher,
+            UserId userId,
+            TransactionId transactionId
+        )
+        {
+            var integrationEvent = new UserStripePaymentIntentPaymentFailedIntegrationEvent
+            {
+                UserId = userId,
+                TransactionId = transactionId
             };
 
             await publisher.PublishAsync(integrationEvent);

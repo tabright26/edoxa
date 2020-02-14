@@ -39,9 +39,9 @@ export function getFieldValidationRuleMessage(
 }
 
 export function throwSubmissionError(
-  error: AxiosError<AxiosErrorData>
+  error: AxiosError<AxiosErrorData> | stripe.Error | any
 ): void | never {
-  if (error.isAxiosError) {
+  if (error && error.isAxiosError) {
     const { data, status } = error.response;
     switch (status) {
       case 400:
@@ -61,5 +61,9 @@ export function throwSubmissionError(
         });
       }
     }
+  } else {
+    throw new SubmissionError<AxiosErrorData>({
+      _error: error.message
+    });
   }
 }

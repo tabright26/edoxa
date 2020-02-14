@@ -36,8 +36,13 @@ message CreateTransactionRequest {
   }
 }
 
-message CreateTransactionAggregatorRequest {
-  int32 bundle = 1;
+message DepositTransactionRequest {
+  int32 bundleId = 1;
+  google.protobuf.StringValue paymentMethodId = 2;
+}
+
+message WithdrawTransactionRequest {
+  int32 bundleId = 1;
   google.protobuf.StringValue email = 2;
 }
 

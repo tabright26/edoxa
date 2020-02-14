@@ -41,7 +41,7 @@ namespace eDoxa.Payment.Api.Controllers.Stripe
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> FetchCustomerAsync()
         {
-            var customerId = HttpContext.GetStripeCustomertId();
+            var customerId = HttpContext.GetStripeCustomerId();
 
             var customer = await _stripeCustomerService.FindCustomerAsync(customerId);
 

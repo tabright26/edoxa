@@ -18,7 +18,7 @@ namespace eDoxa.Seedwork.Application.Extensions
 {
     public static class HttpContextExtensions
     {
-        public static string GetStripeCustomertId(this HttpContext context)
+        public static string GetStripeCustomerId(this HttpContext context)
         {
             return context.GetClaim(CustomClaimTypes.StripeCustomer);
         }

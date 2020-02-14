@@ -1,29 +1,16 @@
 import React, { FunctionComponent } from "react";
-import { compose } from "recompose";
 import { CURRENCY_TYPE_TOKEN, TRANSACTION_TYPE_DEPOSIT } from "types";
-import { withStripeCustomerHasDefaultPaymentMethod } from "store/root/payment/stripe/customer/container";
-import UserTransactionButton from "components/Transaction/Button";
+import TransactionButton from "components/Transaction/Button";
 
-type InnerProps = { hasDefaultPaymentMethod: boolean };
-
-type OutterProps = {};
-
-type Props = InnerProps & OutterProps;
-
-const Buy: FunctionComponent<Props> = ({ hasDefaultPaymentMethod }) => (
-  <UserTransactionButton.Create
+const Buy: FunctionComponent = () => (
+  <TransactionButton
     transactionType={TRANSACTION_TYPE_DEPOSIT}
-    currency={CURRENCY_TYPE_TOKEN}
-    disabled={!hasDefaultPaymentMethod}
+    currencyType={CURRENCY_TYPE_TOKEN}
     title="BUY (TOKEN)"
     description={null}
   >
     Buy
-  </UserTransactionButton.Create>
+  </TransactionButton>
 );
 
-const enhance = compose<InnerProps, OutterProps>(
-  withStripeCustomerHasDefaultPaymentMethod
-);
-
-export default enhance(Buy);
+export default Buy;

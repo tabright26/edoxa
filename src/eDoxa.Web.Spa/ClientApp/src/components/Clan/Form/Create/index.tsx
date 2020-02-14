@@ -27,7 +27,7 @@ const CustomForm: FunctionComponent<any> = ({
       <Button.Submit loading={submitting} size="sm" className="mr-2">
         Save
       </Button.Submit>
-      <Button.Cancel onClick={handleCancel} />
+      <Button.Cancel size="sm" onClick={handleCancel} />
     </FormGroup>
   </Form>
 );

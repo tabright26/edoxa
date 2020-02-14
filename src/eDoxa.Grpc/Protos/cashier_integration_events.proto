@@ -14,3 +14,18 @@ message ChallengeClosedIntegrationEvent {
   string challengeId = 1;
   map<string, CurrencyDto> payoutPrizes = 2;
 }
+
+message UserDepositSucceededIntegrationEvent {
+  string userId = 1;
+  TransactionDto transaction = 2;
+}
+
+message UserDepositFailedIntegrationEvent {
+  string userId = 1;
+  TransactionDto transaction = 2;
+}
+
+message UserDepositCanceledIntegrationEvent {
+  string userId = 1;
+  TransactionDto transaction = 2;
+}

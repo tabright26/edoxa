@@ -2,10 +2,10 @@ import React, { FunctionComponent } from "react";
 import { Table, Badge } from "reactstrap";
 import Moment from "react-moment";
 import Format from "components/Shared/Format";
-import { UserTransaction } from "types";
+import { Transaction } from "types";
 
 interface Props {
-  transactions: UserTransaction[];
+  transactions: Transaction[];
 }
 
 const List: FunctionComponent<Props> = ({ transactions }) => (

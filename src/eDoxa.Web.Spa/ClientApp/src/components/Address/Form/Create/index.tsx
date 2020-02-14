@@ -27,9 +27,7 @@ import {
   AddressValidatorOptions,
   CountryIsoCode
 } from "types";
-import {
-  withUserProfileCountry
-} from "utils/oidc/containers";
+import { withUserProfileCountry } from "utils/oidc/containers";
 import { HocUserProfileCountryStateProps } from "utils/oidc/containers/types";
 
 type OwnProps = HocUserProfileCountryStateProps;
@@ -137,6 +135,7 @@ const CustomForm: FunctionComponent<Props> = ({
         Save
       </Button.Submit>
       <Button.Cancel
+        size="sm"
         onClick={() => {
           handleCancel();
           reset();

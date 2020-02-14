@@ -139,7 +139,7 @@ exports[`renders without crashing 1`] = `
                       className="w-100 badge badge-dark badge-pill"
                     >
                       <span>
-                        a few seconds
+                        0 hours
                       </span>
                     </span>
                   </dt>
