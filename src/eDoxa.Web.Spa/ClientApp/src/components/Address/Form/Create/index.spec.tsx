@@ -4,14 +4,14 @@ it("should match the snapshot", () => {});
 // import { Provider } from "react-redux";
 // import { ReactWrapper } from "enzyme";
 // import Create from "./Create";
-// import { configureStore } from "store";
+// import store from "store";
 // import { FormGroup } from "reactstrap";
 // import Input from "components/Shared/Input";
 
 // const shallow = global["shallow"];
 // const mount = global["mount"];
 
-// const store = configureStore();
+//
 
 // const createWrapper = (): ReactWrapper | any => {
 //   return mount(

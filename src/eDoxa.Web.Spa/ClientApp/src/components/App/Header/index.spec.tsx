@@ -3,21 +3,9 @@ import renderer from "react-test-renderer";
 import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import Header from ".";
+import store from "store";
 
 it("renders without crashing", () => {
-  // Arrange
-  const store: any = {
-    getState: () => {
-      return {
-        oidc: {
-          user: { profile: { email: null } }
-        }
-      };
-    },
-    dispatch: action => {},
-    subscribe: () => {}
-  };
-
   // Act
   const tree = renderer
     .create(

@@ -2,7 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { ReactWrapper } from "enzyme";
 import Create from ".";
-import { configureStore } from "store";
+import store from "store";
 import Input from "components/Shared/Input";
 import {
   PROFILE_FIRST_NAME_REQUIRED,
@@ -19,8 +19,6 @@ import {
 
 const shallow = global["shallow"];
 const mount = global["mount"];
-
-const store = configureStore();
 
 const createWrapper = (): ReactWrapper | any => {
   return mount(
@@ -42,8 +40,8 @@ describe("<UserInformationCreateForm />", () => {
 
   describe("defines information create form fields", () => {
     test.each([
-      ["firstName", "First Name"],
-      ["lastName", "Last Name"]
+      ["firstName", "First name"],
+      ["lastName", "Last name"]
     ])("renders name fields", (name: string, label: string) => {
       const wrapper = createWrapper();
       const field = findFieldByName(wrapper, name);
