@@ -2,7 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { ReactWrapper } from "enzyme";
 import Deposit from ".";
-import { configureStore } from "store";
+import store from "store";
 import { CURRENCY_TYPE_MONEY, TRANSACTION_TYPE_DEPOSIT } from "types";
 import {
   StaticOptionsActions,
@@ -16,8 +16,6 @@ import {
 
 const shallow = global["shallow"];
 const mount = global["mount"];
-
-const store = configureStore();
 
 const action: StaticOptionsActions = {
   type: LOAD_CASHIER_STATIC_OPTIONS_SUCCESS,
@@ -59,11 +57,7 @@ store.dispatch<any>(action);
 const createWrapper = (): ReactWrapper => {
   return mount(
     <Provider store={store}>
-      <Deposit
-        transactionType={TRANSACTION_TYPE_DEPOSIT}
-        currency={CURRENCY_TYPE_MONEY}
-        handleCancel={() => {}}
-      />
+      <Deposit currencyType={CURRENCY_TYPE_MONEY} handleCancel={() => {}} />
     </Provider>
   );
 };
@@ -72,11 +66,7 @@ describe("<UserAccountDepositForm />", () => {
   it("should match the snapshot", () => {
     const shallowWrapper = shallow(
       <Provider store={store}>
-        <Deposit
-          handleCancel={() => {}}
-          transactionType={TRANSACTION_TYPE_DEPOSIT}
-          currency={CURRENCY_TYPE_MONEY}
-        />
+        <Deposit handleCancel={() => {}} currencyType={CURRENCY_TYPE_MONEY} />
       </Provider>
     );
     expect(shallowWrapper).toMatchSnapshot();

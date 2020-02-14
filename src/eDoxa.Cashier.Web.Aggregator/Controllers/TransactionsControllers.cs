@@ -1,13 +1,11 @@
 ﻿// Filename: TransactionsControllers.cs
-// Date Created: 2019-12-26
+// Date Created: 2020-01-11
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
-using eDoxa.Grpc.Protos.Cashier.Dtos;
-using eDoxa.Grpc.Protos.Cashier.Enums;
 using eDoxa.Grpc.Protos.Cashier.Requests;
 using eDoxa.Grpc.Protos.Cashier.Services;
 using eDoxa.Grpc.Protos.Payment.Requests;
@@ -37,43 +35,52 @@ namespace eDoxa.Cashier.Web.Aggregator.Controllers
             _paymentServiceClient = paymentServiceClient;
         }
 
-        [HttpPost]
-        [SwaggerOperation("Create a transaction.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(TransactionDto))]
+        [HttpPost("deposit")]
+        [SwaggerOperation("Create a deposit transaction.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> PostAsync([FromBody] CreateTransactionAggregatorRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] DepositTransactionRequest request)
         {
             var createTransactionRequest = new CreateTransactionRequest
             {
-                Bundle = request.Bundle
+                Bundle = request.BundleId
             };
 
             var createTransactionResponse = await _cashierServiceClient.CreateTransactionAsync(createTransactionRequest);
 
-            var transaction = createTransactionResponse.Transaction;
-
-            if (transaction.Type == EnumTransactionType.Deposit)
+            var createStripePaymentIntentRequest = new CreateStripePaymentIntentRequest
             {
-                var depositRequest = new DepositRequest
-                {
-                    Transaction = transaction
-                };
+                PaymentMethodId = request.PaymentMethodId,
+                Transaction = createTransactionResponse.Transaction
+            };
 
-                await _paymentServiceClient.DepositAsync(depositRequest);
-            }
+            var createStripePaymentIntentResponse = await _paymentServiceClient.CreateStripePaymentIntentAsync(createStripePaymentIntentRequest);
 
-            if (transaction.Type == EnumTransactionType.Withdrawal)
+            return this.Ok(createStripePaymentIntentResponse.ClientSecret);
+        }
+
+        [HttpPost("withdraw")]
+        [SwaggerOperation("Create a withdraw transaction.")]
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> PostAsync([FromBody] WithdrawTransactionRequest request)
+        {
+            var createTransactionRequest = new CreateTransactionRequest
             {
-                var withdrawalRequest = new WithdrawalRequest
-                {
-                    Transaction = transaction,
-                    Email = request.Email
-                };
+                Bundle = request.BundleId
+            };
 
-                await _paymentServiceClient.WithdrawalAsync(withdrawalRequest);
-            }
+            var createTransactionResponse = await _cashierServiceClient.CreateTransactionAsync(createTransactionRequest);
 
-            return this.Ok(transaction);
+            var createPaypalPayoutRequest = new CreatePaypalPayoutRequest
+            {
+                Email = request.Email,
+                Transaction = createTransactionResponse.Transaction
+            };
+
+            await _paymentServiceClient.CreatePaypalPayoutAsync(createPaypalPayoutRequest);
+
+            return this.Ok();
         }
     }
 }

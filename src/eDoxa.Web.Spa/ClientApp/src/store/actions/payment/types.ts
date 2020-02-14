@@ -5,6 +5,24 @@ import {
   StripePaymentMethod,
   StripeBankAccount
 } from "types";
+export const LOAD_STRIPE_PAYMENTINTENT = "LOAD_STRIPE_PAYMENTINTENT";
+export const LOAD_STRIPE_PAYMENTINTENT_SUCCESS =
+  "LOAD_STRIPE_PAYMENTINTENT_SUCCESS";
+export const LOAD_STRIPE_PAYMENTINTENT_FAIL = "LOAD_STRIPE_PAYMENTINTENT_FAIL";
+
+export type LoadStripePaymentIntentType =
+  | typeof LOAD_STRIPE_PAYMENTINTENT
+  | typeof LOAD_STRIPE_PAYMENTINTENT_SUCCESS
+  | typeof LOAD_STRIPE_PAYMENTINTENT_FAIL;
+
+export type LoadStripePaymentIntentActionCreator = AxiosActionCreator<
+  LoadStripePaymentIntentType
+>;
+
+export type LoadStripePaymentIntentAction = AxiosAction<
+  LoadStripePaymentIntentType,
+  string
+>;
 
 export const LOAD_STRIPE_ACCOUNT = "LOAD_STRIPE_ACCOUNT";
 export const LOAD_STRIPE_ACCOUNT_SUCCESS = "LOAD_STRIPE_ACCOUNT_SUCCESS";

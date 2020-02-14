@@ -17,8 +17,9 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
         public static void UseIntegrationEventSubscriptions(this IServiceBusSubscriber subscriber)
         {
             subscriber.Subscribe<UserCreatedIntegrationEvent, UserCreatedIntegrationEventHandler>();
-            subscriber.Subscribe<UserDepositSucceededIntegrationEvent, UserDepositSucceededIntegrationEventHandler>();
-            subscriber.Subscribe<UserDepositFailedIntegrationEvent, UserDepositFailedIntegrationEventHandler>();
+            subscriber.Subscribe<UserStripePaymentIntentSucceededIntegrationEvent, UserStripePaymentIntentSucceededIntegrationEventHandler>();
+            subscriber.Subscribe<UserStripePaymentIntentPaymentFailedIntegrationEvent, UserStripePaymentIntentPaymentFailedIntegrationEventHandler>();
+            subscriber.Subscribe<UserStripePaymentIntentCanceledIntegrationEvent, UserStripePaymentIntentCanceledIntegrationEventHandler>();
             subscriber.Subscribe<UserWithdrawalSucceededIntegrationEvent, UserWithdrawalSucceededIntegrationEventHandler>();
             subscriber.Subscribe<UserWithdrawalFailedIntegrationEvent, UserWithdrawalFailedIntegrationEventHandler>();
             subscriber.Subscribe<ChallengeSynchronizedIntegrationEvent, ChallengeSynchronizedIntegrationEventHandler>();

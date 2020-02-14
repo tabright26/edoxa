@@ -22,10 +22,12 @@ import {
   loadChallengesStaticOptions,
   loadGamesStaticOptions
 } from "store/actions/static";
+import { loadStripePaymentMethods } from "store/actions/payment";
 
 loadUser(store, userManager).then(user => {
   if (user) {
     store.dispatch<any>(loadUserTransactionHistory());
+    store.dispatch<any>(loadStripePaymentMethods());
   }
 });
 store.dispatch<any>(loadIdentityStaticOptions());

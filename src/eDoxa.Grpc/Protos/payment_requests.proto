@@ -8,11 +8,12 @@ import "cashier_dtos.proto";
 
 package edoxa.services.payment;
 
-message DepositRequest {
+message CreateStripePaymentIntentRequest {
   cashier.TransactionDto transaction = 1;
+  google.protobuf.StringValue paymentMethodId = 2;
 }
 
-message WithdrawalRequest {
+message CreatePaypalPayoutRequest {
   google.protobuf.StringValue email = 1;
   cashier.TransactionDto transaction = 2;
 }

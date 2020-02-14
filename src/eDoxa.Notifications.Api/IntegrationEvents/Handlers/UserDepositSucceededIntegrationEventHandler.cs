@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Grpc.Protos.Payment.IntegrationEvents;
+using eDoxa.Grpc.Protos.Cashier.IntegrationEvents;
 using eDoxa.Notifications.Domain.Services;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;

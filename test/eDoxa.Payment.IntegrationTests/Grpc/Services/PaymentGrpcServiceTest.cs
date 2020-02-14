@@ -12,9 +12,8 @@ using Autofac;
 
 using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Grpc.Protos.Cashier.Enums;
-using eDoxa.Grpc.Protos.Payment.IntegrationEvents;
+using eDoxa.Grpc.Protos.Cashier.IntegrationEvents;
 using eDoxa.Grpc.Protos.Payment.Requests;
-using eDoxa.Grpc.Protos.Payment.Responses;
 using eDoxa.Grpc.Protos.Payment.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
@@ -55,7 +54,10 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
             var userId = new UserId();
             const string email = "test@edoxa.gg";
 
-            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email), new Claim(CustomClaimTypes.StripeCustomer, "customerId"))
+            var host = TestHost.WithClaimsFromBearerAuthentication(
+                    new Claim(JwtClaimTypes.Subject, userId.ToString()),
+                    new Claim(JwtClaimTypes.Email, email),
+                    new Claim(CustomClaimTypes.StripeCustomer, "customerId"))
                 .WithWebHostBuilder(
                     builder =>
                     {
@@ -85,7 +87,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
 
             var client = new PaymentService.PaymentServiceClient(host.CreateChannel());
 
-            var request = new DepositRequest
+            var request = new CreateStripePaymentIntentRequest
             {
                 Transaction = new TransactionDto
                 {
@@ -103,10 +105,10 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
             };
 
             // Act
-            var response = await client.DepositAsync(request);
+            var response = await client.CreateStripePaymentIntentAsync(request);
 
             //Assert
-            response.Should().BeOfType<DepositResponse>();
+            response.Should().BeOfType<CreateStripePaymentIntentRequest>();
         }
 
         [Fact]
@@ -136,7 +138,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
 
             var client = new PaymentService.PaymentServiceClient(host.CreateChannel());
 
-            var request = new DepositRequest
+            var request = new CreateStripePaymentIntentRequest
             {
                 Transaction = new TransactionDto
                 {
@@ -154,7 +156,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
             };
 
             // Act 
-            var func = new Func<Task>(async () => await client.DepositAsync(request));
+            var func = new Func<Task>(async () => await client.CreateStripePaymentIntentAsync(request));
 
             // Assert
             func.Should().Throw<RpcException>();
@@ -171,7 +173,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
 
             var client = new PaymentService.PaymentServiceClient(host.CreateChannel());
 
-            var request = new DepositRequest
+            var request = new CreateStripePaymentIntentRequest
             {
                 Transaction = new TransactionDto
                 {
@@ -189,7 +191,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
             };
 
             // Act
-            var func = new Func<Task>(async () => await client.DepositAsync(request));
+            var func = new Func<Task>(async () => await client.CreateStripePaymentIntentAsync(request));
 
             // Assert
             func.Should().Throw<RpcException>();
@@ -204,7 +206,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
 
             var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email));
 
-            var request = new WithdrawalRequest
+            var request = new CreatePaypalPayoutRequest
             {
                 Transaction = new TransactionDto
                 {
@@ -224,7 +226,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
             var client = new PaymentService.PaymentServiceClient(host.CreateChannel());
 
             // Act Assert
-            var func = new Func<Task>(async () => await client.WithdrawalAsync(request));
+            var func = new Func<Task>(async () => await client.CreatePaypalPayoutAsync(request));
             func.Should().Throw<RpcException>();
         }
 
@@ -237,7 +239,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
 
             var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email));
 
-            var request = new WithdrawalRequest
+            var request = new CreatePaypalPayoutRequest
             {
                 Transaction = new TransactionDto
                 {
@@ -257,7 +259,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
             var client = new PaymentService.PaymentServiceClient(host.CreateChannel());
 
             // Act 
-            var func = new Func<Task>(async () => await client.WithdrawalAsync(request));
+            var func = new Func<Task>(async () => await client.CreatePaypalPayoutAsync(request));
 
             // Assert
             func.Should().Throw<RpcException>();

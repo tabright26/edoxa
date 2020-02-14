@@ -58,7 +58,7 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
             transaction stay for longer than 5 minutes please contact{" "}
             <a href="mailto:support@edoxa.gg">support@edoxa.gg</a>.
           </p>
-          {process.env.NODE_ENV !== "production" && <BuyToken />}
+          <BuyToken />
         </PopoverBody>
       </Popover>
     </div>

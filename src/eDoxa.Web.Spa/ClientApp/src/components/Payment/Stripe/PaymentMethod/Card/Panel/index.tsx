@@ -1,13 +1,12 @@
 import React, { FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { withStripePaymentMethods } from "store/root/payment/stripe/paymentMethod/container";
 import { StripePaymentMethod } from "types";
 import PaymentMethodCard from "components/Payment/Stripe/PaymentMethod/Card";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { compose } from "recompose";
 import { Loading } from "components/Shared/Loading";
-import { connect, MapDispatchToProps } from "react-redux";
+import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 import { show } from "redux-modal";
 import {
   CREATE_STRIPE_PAYMENTMETHOD_MODAL,
@@ -15,6 +14,7 @@ import {
   DELETE_STRIPE_PAYMENTMETHOD_MODAL
 } from "utils/modal/constants";
 import Button from "components/Shared/Button";
+import { RootState } from "store/types";
 
 interface OwnProps {}
 
@@ -126,9 +126,10 @@ const Panel: FunctionComponent<any> = ({
   </Card>
 );
 
-const mapStateToProps = () => {
+const mapStateToProps: MapStateToProps<any, any, RootState> = state => {
   return {
-    limit: 1
+    limit: 5,
+    paymentMethods: state.root.payment.stripe.paymentMethods
   };
 };
 
@@ -146,9 +147,6 @@ const mapDispatchToProps: MapDispatchToProps<
   };
 };
 
-const enhance = compose<any, any>(
-  withStripePaymentMethods,
-  connect(mapStateToProps, mapDispatchToProps)
-);
+const enhance = compose<any, any>(connect(mapStateToProps, mapDispatchToProps));
 
 export default enhance(Panel);

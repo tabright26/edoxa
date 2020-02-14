@@ -1,22 +1,31 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
-import { UserTransaction, Promotion } from "types";
+import { Transaction, Promotion } from "types";
 
-export const CREATE_USER_TRANSACTION = "CREATE_USER_TRANSACTION";
-export const CREATE_USER_TRANSACTION_SUCCESS =
-  "CREATE_USER_TRANSACTION_SUCCESS";
-export const CREATE_USER_TRANSACTION_FAIL = "CREATE_USER_TRANSACTION_FAIL";
+export const DEPOSIT_TRANSACTION = "DEPOSIT_TRANSACTION";
+export const DEPOSIT_TRANSACTION_SUCCESS = "DEPOSIT_TRANSACTION_SUCCESS";
+export const DEPOSIT_TRANSACTION_FAIL = "DEPOSIT_TRANSACTION_FAIL";
 
-export type CreateUserTransactionType =
-  | typeof CREATE_USER_TRANSACTION
-  | typeof CREATE_USER_TRANSACTION_SUCCESS
-  | typeof CREATE_USER_TRANSACTION_FAIL;
-export type CreateUserTransactionActionCreator = AxiosActionCreator<
-  CreateUserTransactionType
+export type DepositTransactionType =
+  | typeof DEPOSIT_TRANSACTION
+  | typeof DEPOSIT_TRANSACTION_SUCCESS
+  | typeof DEPOSIT_TRANSACTION_FAIL;
+export type DepositTransactionActionCreator = AxiosActionCreator<
+  DepositTransactionType
 >;
-export type CreateUserTransactionAction = AxiosAction<
-  CreateUserTransactionType,
-  UserTransaction
+export type DepositTransactionAction = AxiosAction<DepositTransactionType>;
+
+export const WITHDRAW_TRANSACTION = "WITHDRAW_TRANSACTION";
+export const WITHDRAW_TRANSACTION_SUCCESS = "WITHDRAW_TRANSACTION_SUCCESS";
+export const WITHDRAW_TRANSACTION_FAIL = "WITHDRAW_TRANSACTION_FAIL";
+
+export type WithdrawTransactionType =
+  | typeof WITHDRAW_TRANSACTION
+  | typeof WITHDRAW_TRANSACTION_SUCCESS
+  | typeof WITHDRAW_TRANSACTION_FAIL;
+export type WithdrawTransactionActionCreator = AxiosActionCreator<
+  WithdrawTransactionType
 >;
+export type WithdrawTransactionAction = AxiosAction<WithdrawTransactionType>;
 
 export const LOAD_USER_TRANSACTION_HISTORY = "LOAD_USER_TRANSACTION_HISTORY";
 export const LOAD_USER_TRANSACTION_HISTORY_SUCCESS =
@@ -33,7 +42,7 @@ export type LoadUserTransactionHistoryActionCreator = AxiosActionCreator<
 >;
 export type LoadUserTransactionHistoryAction = AxiosAction<
   LoadUserTransactionHistoryType,
-  UserTransaction[]
+  Transaction[]
 >;
 
 export const REDEEM_PROMOTION = "REDEEM_PROMOTION";

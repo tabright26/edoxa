@@ -3,7 +3,7 @@ import React, { Suspense, FunctionComponent } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { ConnectedRouter as Router } from "connected-react-router";
 import { history } from "utils/router/history";
-import UserTransactionModal from "components/Transaction/Modal";
+import TransactionModal from "components/Transaction/Modal";
 import ChallengeParticipantMatchModal from "components/Challenge/Participant/Match/Modal";
 import { Loading } from "components/Shared/Loading";
 import { RouteProps } from "utils/router/types";
@@ -53,7 +53,8 @@ const App: FunctionComponent = () => (
     <StripePaymentMethodModal.Create />
     <StripePaymentMethodModal.Update />
     <StripePaymentMethodModal.Delete />
-    <UserTransactionModal.Create />
+    <TransactionModal.Deposit />
+    <TransactionModal.Withdraw />
     <ChallengeParticipantMatchModal.Score />
     <Router history={history}>
       <Suspense fallback={<Loading />}>

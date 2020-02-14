@@ -1,3 +1,5 @@
+import { BrandProp } from "components/Payment/Stripe/PaymentMethod/Card/Icon";
+
 export const GAME_LEAGUE_OF_LEGENDS = "LeagueOfLegends";
 
 export type Game = typeof GAME_LEAGUE_OF_LEGENDS;
@@ -120,7 +122,7 @@ export interface Balance {
   readonly pending: number;
 }
 
-export interface UserTransaction extends Entity<TransactionId> {
+export interface Transaction extends Entity<TransactionId> {
   readonly timestamp: number;
   readonly currency: Currency;
   readonly description: string;
@@ -421,7 +423,7 @@ export interface StripePaymentMethod {
 }
 
 export interface StripeCard {
-  readonly brand: string;
+  readonly brand: BrandProp;
   readonly country: string;
   readonly expMonth: number;
   readonly expYear: number;
