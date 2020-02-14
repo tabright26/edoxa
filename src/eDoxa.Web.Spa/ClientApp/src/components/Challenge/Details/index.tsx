@@ -46,7 +46,7 @@ const Details: FunctionComponent<Props> = ({ challenge, loadChallenge }) => {
       <Row>
         <Col xs={{ size: 8, order: 1 }}>
           <Card className="my-4">
-            <CardBody className="d-flex">
+            <CardBody>
               <Row>
                 <Col md="3">
                   <Logo

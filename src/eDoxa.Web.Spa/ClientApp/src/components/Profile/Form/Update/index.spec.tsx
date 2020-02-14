@@ -2,7 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { ReactWrapper } from "enzyme";
 import Update from ".";
-import { configureStore } from "store";
+import store from "store";
 import Input from "components/Shared/Input";
 import {
   PROFILE_FIRST_NAME_REQUIRED,
@@ -18,8 +18,6 @@ import {
 
 const shallow = global["shallow"];
 const mount = global["mount"];
-
-const store = configureStore();
 
 const createWrapper = (): ReactWrapper | any => {
   return mount(
@@ -44,7 +42,7 @@ describe("<UserInformationUpdateForm />", () => {
       const wrapper = createWrapper();
       const field = findFieldByName(wrapper, "firstName");
 
-      expect(field.prop("placeholder")).toBe("First Name");
+      expect(field.prop("placeholder")).toBe("First name");
       expect(field.prop("component")).toBe(Input.Text);
     });
 

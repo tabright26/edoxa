@@ -3,15 +3,9 @@ import renderer from "react-test-renderer";
 import Payout from ".";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import store from "store";
 
 it("renders without crashing", () => {
-  // Arrange
-  const store: any = {
-    getState: () => {},
-    dispatch: action => {},
-    subscribe: () => {}
-  };
-
   // Act
   const tree = renderer
     .create(

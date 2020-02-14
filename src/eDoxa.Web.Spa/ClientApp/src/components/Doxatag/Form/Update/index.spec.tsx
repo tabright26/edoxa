@@ -2,7 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { ReactWrapper } from "enzyme";
 import Update from "./index";
-import { configureStore } from "store";
+import store from "store";
 import { FormGroup } from "reactstrap";
 import Input from "components/Shared/Input";
 import {
@@ -15,15 +15,12 @@ import {
 import {
   findFieldByName,
   findSubmitButton,
-  findCancelButton,
   findInputByName,
   findFormFeedback
 } from "utils/test/helpers";
 
 const shallow = global["shallow"];
 const mount = global["mount"];
-
-const store = configureStore();
 
 const createWrapper = (): ReactWrapper | any => {
   return mount(
@@ -60,14 +57,6 @@ describe("<UserDoxatagUpdateForm />", () => {
 
       expect(button.prop("type")).toBe("submit");
       expect(button.text()).toBe("Save");
-    });
-
-    it("renders cancel button", () => {
-      const wrapper = createWrapper();
-      const button = findCancelButton(wrapper);
-
-      expect(button.prop("type")).toBe("button");
-      expect(button.text()).toBe("Cancel");
     });
   });
 

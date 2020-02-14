@@ -8,13 +8,11 @@ import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import store from "./store";
-import ReduxToastr from "react-redux-toastr";
 import { StripeProvider } from "react-stripe-elements";
 import { LocalizeProvider } from "react-localize-redux";
 import { initialize } from "utils/localize/initialize";
 import { OidcProvider, loadUser } from "redux-oidc";
 import { userManager } from "utils/oidc/UserManager";
-import MessengerCustomerChat from "react-messenger-customer-chat";
 import { loadUserTransactionHistory } from "store/actions/cashier";
 import {
   loadIdentityStaticOptions,
@@ -23,6 +21,8 @@ import {
   loadGamesStaticOptions
 } from "store/actions/static";
 import { loadStripePaymentMethods } from "store/actions/payment";
+import { MessengerCustomerChat } from "utils/facebook/MessengerCustomerChat";
+import { ToastrProvider } from "utils/toastr/Provider";
 
 loadUser(store, userManager).then(user => {
   if (user) {
@@ -46,25 +46,8 @@ ReactDOM.render(
         </StripeProvider>
       </LocalizeProvider>
     </OidcProvider>
-    {process.env.NODE_ENV === "production" && (
-      <MessengerCustomerChat
-        pageId={process.env.REACT_APP_FACEBOOK_MCC_PAGE_ID}
-        appId={process.env.REACT_APP_FACEBOOK_MCC_APP_ID}
-        version="5.0"
-        xfbml
-        themeColor="#ff6f00"
-      />
-    )}
-    <ReduxToastr
-      timeOut={7500}
-      newestOnTop={false}
-      preventDuplicates
-      position="bottom-right"
-      transitionIn="fadeIn"
-      transitionOut="fadeOut"
-      progressBar={false}
-      closeOnToastrClick
-    />
+    <ToastrProvider />
+    <MessengerCustomerChat />
   </Provider>,
   document.getElementById("root")
 );

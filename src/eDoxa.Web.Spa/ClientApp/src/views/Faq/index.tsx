@@ -40,8 +40,8 @@ const FaqItem: FunctionComponent<FaqItemProps> = ({ questionGroup }) => {
     <>
       {items.map((question, index) => (
         <Card
-          className={`my-1 ${accordion[index] && "card-accent-primary"}`}
           key={index}
+          className={`my-1 ${accordion[index] && "card-accent-primary"}`}
         >
           <CardHeader id={`button-${index}`}>
             <Button

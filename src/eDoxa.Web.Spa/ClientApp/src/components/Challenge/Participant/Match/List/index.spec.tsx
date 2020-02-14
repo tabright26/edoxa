@@ -3,6 +3,7 @@ import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import List from ".";
+import store from "store";
 
 it("renders without crashing", () => {
   // Arrange
@@ -38,11 +39,11 @@ it("renders without crashing", () => {
   //   error: null
   // };
 
-  const store: any = {
-    getState: () => {},
-    dispatch: action => {},
-    subscribe: () => {}
-  };
+  // const store: any = {
+  //   getState: () => {},
+  //   dispatch: action => {},
+  //   subscribe: () => {}
+  // };
 
   // Act
   const tree = renderer
