@@ -1,21 +1,34 @@
 import React, { FunctionComponent } from "react";
-import { Form } from "reactstrap";
+import { Form, FormGroup } from "reactstrap";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import {
   injectStripe,
-  CardNumberElement,
-  CardExpiryElement,
-  CardCvcElement,
-  ReactStripeElements
+  ReactStripeElements,
+  CardElement
 } from "react-stripe-elements";
 import Button from "components/Shared/Button";
 import { CREATE_STRIPE_PAYMENTMETHOD_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { attachStripePaymentMethod } from "store/actions/payment";
-import { ATTACH_STRIPE_PAYMENTMETHOD_FAIL } from "store/actions/payment/types";
 import { throwSubmissionError } from "utils/form/types";
-import { RootActions } from "store/types";
+import { AxiosActionCreatorMeta } from "utils/axios/types";
+
+const style = {
+  base: {
+    color: "#FFF",
+    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+    fontSmoothing: "antialiased",
+    fontSize: "16px",
+    "::placeholder": {
+      color: "#aab7c4"
+    }
+  },
+  invalid: {
+    color: "#ff6f00",
+    iconColor: "#ff6f00"
+  }
+};
 
 interface FormData {}
 
@@ -37,27 +50,13 @@ const Create: FunctionComponent<Props> = ({
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary anyTouched={anyTouched} error={error} />
-    <dl className="row mb-0">
-      <dt className="col-sm-4">Card number</dt>
-      <dd className="col-sm-8">
-        <CardNumberElement />
-      </dd>
-      <dt className="col-sm-4">Expiration date</dt>
-      <dd className="col-sm-8">
-        <CardExpiryElement />
-      </dd>
-      <dt className="col-sm-4">CVC</dt>
-      <dd className="col-sm-8">
-        <CardCvcElement />
-      </dd>
-      <dt className="col-sm-4 mb-0"></dt>
-      <dd className="col-sm-8 mb-0">
-        <Button.Submit loading={submitting} className="mr-2" size="sm">
-          Save
-        </Button.Submit>
-        <Button.Cancel onClick={handleCancel} />
-      </dd>
-    </dl>
+    <FormGroup>
+      <CardElement style={style} />
+    </FormGroup>
+    <Button.Submit loading={submitting} className="mr-2" size="sm">
+      Save
+    </Button.Submit>
+    <Button.Cancel size="sm" onClick={handleCancel} />
   </Form>
 );
 
@@ -65,23 +64,24 @@ const enhance = compose<InnerProps, OutterProps>(
   injectStripe,
   reduxForm<FormData, Props>({
     form: CREATE_STRIPE_PAYMENTMETHOD_FORM,
-    onSubmit: (_values, dispatch: any, { stripe }) =>
-      stripe.createPaymentMethod("card").then(result => {
-        if (result.paymentMethod) {
-          return dispatch(attachStripePaymentMethod(result.paymentMethod)).then(
-            (action: RootActions) => {
-              switch (action.type) {
-                case ATTACH_STRIPE_PAYMENTMETHOD_FAIL: {
-                  throwSubmissionError(action.error);
-                  break;
-                }
-              }
+    onSubmit: async (_values, dispatch: any, { stripe }) => {
+      try {
+        return await new Promise((resolve, reject) => {
+          const meta: AxiosActionCreatorMeta = { resolve, reject };
+          stripe.createPaymentMethod("card").then(result => {
+            if (result.paymentMethod) {
+              dispatch(
+                attachStripePaymentMethod(result.paymentMethod, false, meta)
+              );
+            } else {
+              reject(result.error);
             }
-          );
-        } else {
-          return Promise.reject(result.error);
-        }
-      }),
+          });
+        });
+      } catch (error) {
+        throwSubmissionError(error);
+      }
+    },
     onSubmitSuccess: (_result, _dispatch, { handleCancel }) => handleCancel()
   })
 );

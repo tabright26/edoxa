@@ -12,8 +12,9 @@ import {
 } from "./actions/payment/types";
 import {
   LoadUserTransactionHistoryAction,
-  CreateUserTransactionAction,
-  RedeemPromotionAction
+  DepositTransactionAction,
+  RedeemPromotionAction,
+  WithdrawTransactionAction
 } from "./actions/cashier/types";
 import {
   LoadChallengesAction,
@@ -68,7 +69,8 @@ export type RootActions =
   | LoadStripeBankAccountAction
   | UpdateStripeBankAccountAction
   | LoadUserTransactionHistoryAction
-  | CreateUserTransactionAction
+  | DepositTransactionAction
+  | WithdrawTransactionAction
   | RedeemPromotionAction
   | LoadChallengesAction
   | LoadChallengeAction

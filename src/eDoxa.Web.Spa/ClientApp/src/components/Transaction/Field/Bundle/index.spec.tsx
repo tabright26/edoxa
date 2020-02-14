@@ -46,7 +46,7 @@ it("renders without crashing", () => {
     <Form onSubmit={() => {}}>
       <TransactionBundle
         name="bundleId"
-        currency={CURRENCY_TYPE_MONEY}
+        currencyType={CURRENCY_TYPE_MONEY}
         transactionType={TRANSACTION_TYPE_DEPOSIT}
       />
     </Form>
@@ -104,7 +104,7 @@ it("renders without crashing", () => {
     <Form onSubmit={() => {}}>
       <TransactionBundle
         name="bundleId"
-        currency={CURRENCY_TYPE_TOKEN}
+        currencyType={CURRENCY_TYPE_TOKEN}
         transactionType={TRANSACTION_TYPE_DEPOSIT}
       />
     </Form>

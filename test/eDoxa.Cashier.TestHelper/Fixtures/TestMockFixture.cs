@@ -1,5 +1,5 @@
 ﻿// Filename: TestMockFixture.cs
-// Date Created: 2020-02-02
+// Date Created: 2020-02-10
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -9,6 +9,7 @@ using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Strategies;
+using eDoxa.ServiceBus.Abstractions;
 
 using Moq;
 
@@ -29,6 +30,7 @@ namespace eDoxa.Cashier.TestHelper.Fixtures
             PromotionService = new Mock<IPromotionService>();
             ChallengePayoutStrategy = new Mock<IChallengePayoutStrategy>();
             ChallengePayoutFactory = new Mock<IChallengePayoutFactory>();
+            ServiceBusPublisher = new Mock<IServiceBusPublisher>();
         }
 
         public Mock<IAccountQuery> AccountQuery { get; }
@@ -52,5 +54,7 @@ namespace eDoxa.Cashier.TestHelper.Fixtures
         public Mock<IChallengePayoutStrategy> ChallengePayoutStrategy { get; }
 
         public Mock<IChallengePayoutFactory> ChallengePayoutFactory { get; }
+
+        public Mock<IServiceBusPublisher> ServiceBusPublisher { get; }
     }
 }

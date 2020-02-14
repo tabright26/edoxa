@@ -8,7 +8,7 @@ import {
   CurrencyType,
   TransactionType,
   TransactionStatus,
-  UserTransaction
+  Transaction
 } from "types";
 import { Loading } from "components/Shared/Loading";
 import { connect, MapStateToProps } from "react-redux";
@@ -35,7 +35,7 @@ type Props = InnerProps & OutterProps;
 const Panel: FunctionComponent<Props> = ({
   transactionHistory: { data, loading }
 }) => {
-  const [transactions, setTransactions] = useState<UserTransaction[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   useEffect(() => {
     setTransactions(data.slice(0, pageSize));
   }, [data]);

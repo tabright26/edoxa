@@ -4,6 +4,8 @@ option csharp_namespace = "eDoxa.Grpc.Protos.Payment.Responses";
 
 package edoxa.services.payment;
 
-message DepositResponse {}
+message CreateStripePaymentIntentResponse {
+  string clientSecret = 1;
+}
 
-message WithdrawalResponse {}
+message CreatePaypalPayoutResponse {}

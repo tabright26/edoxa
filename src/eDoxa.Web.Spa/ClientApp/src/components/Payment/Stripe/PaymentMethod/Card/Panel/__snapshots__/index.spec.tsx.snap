@@ -18,13 +18,13 @@ exports[`renders without crashing 1`] = `
       (
       1
       /
-      1
+      5
       )
     </small>
     <button
       aria-label={null}
-      className="p-0 ml-auto my-auto btn btn-link btn-sm disabled"
-      disabled={true}
+      className="p-0 ml-auto my-auto btn btn-link btn-sm"
+      disabled={false}
       onClick={[Function]}
       type="button"
     >

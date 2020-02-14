@@ -34,10 +34,34 @@ import {
   LoadStripePaymentMethodsActionCreator,
   UpdateStripePaymentMethodActionCreator,
   AttachStripePaymentMethodActionCreator,
-  DetachStripePaymentMethodActionCreator
+  DetachStripePaymentMethodActionCreator,
+  LOAD_STRIPE_PAYMENTINTENT,
+  LoadStripePaymentIntentActionCreator,
+  LOAD_STRIPE_PAYMENTINTENT_SUCCESS,
+  LOAD_STRIPE_PAYMENTINTENT_FAIL
 } from "./types";
 
-import { AXIOS_PAYLOAD_CLIENT_CASHIER } from "utils/axios/types";
+import {
+  AXIOS_PAYLOAD_CLIENT_CASHIER,
+  AxiosActionCreatorMeta
+} from "utils/axios/types";
+
+export function loadStripePaymentIntent(): LoadStripePaymentIntentActionCreator {
+  return {
+    types: [
+      LOAD_STRIPE_PAYMENTINTENT,
+      LOAD_STRIPE_PAYMENTINTENT_SUCCESS,
+      LOAD_STRIPE_PAYMENTINTENT_FAIL
+    ],
+    payload: {
+      client: AXIOS_PAYLOAD_CLIENT_CASHIER,
+      request: {
+        method: "POST",
+        url: "/payment/api/stripe/payment-intent"
+      }
+    }
+  };
+}
 
 export function loadStripeAccount(): LoadStripeAccountActionCreator {
   return {
@@ -175,7 +199,8 @@ export function updateStripePaymentMethod(
 
 export function attachStripePaymentMethod(
   paymentMethod: stripe.paymentMethod.PaymentMethod,
-  defaultPaymentMethod: boolean = false
+  defaultPaymentMethod: boolean = false,
+  meta: AxiosActionCreatorMeta
 ): AttachStripePaymentMethodActionCreator {
   return {
     types: [
@@ -192,7 +217,8 @@ export function attachStripePaymentMethod(
           defaultPaymentMethod
         }
       }
-    }
+    },
+    meta
   };
 }
 

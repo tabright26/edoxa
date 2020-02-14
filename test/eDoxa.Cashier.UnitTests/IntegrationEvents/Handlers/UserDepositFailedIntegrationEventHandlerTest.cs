@@ -4,24 +4,18 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
-using eDoxa.Grpc.Protos.Cashier.Dtos;
-using eDoxa.Grpc.Protos.Cashier.Enums;
 using eDoxa.Grpc.Protos.Payment.IntegrationEvents;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Mocks;
-
-using Google.Protobuf.WellKnownTypes;
 
 using Moq;
 
@@ -45,7 +39,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             var userId = new UserId();
             var account = new Account(userId, new List<Transaction>());
 
-            var mockLogger = new MockLogger<UserDepositFailedIntegrationEventHandler>();
+            var mockLogger = new MockLogger<UserStripePaymentIntentPaymentFailedIntegrationEventHandler>();
 
             TestMock.AccountService.Setup(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
@@ -60,24 +54,12 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                 .ReturnsAsync(new DomainValidationResult<ITransaction>())
                 .Verifiable();
 
-            var handler = new UserDepositFailedIntegrationEventHandler(TestMock.AccountService.Object, mockLogger.Object);
+            var handler = new UserStripePaymentIntentPaymentFailedIntegrationEventHandler(TestMock.AccountService.Object, TestMapper, TestMock.ServiceBusPublisher.Object, mockLogger.Object);
 
-            var integrationEvent = new UserDepositFailedIntegrationEvent
+            var integrationEvent = new UserStripePaymentIntentPaymentFailedIntegrationEvent
             {
                 UserId = userId,
-                Transaction = new TransactionDto
-                {
-                    Id = new TransactionId(),
-                    Description = "test",
-                    Status = EnumTransactionStatus.Failed,
-                    Currency = new CurrencyDto
-                    {
-                        Type = EnumCurrencyType.Money,
-                        Amount = Money.Fifty.Amount
-                    },
-                    Timestamp = Timestamp.FromDateTime(DateTime.UtcNow),
-                    Type = EnumTransactionType.Deposit
-                }
+                TransactionId = new TransactionId()
             };
 
             // Act

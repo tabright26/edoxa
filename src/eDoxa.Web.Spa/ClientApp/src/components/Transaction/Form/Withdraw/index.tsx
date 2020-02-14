@@ -2,14 +2,13 @@ import React, { FunctionComponent } from "react";
 import { Form, ModalBody, ModalFooter, FormGroup } from "reactstrap";
 import { reduxForm, InjectedFormProps, FormErrors, Field } from "redux-form";
 import Button from "components/Shared/Button";
-import { CREATE_USER_TRANSACTION_FORM } from "utils/form/constants";
+import { WITHDRAW_TRANSACTION_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { throwSubmissionError } from "utils/form/types";
-import { createUserTransaction } from "store/actions/cashier";
+import { withdrawTransaction } from "store/actions/cashier";
 import {
   CurrencyType,
-  TransactionType,
   TransactionBundleId,
   TRANSACTION_TYPE_WITHDRAWAL
 } from "types";
@@ -19,12 +18,11 @@ import Input from "components/Shared/Input";
 
 interface FormData {
   bundleId: TransactionBundleId;
-  email?: string;
+  email: string;
 }
 
 interface OutterProps {
-  currency: CurrencyType;
-  transactionType: TransactionType;
+  currencyType: CurrencyType;
   handleCancel: () => void;
 }
 
@@ -32,12 +30,11 @@ type InnerProps = InjectedFormProps<FormData, Props>;
 
 type Props = InnerProps & OutterProps;
 
-const Create: FunctionComponent<Props> = ({
+const Withdraw: FunctionComponent<Props> = ({
   handleSubmit,
   error,
   handleCancel,
-  currency,
-  transactionType,
+  currencyType,
   submitting,
   anyTouched
 }) => (
@@ -46,44 +43,44 @@ const Create: FunctionComponent<Props> = ({
       <ValidationSummary anyTouched={anyTouched} error={error} />
       <FormField.Bundle
         name="bundleId"
-        transactionType={transactionType}
-        currency={currency}
+        currencyType={currencyType}
+        transactionType={TRANSACTION_TYPE_WITHDRAWAL}
       />
-      {transactionType === TRANSACTION_TYPE_WITHDRAWAL && (
-        <FormGroup>
-          <dl className="row mb-0">
-            <dd className="col-sm-3 mb-0 my-auto text-muted">PayPal email</dd>
-            <dd className="col-sm-9 mb-0">
-              <Field
-                type="text"
-                name="email"
-                placeholder="Email"
-                size="sm"
-                autoComplete="email"
-                component={Input.Text}
-              />
-            </dd>
-          </dl>
-        </FormGroup>
-      )}
+      <FormGroup>
+        <dl className="row mb-0">
+          <dd className="col-sm-3 mb-0 my-auto text-muted">PayPal email</dd>
+          <dd className="col-sm-9 mb-0">
+            <Field
+              type="text"
+              name="email"
+              placeholder="Email"
+              size="sm"
+              autoComplete="email"
+              component={Input.Text}
+            />
+          </dd>
+        </dl>
+      </FormGroup>
     </ModalBody>
     <ModalFooter className="bg-gray-800">
-      <Button.Submit size={null} loading={submitting} className="mr-2">
+      <Button.Submit loading={submitting} className="mr-2">
         Confirm
       </Button.Submit>
-      <Button.Cancel size={null} onClick={handleCancel} />
+      <Button.Cancel onClick={handleCancel} />
     </ModalFooter>
   </Form>
 );
 
 const enhance = compose<InnerProps, OutterProps>(
   reduxForm<FormData, Props>({
-    form: CREATE_USER_TRANSACTION_FORM,
+    form: WITHDRAW_TRANSACTION_FORM,
     onSubmit: async (values, dispatch) => {
       try {
         return await new Promise((resolve, reject) => {
           const meta: AxiosActionCreatorMeta = { resolve, reject };
-          dispatch(createUserTransaction(values.bundleId, values.email, meta));
+          dispatch(
+            withdrawTransaction(values.bundleId, values.email, meta)
+          );
         });
       } catch (error) {
         throwSubmissionError(error);
@@ -100,4 +97,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(Create);
+export default enhance(Withdraw);
