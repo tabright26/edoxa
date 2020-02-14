@@ -60,7 +60,7 @@ const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
             <a href="mailto:support@edoxa.gg">support@edoxa.gg</a>.
           </p>
           <DepositMoney />
-          {process.env.NODE_ENV !== "production" && <WithdrawMoney />}
+          <WithdrawMoney />
         </PopoverBody>
       </Popover>
     </div>

@@ -13,6 +13,7 @@ import {
   findSubmitButton,
   findCancelButton
 } from "utils/test/helpers";
+import { StripeProvider, Elements } from "react-stripe-elements";
 
 const shallow = global["shallow"];
 const mount = global["mount"];
@@ -57,7 +58,11 @@ store.dispatch<any>(action);
 const createWrapper = (): ReactWrapper => {
   return mount(
     <Provider store={store}>
-      <Deposit currencyType={CURRENCY_TYPE_MONEY} handleCancel={() => {}} />
+      <StripeProvider stripe={null}>
+        <Elements>
+          <Deposit handleCancel={() => {}} currencyType={CURRENCY_TYPE_MONEY} />
+        </Elements>
+      </StripeProvider>
     </Provider>
   );
 };
@@ -66,7 +71,14 @@ describe("<UserAccountDepositForm />", () => {
   it("should match the snapshot", () => {
     const shallowWrapper = shallow(
       <Provider store={store}>
-        <Deposit handleCancel={() => {}} currencyType={CURRENCY_TYPE_MONEY} />
+        <StripeProvider stripe={null}>
+          <Elements>
+            <Deposit
+              handleCancel={() => {}}
+              currencyType={CURRENCY_TYPE_MONEY}
+            />
+          </Elements>
+        </StripeProvider>
       </Provider>
     );
     expect(shallowWrapper).toMatchSnapshot();

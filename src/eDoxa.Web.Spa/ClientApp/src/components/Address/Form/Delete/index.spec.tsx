@@ -4,12 +4,12 @@ it("should match the snapshot", () => {});
 // import { Provider } from "react-redux";
 // import { ReactWrapper } from "enzyme";
 // import Delete from ".";
-// import { configureStore } from "store";
+// import store from "store";
 
 // const shallow = global["shallow"];
 // const mount = global["mount"];
 
-// const store = configureStore();
+//
 
 // const createWrapper = (): ReactWrapper | any => {
 //   return mount(

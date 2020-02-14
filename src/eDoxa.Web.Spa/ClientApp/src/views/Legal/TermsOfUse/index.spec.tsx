@@ -2,6 +2,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import TermsOfUse from ".";
+import { LocalizeProvider } from "react-localize-redux";
 
 it("renders without crashing", () => {
   // Arrange
@@ -15,7 +16,9 @@ it("renders without crashing", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <TermsOfUse />
+        <LocalizeProvider store={store}>
+          <TermsOfUse />
+        </LocalizeProvider>
       </Provider>
     )
     .toJSON();

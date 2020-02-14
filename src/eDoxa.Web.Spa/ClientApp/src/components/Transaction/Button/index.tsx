@@ -19,6 +19,7 @@ interface DispatchProps {
 }
 
 interface OwnProps {
+  disabled?: boolean;
   currencyType: CurrencyType;
   transactionType: TransactionType;
   title: string;
@@ -31,8 +32,18 @@ type OutterProps = OwnProps;
 
 type Props = InnerProps & OutterProps;
 
-const Create: FunctionComponent<Props> = ({ showModal, children }) => (
-  <Button color="primary" size="sm" block onClick={() => showModal()}>
+const Create: FunctionComponent<Props> = ({
+  showModal,
+  children,
+  disabled
+}) => (
+  <Button
+    color="primary"
+    size="sm"
+    block
+    onClick={() => showModal()}
+    disabled={disabled}
+  >
     {children}
   </Button>
 );

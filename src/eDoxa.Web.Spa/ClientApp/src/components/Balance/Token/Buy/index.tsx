@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { CURRENCY_TYPE_TOKEN, TRANSACTION_TYPE_DEPOSIT } from "types";
 import TransactionButton from "components/Transaction/Button";
+import { REACT_APP_BUY_BUTTON_DISABLED } from "keys";
 
 const Buy: FunctionComponent = () => (
   <TransactionButton
@@ -8,6 +9,7 @@ const Buy: FunctionComponent = () => (
     currencyType={CURRENCY_TYPE_TOKEN}
     title="BUY (TOKEN)"
     description={null}
+    disabled={REACT_APP_BUY_BUTTON_DISABLED === "true"}
   >
     Buy
   </TransactionButton>

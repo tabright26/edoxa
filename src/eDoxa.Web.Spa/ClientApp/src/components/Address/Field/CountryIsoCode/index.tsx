@@ -9,7 +9,7 @@ import { Label } from "reactstrap";
 
 interface OwnProps {
   label?: string;
-  placeholder: string;
+  placeholder?: string;
   size?: string;
   disabled?: boolean;
   onChange?: (event: SyntheticEvent) => void;
@@ -29,7 +29,7 @@ const CountryField: FunctionComponent<Props> = ({
   countries,
   disabled = false,
   label = null,
-  placeholder,
+  placeholder = null,
   size = null,
   onChange = null
 }) => (
