@@ -1,7 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { Currency } from ".";
-import { CURRENCY_TYPE_MONEY } from "types";
+import { CURRENCY_TYPE_MONEY } from "types/cashier";
 
 it("renders without crashing", () => {
   const tree = renderer

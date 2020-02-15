@@ -8,13 +8,13 @@ import Payout from "components/Challenge/Payout";
 import Timeline from "components/Challenge/Timeline";
 import Rules from "components/Challenge/Rules";
 import { Loading } from "components/Shared/Loading";
-import { Challenge, ChallengeId } from "types";
 import GameCredentialModal from "components/Game/Credential/Modal";
 import { compose } from "recompose";
 import { connect, MapStateToProps, MapDispatchToProps } from "react-redux";
 import { RootState } from "store/types";
 import { loadChallenge } from "store/actions/challenge";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import { ChallengeId, Challenge } from "types/challenges";
 
 type Params = {
   readonly challengeId?: ChallengeId;

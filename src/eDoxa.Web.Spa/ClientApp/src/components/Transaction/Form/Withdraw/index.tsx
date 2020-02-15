@@ -11,7 +11,7 @@ import {
   CurrencyType,
   TransactionBundleId,
   TRANSACTION_TYPE_WITHDRAWAL
-} from "types";
+} from "types/cashier";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import FormField from "components/Transaction/Field";
 import Input from "components/Shared/Input";
@@ -78,9 +78,7 @@ const enhance = compose<InnerProps, OutterProps>(
       try {
         return await new Promise((resolve, reject) => {
           const meta: AxiosActionCreatorMeta = { resolve, reject };
-          dispatch(
-            withdrawTransaction(values.bundleId, values.email, meta)
-          );
+          dispatch(withdrawTransaction(values.bundleId, values.email, meta));
         });
       } catch (error) {
         throwSubmissionError(error);

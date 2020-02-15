@@ -9,7 +9,7 @@ import {
   TransactionType,
   TransactionStatus,
   Transaction
-} from "types";
+} from "types/cashier";
 import { Loading } from "components/Shared/Loading";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";

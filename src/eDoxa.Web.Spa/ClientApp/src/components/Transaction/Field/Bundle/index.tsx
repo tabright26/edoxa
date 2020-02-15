@@ -7,7 +7,7 @@ import {
   CurrencyType,
   TransactionType,
   TransactionBundleId
-} from "types";
+} from "types/cashier";
 import { connect, MapStateToProps } from "react-redux";
 import { compose } from "recompose";
 import { RootState } from "store/types";

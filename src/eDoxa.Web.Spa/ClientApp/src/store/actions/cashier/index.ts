@@ -21,7 +21,7 @@ import {
   TransactionType,
   TransactionStatus,
   TransactionBundleId
-} from "types";
+} from "types/cashier";
 import {
   AxiosActionCreatorMeta,
   AXIOS_PAYLOAD_CLIENT_CASHIER

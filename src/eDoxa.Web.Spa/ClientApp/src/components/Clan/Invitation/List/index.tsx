@@ -2,8 +2,8 @@ import React, { FunctionComponent } from "react";
 import { Card, CardBody, CardHeader } from "reactstrap";
 import { withInvitations } from "store/root/organization/invitation/container";
 import Item from "components/Clan/Invitation/List/Item";
-import { ClanInvitation } from "types";
 import { Loading } from "components/Shared/Loading";
+import { ClanInvitation } from "types/clans";
 
 const InvitationList: FunctionComponent<any> = ({
   actions,

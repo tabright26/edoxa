@@ -1,7 +1,5 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
-import { ClanCandidature, ClanInvitation, ClanMember, Clan } from "types";
-
-//------------------------------------------------------------------------------------------------------------
+import { ClanCandidature, ClanInvitation, Clan, ClanMember } from "types/clans";
 
 export const LOAD_CLAN_CANDIDATURES = "LOAD_CLAN_CANDIDATURES";
 export const LOAD_CLAN_CANDIDATURES_SUCCESS = "LOAD_CLAN_CANDIDATURES_SUCCESS";

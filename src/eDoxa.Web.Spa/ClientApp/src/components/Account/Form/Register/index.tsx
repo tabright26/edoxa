@@ -25,12 +25,12 @@ import { connect, MapStateToProps } from "react-redux";
 import InputMask from "react-input-mask";
 import { getLegalTermsOfUsePath } from "utils/coreui/constants";
 import { Link } from "react-router-dom";
-import { CountryIsoCode, COUNTRY_ISO_CODE_CA } from "types";
 import {
   EMAIL_REQUIRED,
   PASSWORD_REQUIRED,
   DOB_REQUIRED
 } from "utils/form/validators";
+import { COUNTRY_ISO_CODE_CA, CountryIsoCode } from "types/identity";
 
 type StateProps = {};
 

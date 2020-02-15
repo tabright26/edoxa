@@ -3,8 +3,8 @@ import Item from "./Item";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { ChallengeId, ChallengeTimeline } from "types";
 import { compose } from "recompose";
+import { ChallengeId, ChallengeTimeline } from "types/challenges";
 
 type Params = {
   readonly challengeId: ChallengeId;

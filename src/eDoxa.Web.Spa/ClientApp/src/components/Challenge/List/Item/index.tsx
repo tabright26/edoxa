@@ -4,7 +4,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import ChallengeLogo from "components/Challenge/Logo";
 import ChallengeSummary from "components/Challenge/Summary";
 import { getChallengeDetailsPath } from "utils/coreui/constants";
-import { Challenge } from "types";
+import { Challenge } from "types/challenges";
 
 type Props = { challenge: Challenge };
 

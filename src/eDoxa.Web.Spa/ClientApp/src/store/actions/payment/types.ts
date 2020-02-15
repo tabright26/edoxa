@@ -1,10 +1,5 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
-import {
-  StripeAccount,
-  StripeCustomer,
-  StripePaymentMethod,
-  StripeBankAccount
-} from "types";
+import { StripeAccount, StripeBankAccount, StripeCustomer, StripePaymentMethod } from "types/payment";
 export const LOAD_STRIPE_PAYMENTINTENT = "LOAD_STRIPE_PAYMENTINTENT";
 export const LOAD_STRIPE_PAYMENTINTENT_SUCCESS =
   "LOAD_STRIPE_PAYMENTINTENT_SUCCESS";

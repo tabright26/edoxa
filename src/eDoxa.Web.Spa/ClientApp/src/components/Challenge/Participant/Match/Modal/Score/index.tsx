@@ -4,8 +4,8 @@ import { Modal, ModalFooter, ModalHeader, Table, Button } from "reactstrap";
 import Format from "components/Shared/Format";
 import { CHALLENGE_MATCH_SCORE_MODAL } from "utils/modal/constants";
 import { compose } from "recompose";
-import { ChallengeParticipantMatchStat } from "types";
 import { sentenceCase } from "change-case";
+import { ChallengeParticipantMatchStat } from "types/challenges";
 
 type InnerProps = InjectedProps & { stats: ChallengeParticipantMatchStat[] };
 

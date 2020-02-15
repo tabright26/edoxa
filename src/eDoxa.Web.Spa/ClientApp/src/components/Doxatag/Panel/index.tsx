@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { RootState } from "store/types";
 import { loadUserDoxatagHistory } from "store/actions/identity";
 import { produce, Draft } from "immer";
-import { UserDoxatag } from "types";
+import { UserDoxatag } from "types/identity";
 
 const Doxatag: FunctionComponent<any> = ({
   className,

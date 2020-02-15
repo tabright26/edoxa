@@ -73,7 +73,8 @@ import {
   KickClanMemberActionCreator
 } from "./types";
 import { AXIOS_PAYLOAD_CLIENT_DEFAULT } from "utils/axios/types";
-import { ClanId, UserId, InvitationId, MemberId } from "types";
+import { InvitationId, ClanId, MemberId } from "types/clans";
+import { UserId } from "types/identity";
 
 export function loadClanCandidatures(
   type: string,

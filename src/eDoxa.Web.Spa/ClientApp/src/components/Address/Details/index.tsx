@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { compose } from "recompose";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
-import { UserAddress } from "types";
+import { UserAddress } from "types/identity";
 
 interface OwnProps {
   address: UserAddress;

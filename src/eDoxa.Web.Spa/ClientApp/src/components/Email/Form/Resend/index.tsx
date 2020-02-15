@@ -5,9 +5,9 @@ import Button from "components/Shared/Button";
 import { RESEND_EMAIL_FROM } from "utils/form/constants";
 import { compose } from "recompose";
 import { throwSubmissionError } from "utils/form/types";
-import { Gender } from "types";
 import { resendUserEmail } from "store/actions/identity";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
+import { Gender } from "types/identity";
 
 type FormData = {
   firstName: string;

@@ -1,11 +1,11 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
+import { LogoutToken } from "types";
 import {
   UserAddress,
   UserDoxatag,
   UserEmail,
-  UserProfile,
-  LogoutToken
-} from "types";
+  UserProfile
+} from "types/identity";
 
 export const LOAD_USER_ADDRESSBOOK = "LOAD_USER_ADDRESSBOOK";
 export const LOAD_USER_ADDRESSBOOK_SUCCESS = "LOAD_USER_ADDRESSBOOK_SUCCESS";

@@ -78,8 +78,6 @@ import {
   RESEND_USER_EMAIL_FAIL,
   ResendUserEmailActionCreator
 } from "./types";
-
-import { AddressId } from "types";
 import {
   AxiosActionCreatorMeta,
   AXIOS_PAYLOAD_CLIENT_DEFAULT,
@@ -87,6 +85,7 @@ import {
 } from "utils/axios/types";
 import { Dispatch } from "react";
 import { RegisterUserAccountFormData } from "components/Account/Form/Register";
+import { AddressId } from "types/identity";
 
 export function loadUserAddressBook(): LoadUserAddressBookActionCreator {
   return {

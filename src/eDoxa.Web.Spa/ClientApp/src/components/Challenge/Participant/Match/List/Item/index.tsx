@@ -2,11 +2,11 @@ import React, { FunctionComponent } from "react";
 import { CardBody, Badge } from "reactstrap";
 import Format from "components/Shared/Format";
 import { compose } from "recompose";
-import { ChallengeParticipantMatch } from "types";
 import { MapDispatchToProps, connect } from "react-redux";
 import { show } from "redux-modal";
 import { CHALLENGE_MATCH_SCORE_MODAL } from "utils/modal/constants";
 import Moment from "react-moment";
+import { ChallengeParticipantMatch } from "types/challenges";
 
 type OwnProps = {
   match: ChallengeParticipantMatch;

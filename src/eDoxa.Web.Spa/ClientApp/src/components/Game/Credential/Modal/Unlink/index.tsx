@@ -4,7 +4,7 @@ import { Modal, ModalHeader } from "reactstrap";
 import { UNLINK_GAME_CREDENTIAL_MODAL } from "utils/modal/constants";
 import GameCredentialFrom from "components/Game/Credential/Form";
 import { compose } from "recompose";
-import { GameOptions } from "types";
+import { GameOptions } from "types/games";
 
 type InnerProps = InjectedProps & {
   gameOptions: GameOptions;

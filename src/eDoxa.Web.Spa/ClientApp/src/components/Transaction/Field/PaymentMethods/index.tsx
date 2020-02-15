@@ -4,8 +4,8 @@ import Input from "components/Shared/Input";
 import { compose } from "recompose";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
-import { StripePaymentMethod } from "types";
 import { Label } from "reactstrap";
+import { StripePaymentMethod } from "types/payment";
 
 interface OwnProps {
   label?: string;

@@ -12,12 +12,11 @@ import {
   ValidateGameAuthenticationActionCreator,
   UnlinkGameCredentialActionCreator
 } from "./types";
-
-import { Game } from "types";
 import {
   AXIOS_PAYLOAD_CLIENT_DEFAULT,
   AxiosActionCreatorMeta
 } from "utils/axios/types";
+import { Game } from "types/games";
 
 export function generateGameAuthentication(
   game: Game,

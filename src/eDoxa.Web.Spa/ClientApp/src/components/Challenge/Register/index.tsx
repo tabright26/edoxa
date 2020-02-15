@@ -6,12 +6,6 @@ import {
   withUserProfileGameIsAuthenticated
 } from "utils/oidc/containers";
 import { compose } from "recompose";
-import {
-  ChallengeId,
-  CHALLENGE_STATE_INSCRIPTION,
-  Game,
-  GameOptions
-} from "types";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { MapStateToProps, connect, DispatchProp } from "react-redux";
 import { RootState } from "store/types";
@@ -21,6 +15,8 @@ import {
   HocUserProfileUserIdStateProps,
   HocUserProfileGameIsAuthenticatedStateProps
 } from "utils/oidc/containers/types";
+import { ChallengeId, CHALLENGE_STATE_INSCRIPTION } from "types/challenges";
+import { Game, GameOptions } from "types/games";
 
 type Params = {
   readonly challengeId?: ChallengeId;

@@ -10,7 +10,8 @@ import {
 } from "store/actions/clan";
 import { RootState } from "store/types";
 import produce, { Draft } from "immer";
-import { UserId, ClanId } from "types";
+import { UserId } from "types/identity";
+import { ClanId } from "types/clans";
 
 interface StateProps {
   clans: ClansState;

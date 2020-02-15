@@ -10,9 +10,8 @@ import { depositTransaction } from "store/actions/cashier";
 import {
   CurrencyType,
   TransactionBundleId,
-  TRANSACTION_TYPE_DEPOSIT,
-  StripePaymentMethodId
-} from "types";
+  TRANSACTION_TYPE_DEPOSIT
+} from "types/cashier";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import FormField from "components/Transaction/Field";
 import { injectStripe, ReactStripeElements } from "react-stripe-elements";
@@ -26,6 +25,7 @@ import { RootState } from "store/types";
 import { MapStateToProps, connect, MapDispatchToProps } from "react-redux";
 import { getProfilePaymentMethodsPath } from "utils/coreui/constants";
 import { push } from "connected-react-router";
+import { StripePaymentMethodId } from "types/payment";
 
 type StateProps = {
   hasPaymentMethod: boolean;

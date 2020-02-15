@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { CURRENCY_TYPE_TOKEN, TRANSACTION_TYPE_DEPOSIT } from "types";
+import { CURRENCY_TYPE_TOKEN, TRANSACTION_TYPE_DEPOSIT } from "types/cashier";
 import TransactionButton from "components/Transaction/Button";
 import { REACT_APP_BUY_BUTTON_DISABLED } from "keys";
 

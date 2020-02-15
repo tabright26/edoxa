@@ -20,7 +20,8 @@ import {
   AXIOS_PAYLOAD_CLIENT_CHALLENGES,
   AxiosActionCreatorMeta
 } from "utils/axios/types";
-import { ChallengeId, Game, ChallengeState } from "types";
+import { Game } from "types/games";
+import { ChallengeState, ChallengeId } from "types/challenges";
 
 export function loadChallenges(
   game: Game = null,

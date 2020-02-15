@@ -2,11 +2,15 @@ import React, { FunctionComponent } from "react";
 import Item from "./Item";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
-import { ChallengeId, ParticipantId, ChallengeParticipantMatch } from "types";
 import { RouteComponentProps } from "react-router-dom";
 import { compose } from "recompose";
 import { withRouter } from "react-router-dom";
 import produce, { Draft } from "immer";
+import {
+  ParticipantId,
+  ChallengeId,
+  ChallengeParticipantMatch
+} from "types/challenges";
 
 type Params = {
   readonly challengeId?: ChallengeId;

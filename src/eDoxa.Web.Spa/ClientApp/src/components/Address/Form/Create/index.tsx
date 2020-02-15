@@ -22,13 +22,10 @@ import { AxiosActionCreatorMeta } from "utils/axios/types";
 import InputMask from "react-input-mask";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
-import {
-  AddressFieldsOptions,
-  AddressValidatorOptions,
-  CountryIsoCode
-} from "types";
+import { AddressFieldsOptions, AddressValidatorOptions } from "types";
 import { withUserProfileCountry } from "utils/oidc/containers";
 import { HocUserProfileCountryStateProps } from "utils/oidc/containers/types";
+import { CountryIsoCode } from "types/identity";
 
 type OwnProps = HocUserProfileCountryStateProps;
 

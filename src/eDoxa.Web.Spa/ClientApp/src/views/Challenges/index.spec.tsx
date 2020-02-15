@@ -3,7 +3,7 @@ import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Challenges from ".";
 import { ChallengesState } from "store/root/challenge/types";
-import { CURRENCY_TYPE_TOKEN } from "types";
+import { CURRENCY_TYPE_TOKEN } from "types/cashier";
 import { MemoryRouter } from "react-router-dom";
 
 it("renders without crashing", () => {

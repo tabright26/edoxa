@@ -7,7 +7,7 @@ import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 import { UserTransactionState } from "./types";
 import { RootActions } from "store/types";
-import { Transaction } from "types";
+import { Transaction } from "types/cashier";
 
 export const initialState: UserTransactionState = {
   data: [],

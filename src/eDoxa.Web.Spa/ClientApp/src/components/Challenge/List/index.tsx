@@ -5,16 +5,15 @@ import { Loading } from "components/Shared/Loading";
 import { compose } from "recompose";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
-import {
-  Challenge,
-  UserId,
-  CURRENCY_TYPE_MONEY,
-  CURRENCY_TYPE_TOKEN,
-  CurrencyType,
-  CHALLENGE_STATE_INSCRIPTION
-} from "types";
 import produce, { Draft } from "immer";
 import { HocUserProfileUserIdStateProps } from "utils/oidc/containers/types";
+import {
+  CurrencyType,
+  CURRENCY_TYPE_MONEY,
+  CURRENCY_TYPE_TOKEN
+} from "types/cashier";
+import { Challenge, CHALLENGE_STATE_INSCRIPTION } from "types/challenges";
+import { UserId } from "types/identity";
 
 type OwnProps = HocUserProfileUserIdStateProps & { history?: boolean };
 
