@@ -10,7 +10,9 @@ import {
   CardBody,
   CardHeader,
   CardImg,
-  CardImgOverlay
+  CardImgOverlay,
+  Alert,
+  Badge
 } from "reactstrap";
 import { AppFooter } from "@coreui/react";
 import logo from "assets/img/brand/logo.png";
@@ -199,10 +201,28 @@ const opts = {
 
 const App = () => (
   <>
+    <Alert className="mb-0 rounded-0 w-100 bg-primary text-light border-0">
+      <Container className="text-justify">
+        Dear new eDoxa users, we welcome you to the Beta version of our eSport
+        platform! The team wants to help unlock every gamer’s potential so that
+        they can be proud to live their eSport dream. Please feel free to
+        contact us with our live chat below or our{" "}
+        <Badge
+          color="dark"
+          onClick={() => (window.location.href = "https://discord.gg/SvBUH5Y")}
+          style={{
+            cursor: "pointer"
+          }}
+        >
+          Discord
+        </Badge>{" "}
+        server to provide feedback and suggestions about eDoxa.gg.
+      </Container>
+    </Alert>
     <Layout.Background>
       <Container className="text-center my-5 h-100">
         <header className="mb-5 bg-transparent border-0 navbar nav">
-          <NavbarBrand>
+          <NavbarBrand style={{ cursor: "pointer" }}>
             <LinkContainer to={getDefaultPath()}>
               <img src={logo} width={150} height={60} alt="brand" />
             </LinkContainer>

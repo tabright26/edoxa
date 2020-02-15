@@ -3,6 +3,30 @@
 exports[`renders without crashing 1`] = `
 Array [
   <div
+    className="mb-0 rounded-0 w-100 bg-primary text-light border-0 alert alert-success fade"
+    role="alert"
+  >
+    <div
+      className="text-justify container"
+    >
+      Dear new eDoxa users, we welcome you to the Beta version of our eSport platform! The team wants to help unlock every gamer’s potential so that they can be proud to live their eSport dream. Please feel free to contact us with our live chat below or our
+       
+      <span
+        className="badge badge-dark"
+        onClick={[Function]}
+        style={
+          Object {
+            "cursor": "pointer",
+          }
+        }
+      >
+        Discord
+      </span>
+       
+      server to provide feedback and suggestions about eDoxa.gg.
+    </div>
+  </div>,
+  <div
     className="m-0 border-0 card"
   >
     <img
@@ -25,6 +49,11 @@ Array [
         >
           <a
             className="navbar-brand"
+            style={
+              Object {
+                "cursor": "pointer",
+              }
+            }
           >
             <img
               alt="brand"
