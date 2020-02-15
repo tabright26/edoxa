@@ -13,8 +13,6 @@ using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Grpc.Protos.Identity.Dtos;
 
 using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types;
-using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types.ParticipantAggregate.Types;
-using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types.ParticipantAggregate.Types.UserAggregate.Types;
 
 namespace eDoxa.Challenges.Web.Aggregator.Mappers
 {
@@ -25,20 +23,10 @@ namespace eDoxa.Challenges.Web.Aggregator.Mappers
             return new ParticipantAggregate
             {
                 Id = participant.Id,
-                User = new UserAggregate
-                {
-                    Id = participant.UserId,
-                    Doxatag = doxatags.Where(doxatag => doxatag.UserId == participant.UserId)
-                        .Select(
-                            doxatag => new DoxatagAggregate
-                            {
-                                Name = doxatag.Name,
-                                Code = doxatag.Code
-                            })
-                        .SingleOrDefault()
-                },
-                Score = participant.Score,
                 ChallengeId = challengeId,
+                UserId = participant.UserId,
+                Doxatag = doxatags.SingleOrDefault(doxatag => doxatag.UserId == participant.UserId),
+                Score = participant.Score,
                 Matches =
                 {
                     participant.Matches.OrderBy(match => match.GameStartedAt)

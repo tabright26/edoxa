@@ -8,14 +8,13 @@ import {
   faCcDiscover
 } from "@fortawesome/free-brands-svg-icons";
 import { SizeProp } from "@fortawesome/fontawesome-svg-core";
+import { StripePaymentMethodCardBrand } from "types/payment";
 
 interface Props {
   className?: string;
   size?: SizeProp;
-  brand: BrandProp;
+  brand: StripePaymentMethodCardBrand;
 }
-
-export type BrandProp = "visa" | "amex" | "mastercard" | "discover";
 
 export const Icon: FunctionComponent<Props> = ({
   className = null,

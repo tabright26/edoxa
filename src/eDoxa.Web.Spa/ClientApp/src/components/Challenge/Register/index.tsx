@@ -6,12 +6,6 @@ import {
   withUserProfileGameIsAuthenticated
 } from "utils/oidc/containers";
 import { compose } from "recompose";
-import {
-  ChallengeId,
-  CHALLENGE_STATE_INSCRIPTION,
-  Game,
-  GameOptions
-} from "types";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { MapStateToProps, connect, DispatchProp } from "react-redux";
 import { RootState } from "store/types";
@@ -21,6 +15,8 @@ import {
   HocUserProfileUserIdStateProps,
   HocUserProfileGameIsAuthenticatedStateProps
 } from "utils/oidc/containers/types";
+import { ChallengeId, CHALLENGE_STATE_INSCRIPTION } from "types/challenges";
+import { Game, GameOptions } from "types/games";
 
 type Params = {
   readonly challengeId?: ChallengeId;
@@ -95,7 +91,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
     canRegister:
       challenge.state === CHALLENGE_STATE_INSCRIPTION &&
       !challenge.participants.some(
-        participant => participant.user.id === ownProps.userId
+        participant => participant.userId === ownProps.userId
       ),
     game: challenge.game,
     gameOptions: state.static.games.games.find(x => x.name === challenge.game)

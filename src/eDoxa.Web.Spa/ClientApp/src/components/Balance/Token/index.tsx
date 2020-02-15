@@ -6,7 +6,7 @@ import {
   CURRENCY_TYPE_TOKEN,
   TRANSACTION_STATUS_SUCCEEDED,
   TRANSACTION_STATUS_PENDING
-} from "types";
+} from "types/cashier";
 
 const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
   const [open, setOpen] = useState(false);

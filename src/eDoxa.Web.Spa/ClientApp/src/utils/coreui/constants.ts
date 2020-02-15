@@ -1,5 +1,6 @@
-import { ChallengeId, ClanId } from "types";
 import { questionGroups, QuestionGroupId } from "views/Faq/types";
+import { ChallengeId } from "types/challenges";
+import { ClanId } from "types/clans";
 
 export function getDefaultPath(): string {
   return "/";

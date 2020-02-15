@@ -1,7 +1,10 @@
 import React, { FunctionComponent } from "react";
-import { CURRENCY_TYPE_MONEY, TRANSACTION_TYPE_WITHDRAWAL } from "types";
 import TransactionButton from "components/Transaction/Button";
 import { REACT_APP_WITHDRAW_BUTTON_DISABLED } from "keys";
+import {
+  TRANSACTION_TYPE_WITHDRAWAL,
+  CURRENCY_TYPE_MONEY
+} from "types/cashier";
 
 const Withdraw: FunctionComponent = () => (
   <TransactionButton

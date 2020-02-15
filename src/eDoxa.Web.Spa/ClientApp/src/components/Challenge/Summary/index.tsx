@@ -3,16 +3,12 @@ import { CardTitle, Row, Col, Badge, Progress } from "reactstrap";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import {
-  ChallengeId,
-  Game,
-  EntryFee,
-  ChallengeState,
-  ChallengePayoutPrizePool
-} from "types";
 import { compose } from "recompose";
 import Format from "components/Shared/Format";
 import humanizeDuration from "humanize-duration";
+import { ChallengeId, ChallengeState } from "types/challenges";
+import { Game } from "types/games";
+import { EntryFee, PrizePool } from "types/cashier";
 
 type Params = {
   readonly challengeId?: ChallengeId;
@@ -26,7 +22,7 @@ type StateProps = {
   readonly state: ChallengeState;
   readonly bestOf: number;
   readonly entries: number;
-  readonly prizePool: ChallengePayoutPrizePool;
+  readonly prizePool: PrizePool;
   readonly entryFee: EntryFee;
   readonly duration: number;
   readonly participantCount: number;

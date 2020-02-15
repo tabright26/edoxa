@@ -158,7 +158,7 @@ namespace eDoxa.Identity.Api.Services
 
                 Identity!.AddClaim(new Claim(JwtClaimTypes.Email, email));
 
-                Identity.AddClaim(new Claim(JwtClaimTypes.EmailVerified, emailConfirmed.ToString()));
+                Identity.AddClaim(new Claim(JwtClaimTypes.EmailVerified, emailConfirmed.ToString(), ClaimValueTypes.Boolean));
             }
         }
 
@@ -174,7 +174,7 @@ namespace eDoxa.Identity.Api.Services
 
                     Identity!.AddClaim(new Claim(JwtClaimTypes.PhoneNumber, phoneNumber));
 
-                    Identity!.AddClaim(new Claim(JwtClaimTypes.PhoneNumberVerified, phoneNumberConfirmed.ToString()));
+                    Identity!.AddClaim(new Claim(JwtClaimTypes.PhoneNumberVerified, phoneNumberConfirmed.ToString(), ClaimValueTypes.Boolean));
                 }
             }
         }

@@ -3,7 +3,6 @@ import { Provider } from "react-redux";
 import { ReactWrapper } from "enzyme";
 import Deposit from ".";
 import store from "store";
-import { CURRENCY_TYPE_MONEY, TRANSACTION_TYPE_DEPOSIT } from "types";
 import {
   StaticOptionsActions,
   LOAD_CASHIER_STATIC_OPTIONS_SUCCESS
@@ -13,6 +12,7 @@ import {
   findSubmitButton,
   findCancelButton
 } from "utils/test/helpers";
+import { TRANSACTION_TYPE_DEPOSIT, CURRENCY_TYPE_MONEY } from "types/cashier";
 
 const shallow = global["shallow"];
 const mount = global["mount"];

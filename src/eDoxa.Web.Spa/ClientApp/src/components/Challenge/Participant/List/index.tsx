@@ -2,10 +2,10 @@ import React, { FunctionComponent, useState, useEffect } from "react";
 import { connect, MapStateToProps } from "react-redux";
 import Item from "./Item";
 import { RootState } from "store/types";
-import { ChallengeId, ChallengeParticipant } from "types";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { compose } from "recompose";
 import { Paginate } from "components/Shared/Paginate";
+import { ChallengeId, ChallengeParticipant } from "types/challenges";
 
 const pageSize = 10;
 

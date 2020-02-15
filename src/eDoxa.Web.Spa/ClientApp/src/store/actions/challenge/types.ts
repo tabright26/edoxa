@@ -1,5 +1,5 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
-import { Challenge, ChallengeParticipant } from "types";
+import { Challenge, ChallengeParticipant } from "types/challenges";
 
 export const LOAD_CHALLENGES = "LOAD_CHALLENGES";
 export const LOAD_CHALLENGES_SUCCESS = "LOAD_CHALLENGES_SUCCESS";

@@ -4,7 +4,7 @@ import { connectModal, InjectedProps } from "redux-modal";
 import StripePaymentMethodForm from "components/Payment/Stripe/PaymentMethod/Form";
 import { UPDATE_STRIPE_PAYMENTMETHOD_MODAL } from "utils/modal/constants";
 import { compose } from "recompose";
-import { StripePaymentMethod } from "types";
+import { StripePaymentMethod } from "types/payment";
 
 type InnerProps = InjectedProps & {
   paymentMethod: StripePaymentMethod;

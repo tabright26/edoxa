@@ -4,6 +4,7 @@ option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.Aggregates";
 
 import "google/protobuf/timestamp.proto";
 
+import "identity_dtos.proto";
 import "challenges_dtos.proto";
 import "challenges_enums.proto";
 import "games_enums.proto";
@@ -39,19 +40,10 @@ message ChallengeAggregate {
 
   message ParticipantAggregate {
     string id = 1;
-    UserAggregate user = 2;
+    string userId = 2;
     string challengeId = 3;
-    customTypes.DecimalValue score = 4;
-    repeated MatchDto matches = 5;
-
-    message UserAggregate {
-      string id = 1;
-      DoxatagAggregate doxatag = 2;
-
-      message DoxatagAggregate {
-        string name = 1;
-        int32 code = 2;
-      }
-    }
+    identity.DoxatagDto doxatag = 4;
+    customTypes.DecimalValue score = 5;
+    repeated MatchDto matches = 6;
   }
 }

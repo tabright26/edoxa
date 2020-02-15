@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from "react";
 import { Table, Card, CardHeader } from "reactstrap";
 import Format from "components/Shared/Format";
-import { ChallengeId, ChallengePayout } from "types";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { compose } from "recompose";
+import { ChallengeId, ChallengePayout } from "types/challenges";
 
 type Params = {
   readonly challengeId?: ChallengeId;

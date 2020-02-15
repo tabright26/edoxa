@@ -1,5 +1,5 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
-import { Transaction, Promotion } from "types";
+import { Transaction, Promotion } from "types/cashier";
 
 export const DEPOSIT_TRANSACTION = "DEPOSIT_TRANSACTION";
 export const DEPOSIT_TRANSACTION_SUCCESS = "DEPOSIT_TRANSACTION_SUCCESS";

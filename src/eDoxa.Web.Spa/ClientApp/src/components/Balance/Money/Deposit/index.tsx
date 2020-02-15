@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
-import { TRANSACTION_TYPE_DEPOSIT, CURRENCY_TYPE_MONEY } from "types";
 import TransactionButton from "components/Transaction/Button";
 import { REACT_APP_DEPOSIT_BUTTON_DISABLED } from "keys";
+import { TRANSACTION_TYPE_DEPOSIT, CURRENCY_TYPE_MONEY } from "types/cashier";
 
 const Deposit: FunctionComponent = () => (
   <TransactionButton

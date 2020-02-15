@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { StripePaymentMethod } from "types";
 import PaymentMethodCard from "components/Payment/Stripe/PaymentMethod/Card";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { compose } from "recompose";
@@ -15,6 +14,7 @@ import {
 } from "utils/modal/constants";
 import Button from "components/Shared/Button";
 import { RootState } from "store/types";
+import { StripePaymentMethod } from "types/payment";
 
 interface OwnProps {}
 

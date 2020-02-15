@@ -1,15 +1,16 @@
 import React, { FunctionComponent } from "react";
 import { Field } from "redux-form";
 import Input from "components/Shared/Input";
-import { CountryRegionOptions, CountryIsoCode } from "types";
+import { CountryRegionOptions } from "types";
 import { FormGroup, Label } from "reactstrap";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
+import { Country } from "types/identity";
 
 interface OwnProps {
   label?: string;
   placeholder: string;
-  countryIsoCode: CountryIsoCode;
+  countryIsoCode: Country;
 }
 
 interface StateProps {

@@ -6,11 +6,11 @@ import Input from "components/Shared/Input";
 import { GENERATE_GAME_AUTHENTICATION_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
-import { Game } from "types";
 import { generateGameAuthentication } from "store/actions/game";
 import { throwSubmissionError } from "utils/form/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { connect } from "react-redux";
+import { Game } from "types/games";
 
 interface FormData {}
 

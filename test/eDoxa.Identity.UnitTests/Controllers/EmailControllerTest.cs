@@ -40,7 +40,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 
             TestMock.UserService.Setup(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>())).Verifiable();
 
-            var controller = new EmailController(TestMock.UserService.Object, TestMapper);
+            var controller = new EmailController(TestMock.ServiceBusPublisher.Object, TestMock.UserService.Object, TestMapper);
 
             // Act
             var result = await controller.ConfirmEmailAsync(Guid.NewGuid().ToString(), "code");
@@ -70,7 +70,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var controller = new EmailController(TestMock.UserService.Object, TestMapper);
+            var controller = new EmailController(TestMock.ServiceBusPublisher.Object, TestMock.UserService.Object, TestMapper);
 
             // Act
             var result = await controller.ConfirmEmailAsync(user.Id.ToString(), "code");
@@ -98,7 +98,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 .ReturnsAsync(IdentityResult.Failed())
                 .Verifiable();
 
-            var controller = new EmailController(TestMock.UserService.Object, TestMapper);
+            var controller = new EmailController(TestMock.ServiceBusPublisher.Object, TestMock.UserService.Object, TestMapper);
 
             // Act
             var result = new Func<Task>(async () => await controller.ConfirmEmailAsync(Guid.NewGuid().ToString(), "code"));

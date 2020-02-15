@@ -3,12 +3,12 @@ import { Form, Button, ModalBody, ModalFooter } from "reactstrap";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import { UNLINK_GAME_CREDENTIAL_FORM } from "utils/form/constants";
 import { compose } from "recompose";
-import { Game } from "types";
 import { unlinkGameCredential } from "store/actions/game";
 import { throwSubmissionError } from "utils/form/types";
 import authorizeService from "utils/oidc/AuthorizeService";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
+import { Game } from "types/games";
 
 interface FormData {}
 

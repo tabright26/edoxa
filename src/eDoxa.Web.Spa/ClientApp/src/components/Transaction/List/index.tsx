@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Table, Badge } from "reactstrap";
 import Moment from "react-moment";
 import Format from "components/Shared/Format";
-import { Transaction } from "types";
+import { Transaction } from "types/cashier";
 
 interface Props {
   transactions: Transaction[];

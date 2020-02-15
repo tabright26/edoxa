@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import Format from "components/Shared/Format";
 import { compose } from "recompose";
-import { CurrencyType, TransactionStatus, Currency } from "types";
+import { CurrencyType, TransactionStatus, Currency } from "types/cashier";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 

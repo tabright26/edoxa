@@ -4,8 +4,8 @@ import {
   QueryParameterNames
 } from "utils/oidc/ApiAuthorizationConstants";
 import { User } from "oidc-client";
-import { UserDob, UserId } from "types";
 import { push } from "react-router-redux";
+import { UserDob, UserId } from "types/identity";
 
 interface DispatchProps {
   redirectToLogin: () => void;
@@ -35,6 +35,9 @@ export interface HocUserProfileDobStateProps {
 }
 export interface HocUserProfileUserIdStateProps {
   userId: UserId;
+}
+export interface HocUserProfileEmailVerifiedStateProps {
+  emailVerified: boolean;
 }
 export interface HocUserProfileGameIsAuthenticatedStateProps {
   isAuthenticated: boolean;
