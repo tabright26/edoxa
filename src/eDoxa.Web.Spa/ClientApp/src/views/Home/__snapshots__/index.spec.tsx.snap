@@ -25,6 +25,11 @@ Array [
         >
           <a
             className="navbar-brand"
+            style={
+              Object {
+                "cursor": "pointer",
+              }
+            }
           >
             <img
               alt="brand"

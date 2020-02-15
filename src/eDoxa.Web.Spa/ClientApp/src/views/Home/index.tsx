@@ -48,6 +48,7 @@ import {
 import { ApplicationPaths } from "utils/oidc/ApiAuthorizationConstants";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import YouTube from "react-youtube";
+import Beta from "components/App/Beta";
 
 const Footer = React.lazy(() => import("components/App/Footer"));
 
@@ -199,10 +200,11 @@ const opts = {
 
 const App = () => (
   <>
+    <Beta.Banner />
     <Layout.Background>
       <Container className="text-center my-5 h-100">
         <header className="mb-5 bg-transparent border-0 navbar nav">
-          <NavbarBrand>
+          <NavbarBrand style={{ cursor: "pointer" }}>
             <LinkContainer to={getDefaultPath()}>
               <img src={logo} width={150} height={60} alt="brand" />
             </LinkContainer>
