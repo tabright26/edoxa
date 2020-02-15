@@ -40,7 +40,9 @@ import {
   DeleteUserAddressAction,
   RegisterUserAccountAction,
   LoginUserAccountAction,
-  LogoutUserAccountAction
+  LogoutUserAccountAction,
+  ResendUserEmailActionCreator,
+  ResendUserEmailAction
 } from "./actions/identity/types";
 import {
   UnlinkGameCredentialAction,
@@ -116,4 +118,5 @@ export type RootActions =
   | LoadClanInvitationAction
   | SendClanInvitationAction
   | AcceptClanInvitationAction
-  | DeclineClanInvitationAction;
+  | DeclineClanInvitationAction
+  | ResendUserEmailAction;

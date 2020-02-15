@@ -72,7 +72,11 @@ import {
   ForgotUserPasswordActionCreator,
   ResetUserPasswordActionCreator,
   LoadUserPhoneActionCreator,
-  UpdateUserPhoneActionCreator
+  UpdateUserPhoneActionCreator,
+  RESEND_USER_EMAIL,
+  RESEND_USER_EMAIL_SUCCESS,
+  RESEND_USER_EMAIL_FAIL,
+  ResendUserEmailActionCreator
 } from "./types";
 
 import { AddressId } from "types";
@@ -240,6 +244,26 @@ export function confirmUserEmail(
         }
       }
     }
+  };
+}
+
+export function resendUserEmail(
+  meta: AxiosActionCreatorMeta
+): ResendUserEmailActionCreator {
+  return {
+    types: [
+      RESEND_USER_EMAIL,
+      RESEND_USER_EMAIL_SUCCESS,
+      RESEND_USER_EMAIL_FAIL
+    ],
+    payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
+      request: {
+        method: "POST",
+        url: "/identity/api/email/resend"
+      }
+    },
+    meta
   };
 }
 

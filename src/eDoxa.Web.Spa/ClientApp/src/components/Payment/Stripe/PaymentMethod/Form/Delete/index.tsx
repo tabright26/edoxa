@@ -9,12 +9,12 @@ import { DETACH_STRIPE_PAYMENTMETHOD_FAIL } from "store/actions/payment/types";
 import { throwSubmissionError } from "utils/form/types";
 import { RootActions } from "store/types";
 
-interface FormData {}
+type FormData = {};
 
-interface OutterProps {
+type OutterProps = {
   paymentMethodId: string;
   handleCancel: () => void;
-}
+};
 
 type InnerProps = InjectedFormProps<FormData, Props>;
 

@@ -35,6 +35,19 @@ export const REGISTER_USER_ACCOUNT = "REGISTER_USER_ACCOUNT";
 export const REGISTER_USER_ACCOUNT_SUCCESS = "REGISTER_USER_ACCOUNT_SUCCESS";
 export const REGISTER_USER_ACCOUNT_FAIL = "REGISTER_USER_ACCOUNT_FAIL";
 
+export const RESEND_USER_EMAIL = "RESEND_USER_EMAIL";
+export const RESEND_USER_EMAIL_SUCCESS = "RESEND_USER_EMAIL_SUCCESS";
+export const RESEND_USER_EMAIL_FAIL = "RESEND_USER_EMAIL_FAIL";
+
+export type ResendUserEmailType =
+  | typeof RESEND_USER_EMAIL
+  | typeof RESEND_USER_EMAIL_SUCCESS
+  | typeof RESEND_USER_EMAIL_FAIL;
+export type ResendUserEmailActionCreator = AxiosActionCreator<
+  ResendUserEmailType
+>;
+export type ResendUserEmailAction = AxiosAction<ResendUserEmailType>;
+
 export type RegisterUserAccountType =
   | typeof REGISTER_USER_ACCOUNT
   | typeof REGISTER_USER_ACCOUNT_SUCCESS

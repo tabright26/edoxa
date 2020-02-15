@@ -36,6 +36,9 @@ export interface HocUserProfileDobStateProps {
 export interface HocUserProfileUserIdStateProps {
   userId: UserId;
 }
+export interface HocUserProfileEmailVerifiedStateProps {
+  emailVerified: boolean;
+}
 export interface HocUserProfileGameIsAuthenticatedStateProps {
   isAuthenticated: boolean;
 }

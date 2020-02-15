@@ -6,6 +6,11 @@ import queryString, { ParseOptions } from "query-string";
 import { compose } from "recompose";
 import { confirmUserEmail } from "store/actions/identity";
 import { getError404Path } from "utils/coreui/constants";
+import authorizeService from "utils/oidc/AuthorizeService";
+import {
+  CONFIRM_USER_EMAIL_SUCCESS,
+  ConfirmUserEmailAction
+} from "store/actions/identity/types";
 
 type DispatchProps = {
   confirmUserEmail: (userId: string | any, code: string | any) => void;
@@ -52,8 +57,17 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
   dispatch: any
 ) => {
   return {
-    confirmUserEmail: (userId: string, code: string) =>
-      dispatch(confirmUserEmail(userId, code))
+    confirmUserEmail: (userId: string, code: string) => {
+      dispatch(confirmUserEmail(userId, code)).then(
+        (action: ConfirmUserEmailAction) => {
+          if (action.type === CONFIRM_USER_EMAIL_SUCCESS) {
+            authorizeService.signIn({
+              returnUrl: window.location.pathname
+            });
+          }
+        }
+      );
+    }
   };
 };
 

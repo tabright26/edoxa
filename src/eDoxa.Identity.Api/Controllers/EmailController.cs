@@ -10,7 +10,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
+using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Domain.Services;
+using eDoxa.Seedwork.Domain.Extensions;
+using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.ServiceBus.Abstractions;
 
 using IdentityServer4.AccessTokenValidation;
 
@@ -28,17 +32,19 @@ namespace eDoxa.Identity.Api.Controllers
     [ApiExplorerSettings(GroupName = "Email")]
     public sealed class EmailController : ControllerBase
     {
+        private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public EmailController(IUserService userService, IMapper mapper)
+        public EmailController(IServiceBusPublisher serviceBusPublisher, IUserService userService, IMapper mapper)
         {
+            _serviceBusPublisher = serviceBusPublisher;
             _userService = userService;
             _mapper = mapper;
         }
 
         [HttpGet]
-        [SwaggerOperation("Find user's address book.")]
+        [SwaggerOperation("Find user's email.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(EmailDto))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> FindEmailAsync()
@@ -49,7 +55,7 @@ namespace eDoxa.Identity.Api.Controllers
         }
 
         [HttpGet("confirm")]
-        [SwaggerOperation("User's forgot password.")]
+        [SwaggerOperation("Confirm user's email.")]
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> ConfirmEmailAsync([FromQuery] string? userId, [FromQuery] string? code)
@@ -72,6 +78,20 @@ namespace eDoxa.Identity.Api.Controllers
 
                 return this.Ok(_mapper.Map<EmailDto>(user));
             }
+
+            return this.Ok();
+        }
+
+        [HttpPost("resend")]
+        [SwaggerOperation("Resend user's email.")]
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        public async Task<IActionResult> ResendEmailAsync()
+        {
+            var user = await _userService.GetUserAsync(User);
+
+            var code = await _userService.GenerateEmailConfirmationTokenAsync(user);
+
+            await _serviceBusPublisher.PublishUserEmailConfirmationTokenGeneratedIntegrationEventAsync(user.Id.ConvertTo<UserId>(), code);
 
             return this.Ok();
         }

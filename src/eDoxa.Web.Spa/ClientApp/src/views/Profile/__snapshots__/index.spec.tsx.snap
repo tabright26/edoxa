@@ -1,139 +1,173 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders without crashing 1`] = `
-<div
-  className="row"
->
+Array [
   <div
-    className="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-2"
+    className="row"
   >
     <div
-      className="mt-4 card"
+      className="col-12 col-sm-12 col-md-12 col-lg-11 col-xl-9"
     >
       <div
-        className="card-header"
+        className="mt-4 mb-0 d-flex alert alert-primary fade"
+        role="alert"
       >
-        <strong
-          className="text-uppercase"
+        <div
+          className="d-inline my-auto"
         >
-          Profile
-        </strong>
+          Confirm your email address to activate all website functionality.
+        </div>
+        <form
+          className="ml-auto"
+          onSubmit={[Function]}
+        >
+          <button
+            aria-label={null}
+            className="d-inline btn btn-primary btn-sm"
+            disabled={null}
+            onClick={[Function]}
+            type="submit"
+          >
+            Resend
+          </button>
+        </form>
       </div>
-      <ul
-        className="list-group list-group-flush"
-      >
-        <li
-          className="list-group-item"
-          href="/profile/overview"
-          onClick={[Function]}
-        >
-          Overview
-        </li>
-        <li
-          className="list-group-item"
-          href="/profile/details"
-          onClick={[Function]}
-        >
-          Details
-        </li>
-        <li
-          className="list-group-item"
-          href="/profile/security"
-          onClick={[Function]}
-        >
-          Security
-        </li>
-      </ul>
     </div>
-    <div
-      className="card"
-    >
-      <div
-        className="card-header"
-      >
-        <strong
-          className="text-uppercase"
-        >
-          Arena
-        </strong>
-      </div>
-      <ul
-        className="list-group list-group-flush"
-      >
-        <li
-          className="list-group-item"
-          href="/profile/challenge-history"
-          onClick={[Function]}
-        >
-          Challenge History
-        </li>
-      </ul>
-    </div>
-    <div
-      className="card"
-    >
-      <div
-        className="card-header"
-      >
-        <strong
-          className="text-uppercase"
-        >
-          Cashier
-        </strong>
-      </div>
-      <ul
-        className="list-group list-group-flush"
-      >
-        <li
-          className="list-group-item"
-          href="/profile/payment-methods"
-          onClick={[Function]}
-        >
-          Payment Methods
-        </li>
-        <li
-          className="list-group-item"
-          href="/profile/transaction-history"
-          onClick={[Function]}
-        >
-          Transaction History
-        </li>
-        <li
-          className="list-group-item"
-          href="/profile/promotional-code"
-          onClick={[Function]}
-        >
-          Promotional Code
-        </li>
-      </ul>
-    </div>
-    <div
-      className="card"
-    >
-      <div
-        className="card-header"
-      >
-        <strong
-          className="text-uppercase"
-        >
-          Connections
-        </strong>
-      </div>
-      <ul
-        className="list-group list-group-flush"
-      >
-        <li
-          className="list-group-item"
-          href="/profile/games"
-          onClick={[Function]}
-        >
-          Games
-        </li>
-      </ul>
-    </div>
-  </div>
+  </div>,
   <div
-    className="col-12 col-sm-12 col-md-8 col-lg-7 col-xl-6"
-  />
-</div>
+    className="row"
+  >
+    <div
+      className="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2"
+    >
+      <div
+        className="mt-4 card"
+      >
+        <div
+          className="card-header"
+        >
+          <strong
+            className="text-uppercase"
+          >
+            Profile
+          </strong>
+        </div>
+        <ul
+          className="list-group list-group-flush"
+        >
+          <li
+            className="list-group-item"
+            href="/profile/overview"
+            onClick={[Function]}
+          >
+            Overview
+          </li>
+          <li
+            className="list-group-item"
+            href="/profile/details"
+            onClick={[Function]}
+          >
+            Details
+          </li>
+          <li
+            className="list-group-item"
+            href="/profile/security"
+            onClick={[Function]}
+          >
+            Security
+          </li>
+        </ul>
+      </div>
+      <div
+        className="card"
+      >
+        <div
+          className="card-header"
+        >
+          <strong
+            className="text-uppercase"
+          >
+            Arena
+          </strong>
+        </div>
+        <ul
+          className="list-group list-group-flush"
+        >
+          <li
+            className="list-group-item"
+            href="/profile/challenge-history"
+            onClick={[Function]}
+          >
+            Challenge History
+          </li>
+        </ul>
+      </div>
+      <div
+        className="card"
+      >
+        <div
+          className="card-header"
+        >
+          <strong
+            className="text-uppercase"
+          >
+            Cashier
+          </strong>
+        </div>
+        <ul
+          className="list-group list-group-flush"
+        >
+          <li
+            className="list-group-item"
+            href="/profile/payment-methods"
+            onClick={[Function]}
+          >
+            Payment Methods
+          </li>
+          <li
+            className="list-group-item"
+            href="/profile/transaction-history"
+            onClick={[Function]}
+          >
+            Transaction History
+          </li>
+          <li
+            className="list-group-item"
+            href="/profile/promotional-code"
+            onClick={[Function]}
+          >
+            Promotional Code
+          </li>
+        </ul>
+      </div>
+      <div
+        className="card"
+      >
+        <div
+          className="card-header"
+        >
+          <strong
+            className="text-uppercase"
+          >
+            Connections
+          </strong>
+        </div>
+        <ul
+          className="list-group list-group-flush"
+        >
+          <li
+            className="list-group-item"
+            href="/profile/games"
+            onClick={[Function]}
+          >
+            Games
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      className="col-12 col-sm-12 col-md-9 col-lg-8 col-xl-7"
+    />
+  </div>,
+]
 `;
