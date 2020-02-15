@@ -43,9 +43,15 @@ export type Currency = {
 
 export type EntryFee = Currency;
 
-export interface Promotion {
-  promotionalCode: string;
-  currency: Currency;
+export type PrizePool = Currency;
+
+export interface Transaction {
+  readonly id: TransactionId;
+  readonly timestamp: number;
+  readonly currency: Currency;
+  readonly description: string;
+  readonly type: TransactionType;
+  readonly status: TransactionStatus;
 }
 
 export interface TransactionBundle {
@@ -59,11 +65,7 @@ export interface TransactionBundle {
   readonly deprecated: boolean;
 }
 
-export interface Transaction {
-  readonly id: TransactionId;
-  readonly timestamp: number;
+export interface Promotion {
+  readonly promotionalCode: string;
   readonly currency: Currency;
-  readonly description: string;
-  readonly type: TransactionType;
-  readonly status: TransactionStatus;
 }

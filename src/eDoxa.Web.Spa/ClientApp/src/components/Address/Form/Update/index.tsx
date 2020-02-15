@@ -23,12 +23,12 @@ import { AddressFieldsOptions, AddressValidatorOptions } from "types";
 import { RootState } from "store/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import InputMask from "react-input-mask";
-import { CountryIsoCode, AddressId } from "types/identity";
+import { Country, AddressId } from "types/identity";
 
 interface StateProps {
   fieldsOptions: AddressFieldsOptions;
   validatorOptions: AddressValidatorOptions;
-  countryIsoCode: CountryIsoCode;
+  countryIsoCode: Country;
 }
 
 interface FormData {

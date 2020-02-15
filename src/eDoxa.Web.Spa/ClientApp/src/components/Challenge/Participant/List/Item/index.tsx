@@ -23,8 +23,8 @@ const Item: FunctionComponent<Props> = ({
 }) => {
   const [collapse, setCollapse] = useState(false);
   const toggle = () => setCollapse(!collapse);
-  const doxatag = participant.user.doxatag
-    ? participant.user.doxatag.name
+  const doxatag = participant.doxatag
+    ? participant.doxatag.name
     : "Data unavailable";
   return (
     <>
@@ -53,7 +53,7 @@ const Item: FunctionComponent<Props> = ({
             </Badge>
           </div>
           <div
-            className={`px-3 py-2 ${participant.user.id === userId &&
+            className={`px-3 py-2 ${participant.userId === userId &&
               "text-primary"}`}
           >
             {collapse ? (

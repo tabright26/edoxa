@@ -1,14 +1,8 @@
 import { TransactionBundle } from "./cashier";
 import { GameOptions } from "./games";
-import { CountryIsoCode } from "./identity";
+import { Country } from "./identity";
 
-export interface LogoutToken {
-  readonly logoutId?: string;
-  readonly clientName?: string;
-  readonly postLogoutRedirectUri?: string;
-  readonly signOutIFrameUrl?: string;
-  readonly showSignoutPrompt: boolean;
-}
+
 
 export interface ChallengesStaticOptions {}
 
@@ -25,11 +19,6 @@ export interface PromotionOptions {}
 
 export interface TransactionOptions {
   readonly bundles: TransactionBundle[];
-}
-
-export interface Balance {
-  readonly available: number;
-  readonly pending: number;
 }
 
 export const FIELD_VALIDATION_RULE_TYPE_REQUIRED = "Required";
@@ -82,7 +71,7 @@ export interface AddressBookOptions {
 }
 
 export interface CountryOptions {
-  readonly isoCode: CountryIsoCode;
+  readonly isoCode: Country;
   readonly name: string;
   readonly code: string;
   readonly address: AddressOptions;

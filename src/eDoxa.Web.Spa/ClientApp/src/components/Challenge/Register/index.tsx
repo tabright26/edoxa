@@ -91,7 +91,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
     canRegister:
       challenge.state === CHALLENGE_STATE_INSCRIPTION &&
       !challenge.participants.some(
-        participant => participant.user.id === ownProps.userId
+        participant => participant.userId === ownProps.userId
       ),
     game: challenge.game,
     gameOptions: state.static.games.games.find(x => x.name === challenge.game)

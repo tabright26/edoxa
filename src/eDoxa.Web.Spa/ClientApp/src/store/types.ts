@@ -1,14 +1,10 @@
 import { reducer as rootReducer } from "store/reducer";
 import {
-  LoadStripeBankAccountAction,
-  UpdateStripeBankAccountAction,
   LoadStripePaymentMethodsAction,
   AttachStripePaymentMethodAction,
   DetachStripePaymentMethodAction,
   UpdateStripePaymentMethodAction,
-  LoadStripeCustomerAction,
-  UpdateStripeCustomerDefaultPaymentMethodAction,
-  LoadStripeAccountAction
+  UpdateStripeCustomerDefaultPaymentMethodAction
 } from "./actions/payment/types";
 import {
   LoadUserTransactionHistoryAction,
@@ -41,7 +37,6 @@ import {
   RegisterUserAccountAction,
   LoginUserAccountAction,
   LogoutUserAccountAction,
-  ResendUserEmailActionCreator,
   ResendUserEmailAction
 } from "./actions/identity/types";
 import {
@@ -68,8 +63,6 @@ import {
 export type RootState = ReturnType<typeof rootReducer>;
 
 export type RootActions =
-  | LoadStripeBankAccountAction
-  | UpdateStripeBankAccountAction
   | LoadUserTransactionHistoryAction
   | DepositTransactionAction
   | WithdrawTransactionAction
@@ -82,9 +75,7 @@ export type RootActions =
   | AttachStripePaymentMethodAction
   | DetachStripePaymentMethodAction
   | UpdateStripePaymentMethodAction
-  | LoadStripeCustomerAction
   | UpdateStripeCustomerDefaultPaymentMethodAction
-  | LoadStripeAccountAction
   | LoadUserPhoneAction
   | UpdateUserPhoneAction
   | ForgotUserPasswordAction

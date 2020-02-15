@@ -1,8 +1,8 @@
 import { UserId } from "types/identity";
 
-export const GAME_LEAGUE_OF_LEGENDS = "LeagueOfLegends";
+export const GAME_LEAGUEOFLEGENDS = "LeagueOfLegends";
 
-export type Game = typeof GAME_LEAGUE_OF_LEGENDS;
+export type Game = typeof GAME_LEAGUEOFLEGENDS;
 
 export type GameServiceName = "Game" | "Challenge" | "Tournament";
 

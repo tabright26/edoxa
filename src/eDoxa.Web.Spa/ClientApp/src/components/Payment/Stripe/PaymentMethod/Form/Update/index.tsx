@@ -17,18 +17,18 @@ import { UPDATE_STRIPE_PAYMENTMETHOD_FAIL } from "store/actions/payment/types";
 import { throwSubmissionError } from "utils/form/types";
 import { RootState, RootActions } from "store/types";
 import { connect, MapStateToProps } from "react-redux";
-import { StripeCardBrand } from "types/payment";
+import { StripePaymentMethodCardBrand } from "types/payment";
 
-interface StateProps {}
-
-interface FormData {
+type FormData = {
   card: {
-    brand: StripeCardBrand;
+    brand: StripePaymentMethodCardBrand;
     last4: string;
     expYear: number;
     expMonth: number;
   };
-}
+};
+
+type StateProps = {};
 
 interface OutterProps {
   paymentMethodId: string;

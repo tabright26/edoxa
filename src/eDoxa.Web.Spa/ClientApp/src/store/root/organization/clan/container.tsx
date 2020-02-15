@@ -9,7 +9,6 @@ import {
   createClan
 } from "store/actions/clan";
 import { RootState } from "store/types";
-import produce, { Draft } from "immer";
 import { UserId } from "types/identity";
 import { ClanId } from "types/clans";
 
@@ -35,16 +34,7 @@ export const withClans = (HighOrderComponent: FunctionComponent<any>) => {
     state,
     ownProps
   ) => {
-    const clans = produce(
-      state.root.organization.clan,
-      (draft: Draft<ClansState>) => {
-        draft.data.forEach(clan => {
-          clan.owner = {
-            userId: clan.ownerId
-          };
-        });
-      }
-    );
+    const clans = state.root.organization.clan;
     return {
       clans,
       userId: ownProps.userId,

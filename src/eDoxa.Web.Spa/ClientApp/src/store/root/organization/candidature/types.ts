@@ -1,4 +1,4 @@
 import { AxiosState } from "utils/axios/types";
-import { ClanCandidature } from "types/clans";
+import { Candidature } from "types/clans";
 
-export type ClanCandidaturesState = AxiosState<ClanCandidature[]>;
+export type ClanCandidaturesState = AxiosState<Candidature[]>;

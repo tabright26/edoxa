@@ -7,9 +7,9 @@ import { connect } from "react-redux";
 import { RootState } from "store/types";
 import { loadUserDoxatagHistory } from "store/actions/identity";
 import { produce, Draft } from "immer";
-import { UserDoxatag } from "types/identity";
+import { Doxatag } from "types/identity";
 
-const Doxatag: FunctionComponent<any> = ({
+const Panel: FunctionComponent<any> = ({
   className,
   doxatag: { data, loading },
   loadUserDoxatagHistory
@@ -62,8 +62,8 @@ const Doxatag: FunctionComponent<any> = ({
 
 const mapStateToProps = (state: RootState) => {
   const { data, error, loading } = state.root.user.doxatagHistory;
-  const doxatags = produce(data, (draft: Draft<UserDoxatag[]>) => {
-    draft.sort((left: UserDoxatag, right: UserDoxatag) =>
+  const doxatags = produce(data, (draft: Draft<Doxatag[]>) => {
+    draft.sort((left: Doxatag, right: Doxatag) =>
       left.timestamp < right.timestamp ? 1 : -1
     );
   });
@@ -84,4 +84,4 @@ const mapDispatchToProps = dispatch => {
 
 const enhance = compose<any, any>(connect(mapStateToProps, mapDispatchToProps));
 
-export default enhance(Doxatag);
+export default enhance(Panel);

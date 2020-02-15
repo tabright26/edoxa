@@ -7,9 +7,9 @@ import { compose } from "recompose";
 import { withRouter } from "react-router-dom";
 import produce, { Draft } from "immer";
 import {
-  ParticipantId,
+  ChallengeParticipantId,
   ChallengeId,
-  ChallengeParticipantMatch
+  ChallengeMatch
 } from "types/challenges";
 
 type Params = {
@@ -18,16 +18,16 @@ type Params = {
 
 type OwnProps = RouteComponentProps<Params> &
   Params & {
-    readonly participantId: ParticipantId;
+    readonly participantId: ChallengeParticipantId;
   };
 
 type StateProps = {
-  readonly matches: ChallengeParticipantMatch[];
+  readonly matches: ChallengeMatch[];
 };
 
 type InnerProps = OwnProps & StateProps;
 
-type OutterProps = Params & { readonly participantId: ParticipantId };
+type OutterProps = Params & { readonly participantId: ChallengeParticipantId };
 
 type Props = InnerProps & OutterProps;
 
@@ -56,7 +56,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   );
   const matches = produce(
     participant.matches,
-    (draft: Draft<ChallengeParticipantMatch[]>) => {
+    (draft: Draft<ChallengeMatch[]>) => {
       draft
         .sort((left, right) => (left.score < right.score ? 1 : -1))
         .slice(0, challenge.bestOf);
@@ -65,7 +65,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   return {
     matches: produce(
       participant.matches,
-      (draft: Draft<ChallengeParticipantMatch[]>) => {
+      (draft: Draft<ChallengeMatch[]>) => {
         draft.forEach(match => {
           match.isBestOf = matches.some(s => s.id === match.id);
         });

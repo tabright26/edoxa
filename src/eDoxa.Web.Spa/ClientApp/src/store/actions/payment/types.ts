@@ -1,83 +1,5 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
-import { StripeAccount, StripeBankAccount, StripeCustomer, StripePaymentMethod } from "types/payment";
-export const LOAD_STRIPE_PAYMENTINTENT = "LOAD_STRIPE_PAYMENTINTENT";
-export const LOAD_STRIPE_PAYMENTINTENT_SUCCESS =
-  "LOAD_STRIPE_PAYMENTINTENT_SUCCESS";
-export const LOAD_STRIPE_PAYMENTINTENT_FAIL = "LOAD_STRIPE_PAYMENTINTENT_FAIL";
-
-export type LoadStripePaymentIntentType =
-  | typeof LOAD_STRIPE_PAYMENTINTENT
-  | typeof LOAD_STRIPE_PAYMENTINTENT_SUCCESS
-  | typeof LOAD_STRIPE_PAYMENTINTENT_FAIL;
-
-export type LoadStripePaymentIntentActionCreator = AxiosActionCreator<
-  LoadStripePaymentIntentType
->;
-
-export type LoadStripePaymentIntentAction = AxiosAction<
-  LoadStripePaymentIntentType,
-  string
->;
-
-export const LOAD_STRIPE_ACCOUNT = "LOAD_STRIPE_ACCOUNT";
-export const LOAD_STRIPE_ACCOUNT_SUCCESS = "LOAD_STRIPE_ACCOUNT_SUCCESS";
-export const LOAD_STRIPE_ACCOUNT_FAIL = "LOAD_STRIPE_ACCOUNT_FAIL";
-
-export type LoadStripeAccountType =
-  | typeof LOAD_STRIPE_ACCOUNT
-  | typeof LOAD_STRIPE_ACCOUNT_SUCCESS
-  | typeof LOAD_STRIPE_ACCOUNT_FAIL;
-
-export type LoadStripeAccountActionCreator = AxiosActionCreator<
-  LoadStripeAccountType
->;
-
-export type LoadStripeAccountAction = AxiosAction<
-  LoadStripeAccountType,
-  StripeAccount
->;
-
-export const LOAD_STRIPE_BANKACCOUNT = "LOAD_STRIPE_BANKACCOUNT";
-export const LOAD_STRIPE_BANKACCOUNT_SUCCESS =
-  "LOAD_STRIPE_BANKACCOUNT_SUCCESS";
-export const LOAD_STRIPE_BANKACCOUNT_FAIL = "LOAD_STRIPE_BANKACCOUNT_FAIL";
-
-export const UPDATE_STRIPE_BANKACCOUNT = "UPDATE_STRIPE_BANKACCOUNT";
-export const UPDATE_STRIPE_BANKACCOUNT_SUCCESS =
-  "UPDATE_STRIPE_BANKACCOUNT_SUCCESS";
-export const UPDATE_STRIPE_BANKACCOUNT_FAIL = "UPDATE_STRIPE_BANKACCOUNT_FAIL";
-
-export type LoadStripeBankAccountType =
-  | typeof LOAD_STRIPE_BANKACCOUNT
-  | typeof LOAD_STRIPE_BANKACCOUNT_SUCCESS
-  | typeof LOAD_STRIPE_BANKACCOUNT_FAIL;
-
-export type LoadStripeBankAccountActionCreator = AxiosActionCreator<
-  LoadStripeBankAccountType
->;
-
-export type LoadStripeBankAccountAction = AxiosAction<
-  LoadStripeBankAccountType,
-  StripeBankAccount
->;
-
-export type UpdateStripeBankAccountType =
-  | typeof UPDATE_STRIPE_BANKACCOUNT
-  | typeof UPDATE_STRIPE_BANKACCOUNT_SUCCESS
-  | typeof UPDATE_STRIPE_BANKACCOUNT_FAIL;
-
-export type UpdateStripeBankAccountActionCreator = AxiosActionCreator<
-  UpdateStripeBankAccountType
->;
-
-export type UpdateStripeBankAccountAction = AxiosAction<
-  UpdateStripeBankAccountType,
-  StripeBankAccount
->;
-
-export const LOAD_STRIPE_CUSTOMER = "LOAD_STRIPE_CUSTOMER";
-export const LOAD_STRIPE_CUSTOMER_SUCCESS = "LOAD_STRIPE_CUSTOMER_SUCCESS";
-export const LOAD_STRIPE_CUSTOMER_FAIL = "LOAD_STRIPE_CUSTOMER_FAIL";
+import { StripePaymentMethod } from "types/payment";
 
 export const UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD =
   "UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD";
@@ -86,32 +8,15 @@ export const UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_SUCCESS =
 export const UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_FAIL =
   "UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_FAIL";
 
-export type LoadStripeCustomerType =
-  | typeof LOAD_STRIPE_CUSTOMER
-  | typeof LOAD_STRIPE_CUSTOMER_SUCCESS
-  | typeof LOAD_STRIPE_CUSTOMER_FAIL;
-
-export type LoadStripeCustomerActionCreator = AxiosActionCreator<
-  LoadStripeCustomerType
->;
-
-export type LoadStripeCustomerAction = AxiosAction<
-  LoadStripeCustomerType,
-  StripeCustomer
->;
-
 export type UpdateStripeCustomerDefaultPaymentMethodType =
   | typeof UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD
   | typeof UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_SUCCESS
   | typeof UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_FAIL;
-
 export type UpdateStripeCustomerDefaultPaymentMethodActionCreator = AxiosActionCreator<
   UpdateStripeCustomerDefaultPaymentMethodType
 >;
-
 export type UpdateStripeCustomerDefaultPaymentMethodAction = AxiosAction<
-  UpdateStripeCustomerDefaultPaymentMethodType,
-  StripeCustomer
+  UpdateStripeCustomerDefaultPaymentMethodType
 >;
 
 export const LOAD_STRIPE_PAYMENTMETHODS = "LOAD_STRIPE_PAYMENTMETHODS";

@@ -5,12 +5,12 @@ import { CountryRegionOptions } from "types";
 import { FormGroup, Label } from "reactstrap";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
-import { CountryIsoCode } from "types/identity";
+import { Country } from "types/identity";
 
 interface OwnProps {
   label?: string;
   placeholder: string;
-  countryIsoCode: CountryIsoCode;
+  countryIsoCode: Country;
 }
 
 interface StateProps {

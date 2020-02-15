@@ -39,6 +39,7 @@ const lanetsChallenges = (
     challenges
       .filter(
         challenge =>
+          challenge.entries !== 30 &&
           challenge.payout.entryFee.type.toUpperCase() ===
             currencyType.toUpperCase() &&
           challenge.state.toUpperCase() ===
@@ -87,7 +88,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
     ? produce(data, (draft: Draft<Challenge[]>) =>
         draft.filter(challenge =>
           challenge.participants.some(
-            participant => participant.user.id === ownProps.userId
+            participant => participant.userId === ownProps.userId
           )
         )
       )

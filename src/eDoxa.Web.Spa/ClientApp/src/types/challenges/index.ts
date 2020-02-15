@@ -1,24 +1,6 @@
-import { EntryFee, Currency } from "types/cashier";
+import { EntryFee, PrizePool } from "types/cashier";
 import { Game } from "types/games";
-import { UserId } from "types/identity";
-
-export type ChallengeId = string;
-export type MatchId = string;
-export type ParticipantId = string;
-
-export interface Challenge {
-  readonly id: ChallengeId;
-  readonly name: string;
-  readonly game: Game;
-  readonly state: ChallengeState;
-  readonly bestOf: number;
-  readonly entries: number;
-  readonly synchronizedAt?: number;
-  readonly timeline: ChallengeTimeline;
-  readonly scoring: ChallengeScoring;
-  readonly payout: ChallengePayout;
-  readonly participants: ChallengeParticipant[];
-}
+import { UserId, Doxatag } from "types/identity";
 
 export const CHALLENGE_STATE_INSCRIPTION = "Inscription";
 export const CHALLENGE_STATE_STARTED = "InProgress";
@@ -31,6 +13,30 @@ export type ChallengeState =
   | typeof CHALLENGE_STATE_ENDED
   | typeof CHALLENGE_STATE_CLOSED;
 
+export type ChallengeId = string;
+export type ChallengeMatchId = string;
+export type ChallengeParticipantId = string;
+export type ChallengeScoring = Map<string, string>;
+export type ChallengeName = string;
+export type PayoutEntries = number;
+export type Entries = number;
+export type Score = number;
+export type BestOf = number;
+
+export interface Challenge {
+  readonly id: ChallengeId;
+  readonly name: ChallengeName;
+  readonly game: Game;
+  readonly state: ChallengeState;
+  readonly bestOf: BestOf;
+  readonly entries: Entries;
+  readonly synchronizedAt?: number;
+  readonly timeline: ChallengeTimeline;
+  readonly scoring: ChallengeScoring;
+  readonly payout: ChallengePayout;
+  readonly participants: ChallengeParticipant[];
+}
+
 export interface ChallengeTimeline {
   readonly duration: number;
   readonly createdAt: number;
@@ -39,17 +45,13 @@ export interface ChallengeTimeline {
   readonly closedAt?: number;
 }
 
-export type ChallengeScoring = Map<string, string>;
-
 export interface ChallengePayout {
   readonly challengeId: ChallengeId;
-  readonly entries: number;
+  readonly entries: PayoutEntries;
   readonly entryFee: EntryFee;
-  readonly prizePool: ChallengePayoutPrizePool;
+  readonly prizePool: PrizePool;
   readonly buckets: ChallengePayoutBucket[];
 }
-
-export type ChallengePayoutPrizePool = Currency;
 
 export interface ChallengePayoutBucket {
   readonly size: number;
@@ -57,40 +59,31 @@ export interface ChallengePayoutBucket {
 }
 
 export interface ChallengeParticipant {
-  readonly id: ParticipantId;
-  readonly score: number;
+  readonly id: ChallengeParticipantId;
   readonly challengeId: ChallengeId;
-  readonly user: ChallengeParticipantUser;
-  readonly matches: ChallengeParticipantMatch[];
+  readonly userId: UserId;
+  readonly doxatag?: Doxatag;
+  readonly score: Score;
+  readonly matches: ChallengeMatch[];
 }
 
-export interface ChallengeParticipantUser {
-  readonly id: UserId;
-  readonly doxatag?: ChallengeParticipantUserDoxatag;
-}
-
-export interface ChallengeParticipantUserDoxatag {
-  readonly name: string;
-  readonly code: number;
-}
-
-export interface ChallengeParticipantMatch {
-  readonly id: MatchId;
+export interface ChallengeMatch {
+  readonly id: ChallengeMatchId;
+  readonly participantId: ChallengeParticipantId;
   readonly challengeId: ChallengeId;
-  readonly participantId: ParticipantId;
+  readonly synchronizedAt: number;
+  readonly score: Score;
   readonly gameUuid: string;
-  readonly gameStartedAt: Date;
   readonly gameDuration: number;
-  readonly gameEndedAt: Date;
-  readonly synchronizedAt: Date;
+  readonly gameStartedAt: number;
+  readonly gameEndedAt: number;
   readonly isBestOf: boolean;
-  readonly score: number;
-  readonly stats: ChallengeParticipantMatchStat[];
+  readonly stats: ChallengeMatchStat[];
 }
 
-export interface ChallengeParticipantMatchStat {
+export interface ChallengeMatchStat {
   readonly name: string;
   readonly value: number;
   readonly weighting: number;
-  readonly score: number;
+  readonly score: Score;
 }

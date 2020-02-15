@@ -6,10 +6,10 @@ import { MapDispatchToProps, connect } from "react-redux";
 import { show } from "redux-modal";
 import { CHALLENGE_MATCH_SCORE_MODAL } from "utils/modal/constants";
 import Moment from "react-moment";
-import { ChallengeParticipantMatch } from "types/challenges";
+import { ChallengeMatch } from "types/challenges";
 
 type OwnProps = {
-  match: ChallengeParticipantMatch;
+  match: ChallengeMatch;
   position: number;
 };
 

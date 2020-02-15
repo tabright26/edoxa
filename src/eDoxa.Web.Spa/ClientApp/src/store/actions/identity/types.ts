@@ -1,10 +1,10 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
-import { LogoutToken } from "types";
 import {
-  UserAddress,
-  UserDoxatag,
-  UserEmail,
-  UserProfile
+  Address,
+  Doxatag,
+  Email,
+  UserProfile,
+  AccountLogoutToken
 } from "types/identity";
 
 export const LOAD_USER_ADDRESSBOOK = "LOAD_USER_ADDRESSBOOK";
@@ -82,7 +82,7 @@ export type LogoutUserAccountActionCreator = AxiosActionCreator<
 >;
 export type LogoutUserAccountAction = AxiosAction<
   LogoutUserAccountType,
-  LogoutToken
+  AccountLogoutToken
 >;
 
 export type LoadUserAddressBookType =
@@ -94,7 +94,7 @@ export type LoadUserAddressBookActionCreator = AxiosActionCreator<
 >;
 export type LoadUserAddressBookAction = AxiosAction<
   LoadUserAddressBookType,
-  UserAddress[]
+  Address[]
 >;
 
 export type CreateUserAddressType =
@@ -106,7 +106,7 @@ export type CreateUserAddressActionCreator = AxiosActionCreator<
 >;
 export type CreateUserAddressAction = AxiosAction<
   CreateUserAddressType,
-  UserAddress
+  Address
 >;
 
 export type UpdateUserAddressType =
@@ -118,7 +118,7 @@ export type UpdateUserAddressActionCreator = AxiosActionCreator<
 >;
 export type UpdateUserAddressAction = AxiosAction<
   UpdateUserAddressType,
-  UserAddress
+  Address
 >;
 
 export type DeleteUserAddressType =
@@ -130,7 +130,7 @@ export type DeleteUserAddressActionCreator = AxiosActionCreator<
 >;
 export type DeleteUserAddressAction = AxiosAction<
   DeleteUserAddressType,
-  UserAddress
+  Address
 >;
 
 export const LOAD_USER_DOXATAGHISTORY = "LOAD_USER_DOXATAGHISTORY";
@@ -151,7 +151,7 @@ export type LoadUserDoxatagHistoryActionCreator = AxiosActionCreator<
 >;
 export type LoadUserDoxatagHistoryAction = AxiosAction<
   LoadUserDoxatagHistoryType,
-  UserDoxatag[]
+  Doxatag[]
 >;
 
 export type ChangeUserDoxatagType =
@@ -163,7 +163,7 @@ export type ChangeUserDoxatagActionCreator = AxiosActionCreator<
 >;
 export type ChangeUserDoxatagAction = AxiosAction<
   ChangeUserDoxatagType,
-  UserDoxatag
+  Doxatag
 >;
 
 export const LOAD_USER_EMAIL = "LOAD_USER_EMAIL";
@@ -179,7 +179,7 @@ export type LoadUserEmailType =
   | typeof LOAD_USER_EMAIL_SUCCESS
   | typeof LOAD_USER_EMAIL_FAIL;
 export type LoadUserEmailActionCreator = AxiosActionCreator<LoadUserEmailType>;
-export type LoadUserEmailAction = AxiosAction<LoadUserEmailType, UserEmail>;
+export type LoadUserEmailAction = AxiosAction<LoadUserEmailType, Email>;
 
 export type ConfirmUserEmailType =
   | typeof CONFIRM_USER_EMAIL
@@ -188,10 +188,7 @@ export type ConfirmUserEmailType =
 export type ConfirmUserEmailActionCreator = AxiosActionCreator<
   ConfirmUserEmailType
 >;
-export type ConfirmUserEmailAction = AxiosAction<
-  ConfirmUserEmailType,
-  UserEmail
->;
+export type ConfirmUserEmailAction = AxiosAction<ConfirmUserEmailType, Email>;
 
 export const LOAD_USER_PROFILE = "LOAD_USER_PROFILE";
 export const LOAD_USER_PROFILE_SUCCESS = "LOAD_USER_PROFILE_SUCCESS";

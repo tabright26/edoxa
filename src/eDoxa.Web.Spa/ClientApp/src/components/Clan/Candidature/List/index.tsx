@@ -3,7 +3,7 @@ import { Card, CardBody, CardHeader } from "reactstrap";
 import { withCandidatures } from "store/root/organization/candidature/container";
 import Item from "./Item";
 import { Loading } from "components/Shared/Loading";
-import { ClanCandidature } from "types/clans";
+import { Candidature } from "types/clans";
 
 const CandidatureList: FunctionComponent<any> = ({
   actions,
@@ -18,7 +18,7 @@ const CandidatureList: FunctionComponent<any> = ({
         <Loading />
       ) : (
         data &&
-        data.map((candidature: ClanCandidature, index: number) => (
+        data.map((candidature: Candidature, index: number) => (
           <Item
             key={index}
             actions={actions}

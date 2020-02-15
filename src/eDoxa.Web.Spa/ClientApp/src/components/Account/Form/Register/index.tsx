@@ -30,7 +30,7 @@ import {
   PASSWORD_REQUIRED,
   DOB_REQUIRED
 } from "utils/form/validators";
-import { COUNTRY_ISO_CODE_CA, CountryIsoCode } from "types/identity";
+import { COUNTRY_CA, Country } from "types/identity";
 
 type StateProps = {};
 
@@ -40,7 +40,7 @@ export interface RegisterUserAccountFormData {
   email: string;
   password: string;
   newPassword: string;
-  countryIsoCode: CountryIsoCode;
+  countryIsoCode: Country;
   dob: string;
 }
 
@@ -163,7 +163,7 @@ const mapStateToProps: MapStateToProps<
 > = () => {
   return {
     initialValues: {
-      countryIsoCode: COUNTRY_ISO_CODE_CA
+      countryIsoCode: COUNTRY_CA
     }
   };
 };
