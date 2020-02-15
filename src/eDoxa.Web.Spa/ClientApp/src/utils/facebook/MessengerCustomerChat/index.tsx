@@ -1,5 +1,5 @@
 import React from "react";
-import { MessengerCustomerChat as FacebookMessengerCustomerChat } from "react-messenger-customer-chat";
+import FacebookMessengerCustomerChat from "react-messenger-customer-chat";
 import { REACT_APP_FACEBOOK_MCC_ENABLED } from "keys";
 
 export const MessengerCustomerChat = () =>
