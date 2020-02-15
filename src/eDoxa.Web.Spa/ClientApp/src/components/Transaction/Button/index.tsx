@@ -6,7 +6,7 @@ import {
   TransactionType,
   TRANSACTION_TYPE_DEPOSIT,
   TRANSACTION_TYPE_WITHDRAWAL
-} from "types";
+} from "types/cashier";
 import { connect, MapDispatchToProps } from "react-redux";
 import { show } from "redux-modal";
 import {

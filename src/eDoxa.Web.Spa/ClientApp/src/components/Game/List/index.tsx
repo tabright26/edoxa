@@ -3,9 +3,9 @@ import { CardDeck } from "reactstrap";
 import { compose } from "recompose";
 import GameListItem from "components/Game/List/Item";
 import GameCredentialModal from "components/Game/Credential/Modal";
-import { GameOptions } from "types";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
+import { GameOptions } from "types/games";
 
 type OwnProps = {};
 

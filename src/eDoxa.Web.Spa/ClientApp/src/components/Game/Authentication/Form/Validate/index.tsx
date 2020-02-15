@@ -9,7 +9,7 @@ import { toastr } from "react-redux-toastr";
 import authorizeService from "utils/oidc/AuthorizeService";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { throwSubmissionError } from "utils/form/types";
-import { GameOptions } from "types";
+import { GameOptions } from "types/games";
 
 interface FormData {}
 

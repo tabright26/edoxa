@@ -3,8 +3,8 @@ import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { connectModal, InjectedProps } from "redux-modal";
 import StripePaymentMethodForm from "components/Payment/Stripe/PaymentMethod/Form";
 import { compose } from "recompose";
-import { StripePaymentMethod } from "types";
 import { DELETE_STRIPE_PAYMENTMETHOD_MODAL } from "utils/modal/constants";
+import { StripePaymentMethod } from "types/payment";
 
 type InnerProps = InjectedProps & {
   paymentMethod: StripePaymentMethod;

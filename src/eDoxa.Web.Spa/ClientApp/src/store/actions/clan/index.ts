@@ -73,7 +73,8 @@ import {
   KickClanMemberActionCreator
 } from "./types";
 import { AXIOS_PAYLOAD_CLIENT_DEFAULT } from "utils/axios/types";
-import { ClanId, UserId, InvitationId, MemberId } from "types";
+import { InvitationId, ClanId, ClanMemberId } from "types/clans";
+import { UserId } from "types/identity";
 
 export function loadClanCandidatures(
   type: string,
@@ -385,7 +386,7 @@ export function loadClanMembers(clanId: ClanId): LoadClanMembersActionCreator {
 
 export function kickClanMember(
   clanId: ClanId,
-  memberId: MemberId
+  memberId: ClanMemberId
 ): KickClanMemberActionCreator {
   return {
     types: [KICK_CLAN_MEMBER, KICK_CLAN_MEMBER_SUCCESS, KICK_CLAN_MEMBER_FAIL],

@@ -1,7 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import Doxatag from ".";
+import Panel from ".";
 import { UserDoxatagHistoryState } from "store/root/user/doxatagHistory/types";
 
 it("renders without crashing", () => {
@@ -30,7 +30,7 @@ it("renders without crashing", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Doxatag />
+        <Panel />
       </Provider>
     )
     .toJSON();

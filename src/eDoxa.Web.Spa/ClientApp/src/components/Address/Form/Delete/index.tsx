@@ -8,7 +8,7 @@ import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { deleteUserAddress } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
-import { AddressId } from "types";
+import { AddressId } from "types/identity";
 
 interface FormData {}
 

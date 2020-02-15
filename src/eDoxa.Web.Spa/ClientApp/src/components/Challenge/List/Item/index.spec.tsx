@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import Item from ".";
 import { ChallengesState } from "store/root/challenge/types";
-import { CURRENCY_TYPE_TOKEN } from "types";
+import { CURRENCY_TYPE_TOKEN } from "types/cashier";
 
 it("renders without crashing", () => {
   // Arrange

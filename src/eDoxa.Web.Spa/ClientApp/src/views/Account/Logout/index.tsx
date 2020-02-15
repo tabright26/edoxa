@@ -5,12 +5,12 @@ import { RouteComponentProps, withRouter, Redirect } from "react-router-dom";
 import { compose } from "recompose";
 import queryString from "query-string";
 import { RootState } from "store/types";
-import { LogoutToken } from "types";
 import { getDefaultPath } from "utils/coreui/constants";
 import { Loading } from "components/Shared/Loading";
+import { AccountLogoutToken } from "types/identity";
 
 type StateProps = {
-  token: LogoutToken;
+  token: AccountLogoutToken;
 };
 
 type DispatchProps = {

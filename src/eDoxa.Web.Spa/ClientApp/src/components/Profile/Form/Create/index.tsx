@@ -18,8 +18,8 @@ import {
 } from "utils/form/validators";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { connect, MapStateToProps } from "react-redux";
-import { Gender, GENDER_MALE } from "types";
 import { RootState } from "store/types";
+import { Gender, GENDER_MALE } from "types/identity";
 
 interface FormData {
   firstName: string;

@@ -21,8 +21,8 @@ import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import produce, { Draft } from "immer";
-import { UserDoxatag } from "types";
 import authorizeService from "utils/oidc/AuthorizeService";
+import { Doxatag } from "types/identity";
 
 interface FormData {
   name: string;
@@ -41,7 +41,6 @@ type Props = InnerProps & OutterProps;
 const CustomForm: FunctionComponent<Props> = ({
   error,
   handleSubmit,
-  handleCancel,
   submitting,
   anyTouched
 }) => (
@@ -68,8 +67,8 @@ const mapStateToProps: MapStateToProps<
   RootState
 > = state => {
   const { data } = state.root.user.doxatagHistory;
-  const doxatags = produce(data, (draft: Draft<UserDoxatag[]>) => {
-    draft.sort((left: UserDoxatag, right: UserDoxatag) =>
+  const doxatags = produce(data, (draft: Draft<Doxatag[]>) => {
+    draft.sort((left: Doxatag, right: Doxatag) =>
       left.timestamp < right.timestamp ? 1 : -1
     );
   });

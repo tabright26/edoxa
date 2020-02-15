@@ -22,20 +22,17 @@ import { AxiosActionCreatorMeta } from "utils/axios/types";
 import InputMask from "react-input-mask";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
-import {
-  AddressFieldsOptions,
-  AddressValidatorOptions,
-  CountryIsoCode
-} from "types";
+import { AddressFieldsOptions, AddressValidatorOptions } from "types";
 import { withUserProfileCountry } from "utils/oidc/containers";
 import { HocUserProfileCountryStateProps } from "utils/oidc/containers/types";
+import { Country } from "types/identity";
 
 type OwnProps = HocUserProfileCountryStateProps;
 
 interface StateProps {
   fieldsOptions: AddressFieldsOptions;
   validatorOptions: AddressValidatorOptions;
-  countryIsoCode: CountryIsoCode;
+  countryIsoCode: Country;
 }
 
 interface FormData {
@@ -150,7 +147,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   ownProps
 ) => {
   const selector = formValueSelector(CREATE_USER_ADDRESS_FORM);
-  const countryIsoCode: CountryIsoCode =
+  const countryIsoCode: Country =
     selector(state, "countryIsoCode") || ownProps.country;
   const country = state.static.identity.countries.find(
     country => country.isoCode === countryIsoCode

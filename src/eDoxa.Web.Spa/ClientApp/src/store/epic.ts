@@ -22,7 +22,9 @@ import {
   LOGIN_USER_ACCOUNT_SUCCESS,
   LOGIN_USER_ACCOUNT_FAIL,
   REGISTER_USER_ACCOUNT_SUCCESS,
-  REGISTER_USER_ACCOUNT_FAIL
+  REGISTER_USER_ACCOUNT_FAIL,
+  RESEND_USER_EMAIL_SUCCESS,
+  RESEND_USER_EMAIL_FAIL
 } from "store/actions/identity/types";
 import {
   CHANGE_USER_DOXATAG_SUCCESS,
@@ -129,7 +131,8 @@ const onSubmitSuccessEpic: Epic<RootActions, any, RootState> = action$ =>
       REGISTER_USER_ACCOUNT_SUCCESS,
       REGISTER_CHALLENGE_PARTICIPANT_SUCCESS,
       WITHDRAW_TRANSACTION_SUCCESS,
-      ATTACH_STRIPE_PAYMENTMETHOD_SUCCESS
+      ATTACH_STRIPE_PAYMENTMETHOD_SUCCESS,
+      RESEND_USER_EMAIL_SUCCESS
     ),
     switchMap(action => {
       const { resolve } = action.meta.previousAction.meta;
@@ -160,7 +163,8 @@ const onSubmitFailEpic: Epic<RootActions, any, RootState> = action$ =>
       REGISTER_USER_ACCOUNT_FAIL,
       REGISTER_CHALLENGE_PARTICIPANT_FAIL,
       WITHDRAW_TRANSACTION_FAIL,
-      ATTACH_STRIPE_PAYMENTMETHOD_FAIL
+      ATTACH_STRIPE_PAYMENTMETHOD_FAIL,
+      RESEND_USER_EMAIL_FAIL
     ),
     switchMap(action => {
       const { reject } = action.meta.previousAction.meta;

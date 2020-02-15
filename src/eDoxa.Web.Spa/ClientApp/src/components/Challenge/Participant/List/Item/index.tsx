@@ -1,11 +1,11 @@
 import React, { FunctionComponent, useState } from "react";
 import { Collapse, Card, Badge, CardHeader, CardBody } from "reactstrap";
 import Format from "components/Shared/Format";
-import { ChallengeParticipant } from "types";
 import List from "components/Challenge/Participant/Match/List";
 import { compose } from "recompose";
 import { withUserProfileUserId } from "utils/oidc/containers";
 import { HocUserProfileUserIdStateProps } from "utils/oidc/containers/types";
+import { ChallengeParticipant } from "types/challenges";
 
 type Props = HocUserProfileUserIdStateProps & {
   participant: ChallengeParticipant;
@@ -23,8 +23,8 @@ const Item: FunctionComponent<Props> = ({
 }) => {
   const [collapse, setCollapse] = useState(false);
   const toggle = () => setCollapse(!collapse);
-  const doxatag = participant.user.doxatag
-    ? participant.user.doxatag.name
+  const doxatag = participant.doxatag
+    ? participant.doxatag.name
     : "Data unavailable";
   return (
     <>
@@ -53,7 +53,7 @@ const Item: FunctionComponent<Props> = ({
             </Badge>
           </div>
           <div
-            className={`px-3 py-2 ${participant.user.id === userId &&
+            className={`px-3 py-2 ${participant.userId === userId &&
               "text-primary"}`}
           >
             {collapse ? (

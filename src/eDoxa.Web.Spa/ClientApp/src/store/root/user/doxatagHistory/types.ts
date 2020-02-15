@@ -1,4 +1,4 @@
 import { AxiosState } from "utils/axios/types";
-import { UserDoxatag } from "types";
+import { Doxatag } from "types/identity";
 
-export type UserDoxatagHistoryState = AxiosState<UserDoxatag[]>;
+export type UserDoxatagHistoryState = AxiosState<Doxatag[]>;

@@ -4,10 +4,10 @@ import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { LINK_GAME_CREDENTIAL_MODAL } from "utils/modal/constants";
 import GameAuthenticationFrom from "components/Game/Authentication/Form";
 import { compose } from "recompose";
-import { GameOptions } from "types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { ModalSubtitle } from "components/Shared/Modal/Subtitle";
+import { GameOptions } from "types/games";
 
 type InnerProps = InjectedProps & { gameOptions: GameOptions };
 

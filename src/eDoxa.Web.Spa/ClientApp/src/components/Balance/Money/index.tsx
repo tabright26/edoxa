@@ -7,7 +7,7 @@ import {
   CURRENCY_TYPE_MONEY,
   TRANSACTION_STATUS_SUCCEEDED,
   TRANSACTION_STATUS_PENDING
-} from "types";
+} from "types/cashier";
 
 const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
   const [open, setOpen] = useState(false);

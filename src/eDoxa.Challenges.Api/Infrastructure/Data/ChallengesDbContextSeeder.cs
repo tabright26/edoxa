@@ -42,9 +42,9 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data
 
         protected override async Task SeedDevelopmentAsync()
         {
-            //await this.SeedTestChallengesAsync();
+            await this.SeedTestChallengesAsync();
 
-            await this.SeedProductionAsync();
+            //await this.SeedProductionAsync();
         }
 
         protected override async Task SeedStagingAsync()
@@ -82,8 +82,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data
                         Entries = default(int),
                         BestOf = default(int),
                         Duration = default(long),
-                        State = default(int),
-                        TimelineCreatedAt = default(long)
+                        State = default(int)
                     })
                 .Select(
                     record =>

@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useState } from "react";
 import { CardImg, CardImgOverlay, Card } from "reactstrap";
-import { GameOptions, Game } from "types";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 import {
   LINK_GAME_CREDENTIAL_MODAL,
@@ -11,6 +10,7 @@ import { compose } from "recompose";
 import { withUserProfileGameIsAuthenticated } from "utils/oidc/containers";
 import { RootState } from "store/types";
 import { HocUserProfileGameIsAuthenticatedStateProps } from "utils/oidc/containers/types";
+import { GameOptions, Game } from "types/games";
 
 const style: React.CSSProperties = {
   filter: "brightness(50%)",

@@ -4,7 +4,7 @@ import { Modal, ModalHeader } from "reactstrap";
 import { DEPOSIT_TRANSACTION_MODAL } from "utils/modal/constants";
 import TransactionForm from "components/Transaction/Form";
 import { compose } from "recompose";
-import { CurrencyType } from "types";
+import { CurrencyType } from "types/cashier";
 import { ModalSubtitle } from "components/Shared/Modal/Subtitle";
 import { Elements } from "react-stripe-elements";
 

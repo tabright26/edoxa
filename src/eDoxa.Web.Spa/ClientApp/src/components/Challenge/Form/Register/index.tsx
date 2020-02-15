@@ -7,9 +7,10 @@ import { compose } from "recompose";
 import { registerChallengeParticipant } from "store/actions/challenge";
 import { toastr } from "react-redux-toastr";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { ChallengeId, UserId } from "types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { throwSubmissionError } from "utils/form/types";
+import { ChallengeId } from "types/challenges";
+import { UserId } from "types/identity";
 
 type FormData = {};
 
