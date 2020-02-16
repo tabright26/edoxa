@@ -3,11 +3,11 @@ import React, { Suspense, FunctionComponent } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { ConnectedRouter as Router } from "connected-react-router";
 import { history } from "utils/router/history";
-import TransactionModal from "components/Transaction/Modal";
-import ChallengeParticipantMatchModal from "components/Challenge/Participant/Match/Modal";
+import TransactionModal from "components/Service/Cashier/Transaction/Modal";
+import ChallengeParticipantMatchModal from "components/Service/Challenge/Participant/Match/Modal";
 import { Loading } from "components/Shared/Loading";
 import { RouteProps } from "utils/router/types";
-import StripePaymentMethodModal from "components/Payment/Stripe/PaymentMethod/Modal";
+import StripePaymentMethodModal from "components/Service/Payment/Stripe/PaymentMethod/Modal";
 import { ApplicationPaths } from "utils/oidc/ApiAuthorizationConstants";
 import { initializeReactGA } from "utils/ga";
 import {
@@ -40,10 +40,8 @@ const PasswordForgot = React.lazy(() =>
   import("views/Account/Password/Forgot")
 );
 const PasswordReset = React.lazy(() => import("views/Account/Password/Reset"));
-const DefaultLayout = React.lazy(() =>
-  import("components/Shared/Layout/Default")
-);
-const NoneLayout = React.lazy(() => import("components/Shared/Layout/None"));
+const DefaultLayout = React.lazy(() => import("components/App/Layout/Default"));
+const NoneLayout = React.lazy(() => import("components/App/Layout/None"));
 const Login = React.lazy(() => import("views/Account/Login"));
 const Logout = React.lazy(() => import("views/Account/Logout"));
 const Register = React.lazy(() => import("views/Account/Register"));

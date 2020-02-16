@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect } from "react";
-import ChallengeList from "components/Challenge/List";
+import ChallengeList from "components/Service/Challenge/List";
 import { loadChallenges } from "store/actions/challenge";
 import { connect, MapDispatchToProps } from "react-redux";
 import { compose } from "recompose";

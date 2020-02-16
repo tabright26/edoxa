@@ -9,10 +9,10 @@ import {
   Row,
   CardImg
 } from "reactstrap";
-import UserAccountForm from "components/Account/Form";
+import UserAccountForm from "components/Service/Identity/Account/Form";
 import { getAccountRegisterPath, getDefaultPath } from "utils/coreui/constants";
 import { LinkContainer } from "react-router-bootstrap";
-import Layout from "components/Shared/Layout";
+import Layout from "components/App/Layout";
 import logo from "assets/img/brand/logo.png";
 
 const Login: FunctionComponent = () => (

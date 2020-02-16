@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 
-import GameList from "components/Game/List";
+import GameList from "components/Service/Game/List";
 
 const ProfileGames: FunctionComponent = () => {
   return (

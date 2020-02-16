@@ -22,6 +22,7 @@ import {
   getProfilePromotionalCodePath,
   getProfileChallengeHistoryPath
 } from "utils/coreui/constants";
+import EmailAlert from "components/Service/Identity/Email/Alert";
 
 const ProfileOverview = React.lazy(() => import("./Overview"));
 const ProfileDetails = React.lazy(() => import("./Details"));
@@ -36,11 +37,11 @@ const ProfileChallengeHistory = React.lazy(() => import("./ChallengeHistory"));
 
 const Profile: FunctionComponent = () => (
   <>
-    {/* <Row>
+    <Row>
       <Col xs="12" sm="12" md="12" lg="11" xl="9">
         <EmailAlert />
       </Col>
-    </Row> */}
+    </Row>
     <Row>
       <Col xs="12" sm="12" md="3" lg="3" xl="2">
         <Card className="mt-4">

@@ -9,7 +9,7 @@ import {
   TRANSACTION_TYPE_DEPOSIT,
   TRANSACTION_TYPE_CHARGE,
   CURRENCY_TYPE_MONEY
-} from "types";
+} from "types/cashier";
 
 it("renders without crashing", () => {
   // Arrange
