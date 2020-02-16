@@ -36,7 +36,7 @@ import dota2Panel from "assets/img/arena/games/dota2/panel.png";
 //import clan1 from "assets/img/organization/clan/clan1.jpg";
 //import clan2 from "assets/img/organization/clan/clan2.jpg";
 //import clan3 from "assets/img/organization/clan/clan3.jpg";
-import Layout from "components/Shared/Layout";
+import Layout from "components/App/Layout";
 import { Loading } from "components/Shared/Loading";
 import { LinkContainer } from "react-router-bootstrap";
 import {

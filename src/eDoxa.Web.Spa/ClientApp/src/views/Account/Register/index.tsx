@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
 import { Card, CardBody, Col, Container, Row, CardImg } from "reactstrap";
-import UserAccountForm from "components/Account/Form";
+import UserAccountForm from "components/Service/Identity/Account/Form";
 import logo from "assets/img/brand/logo.png";
-import Layout from "components/Shared/Layout";
+import Layout from "components/App/Layout";
 import { LinkContainer } from "react-router-bootstrap";
 import { getDefaultPath } from "utils/coreui/constants";
 

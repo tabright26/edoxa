@@ -24,10 +24,7 @@ type OutterProps = {};
 
 type Props = InnerProps & OutterProps;
 
-const EmailConfirm: FunctionComponent<Props> = ({
-  location,
-  confirmUserEmail
-}) => {
+const Confirm: FunctionComponent<Props> = ({ location, confirmUserEmail }) => {
   const [notFound, setNotFound] = useState(false);
   useEffect(() => {
     const options: ParseOptions = {
@@ -76,4 +73,4 @@ const enhance = compose<InnerProps, OutterProps>(
   connect(null, mapDispatchToProps)
 );
 
-export default enhance(EmailConfirm);
+export default enhance(Confirm);

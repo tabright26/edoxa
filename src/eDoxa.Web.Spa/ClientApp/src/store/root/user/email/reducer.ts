@@ -13,7 +13,6 @@ import { RootActions } from "store/types";
 
 export const initialState: UserEmailState = {
   data: null,
-  error: null,
   loading: false
 };
 
@@ -21,34 +20,28 @@ export const reducer: Reducer<UserEmailState, RootActions> = produce(
   (draft: Draft<UserEmailState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_USER_EMAIL: {
-        draft.error = null;
         draft.loading = true;
         break;
       }
       case LOAD_USER_EMAIL_SUCCESS: {
         draft.data = action.payload.data;
-        draft.error = null;
         draft.loading = false;
         break;
       }
       case LOAD_USER_EMAIL_FAIL: {
-        draft.error = action.error;
         draft.loading = false;
         break;
       }
       case CONFIRM_USER_EMAIL: {
-        draft.error = null;
         draft.loading = false;
         break;
       }
       case CONFIRM_USER_EMAIL_SUCCESS: {
         draft.data = action.payload.data;
-        draft.error = null;
         draft.loading = false;
         break;
       }
       case CONFIRM_USER_EMAIL_FAIL: {
-        draft.error = action.error;
         draft.loading = false;
         break;
       }

@@ -33,7 +33,7 @@ describe("user doxatag history reducer", () => {
     };
     const state = {
       data: doxatagHistory200Data,
-      error: null,
+
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);
@@ -52,7 +52,6 @@ describe("user doxatag history reducer", () => {
     };
     const state = {
       data: initialState.data,
-      error,
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);
