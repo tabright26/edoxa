@@ -5,11 +5,11 @@ import {
   AppSidebarToggler,
   AppAsideToggler
 } from "@coreui/react";
-import AppDropdown from "components/App/Dropdown";
+import AppDropdown from "components/App/Header/Dropdown";
 import logo from "assets/img/brand/logo.png";
 import sygnet from "assets/img/brand/sygnet.png";
 import { getDefaultPath } from "utils/coreui/constants";
-import AppNav from "components/App/Nav";
+import AppNav from "components/App/Header/Nav";
 
 const Header: FunctionComponent = () => {
   return (

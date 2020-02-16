@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import DoxatagPanel from "components/Doxatag/Panel";
+import DoxatagPanel from "components/Service/Identity/Doxatag/Panel";
 
 const ProfileOverview: FunctionComponent = () => (
   <>

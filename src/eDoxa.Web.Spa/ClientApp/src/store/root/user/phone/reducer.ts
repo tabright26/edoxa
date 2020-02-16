@@ -13,7 +13,6 @@ import { RootActions } from "store/types";
 
 export const initialState: UserPhoneState = {
   data: null,
-  error: null,
   loading: true
 };
 
@@ -21,34 +20,28 @@ export const reducer: Reducer<UserPhoneState, RootActions> = produce(
   (draft: Draft<UserPhoneState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_USER_PHONE: {
-        draft.error = null;
         draft.loading = true;
         break;
       }
       case LOAD_USER_PHONE_SUCCESS: {
         draft.data = action.payload.data;
-        draft.error = null;
         draft.loading = false;
         break;
       }
       case LOAD_USER_PHONE_FAIL: {
-        draft.error = action.error;
         draft.loading = false;
         break;
       }
       case UPDATE_USER_PHONE: {
-        draft.error = null;
         draft.loading = false;
         break;
       }
       case UPDATE_USER_PHONE_SUCCESS: {
         draft.data = action.payload.data;
-        draft.error = null;
         draft.loading = false;
         break;
       }
       case UPDATE_USER_PHONE_FAIL: {
-        draft.error = action.error;
         draft.loading = false;
         break;
       }

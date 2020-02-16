@@ -2,10 +2,10 @@ import React, { useState, useEffect, FunctionComponent } from "react";
 import { Row, Col, Card, CardHeader, CardBody } from "reactstrap";
 import { toastr } from "react-redux-toastr";
 import { withClans } from "store/root/organization/clan/container";
-import ClanInfo from "components/Clan/Summary";
-import CandidatureList from "components/Clan/Candidature/List";
-import InvitationList from "components/Clan/Invitation/List";
-import Members from "components/Clan/Member/List";
+import ClanInfo from "components/Service/Clan/Summary";
+import CandidatureList from "components/Service/Clan/Candidature/List";
+import InvitationList from "components/Service/Clan/Invitation/List";
+import Members from "components/Service/Clan/Member/List";
 import { compose } from "recompose";
 
 const ClanDashboardIndex: FunctionComponent<any> = ({

@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import TransactionPanel from "components/Transaction/Panel";
+import TransactionPanel from "components/Service/Cashier/Transaction/Panel";
 
 const TransactionHistory: FunctionComponent = () => (
   <>

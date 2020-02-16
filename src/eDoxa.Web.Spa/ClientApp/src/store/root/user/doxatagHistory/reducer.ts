@@ -13,7 +13,6 @@ import { RootActions } from "store/types";
 
 export const initialState: UserDoxatagHistoryState = {
   data: [],
-  error: null,
   loading: false
 };
 
@@ -21,7 +20,6 @@ export const reducer: Reducer<UserDoxatagHistoryState, RootActions> = produce(
   (draft: Draft<UserDoxatagHistoryState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_USER_DOXATAGHISTORY: {
-        draft.error = null;
         draft.loading = true;
         break;
       }
@@ -29,13 +27,11 @@ export const reducer: Reducer<UserDoxatagHistoryState, RootActions> = produce(
         const { status, data } = action.payload;
         switch (status) {
           case 204: {
-            draft.error = null;
             draft.loading = false;
             break;
           }
           default: {
             draft.data = data;
-            draft.error = null;
             draft.loading = false;
             break;
           }
@@ -43,23 +39,19 @@ export const reducer: Reducer<UserDoxatagHistoryState, RootActions> = produce(
         break;
       }
       case LOAD_USER_DOXATAGHISTORY_FAIL: {
-        draft.error = action.error;
         draft.loading = false;
         break;
       }
       case CHANGE_USER_DOXATAG: {
-        draft.error = null;
         draft.loading = true;
         break;
       }
       case CHANGE_USER_DOXATAG_SUCCESS: {
         draft.data.push(action.payload.data);
-        draft.error = null;
         draft.loading = false;
         break;
       }
       case CHANGE_USER_DOXATAG_FAIL: {
-        draft.error = action.error;
         draft.loading = false;
         break;
       }

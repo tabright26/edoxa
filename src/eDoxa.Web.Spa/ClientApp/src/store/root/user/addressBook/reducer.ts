@@ -19,7 +19,6 @@ import { RootActions } from "store/types";
 
 export const initialState: UserAddressBookState = {
   data: [],
-  error: null,
   loading: false
 };
 
@@ -27,7 +26,6 @@ export const reducer: Reducer<UserAddressBookState, RootActions> = produce(
   (draft: Draft<UserAddressBookState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_USER_ADDRESSBOOK: {
-        draft.error = null;
         draft.loading = true;
         break;
       }
@@ -35,13 +33,11 @@ export const reducer: Reducer<UserAddressBookState, RootActions> = produce(
         const { status, data } = action.payload;
         switch (status) {
           case 204: {
-            draft.error = null;
             draft.loading = false;
             break;
           }
           default: {
             draft.data = data;
-            draft.error = null;
             draft.loading = false;
             break;
           }
@@ -49,28 +45,23 @@ export const reducer: Reducer<UserAddressBookState, RootActions> = produce(
         break;
       }
       case LOAD_USER_ADDRESSBOOK_FAIL: {
-        draft.error = action.error;
         draft.loading = false;
         break;
       }
       case CREATE_USER_ADDRESS: {
-        draft.error = null;
         draft.loading = true;
         break;
       }
       case CREATE_USER_ADDRESS_SUCCESS: {
-        draft.error = null;
         draft.loading = false;
         draft.data.push(action.payload.data);
         break;
       }
       case CREATE_USER_ADDRESS_FAIL: {
-        draft.error = action.error;
         draft.loading = false;
         break;
       }
       case UPDATE_USER_ADDRESS: {
-        draft.error = null;
         draft.loading = true;
         break;
       }
@@ -79,17 +70,14 @@ export const reducer: Reducer<UserAddressBookState, RootActions> = produce(
           address => address.id === action.payload.data.id
         );
         draft.data[index] = action.payload.data;
-        draft.error = null;
         draft.loading = false;
         break;
       }
       case UPDATE_USER_ADDRESS_FAIL: {
-        draft.error = action.error;
         draft.loading = false;
         break;
       }
       case DELETE_USER_ADDRESS: {
-        draft.error = null;
         draft.loading = true;
         break;
       }
@@ -97,12 +85,10 @@ export const reducer: Reducer<UserAddressBookState, RootActions> = produce(
         draft.data = draft.data.filter(
           address => address.id !== action.payload.data.id
         );
-        draft.error = null;
         draft.loading = false;
         break;
       }
       case DELETE_USER_ADDRESS_FAIL: {
-        draft.error = action.error;
         draft.loading = false;
         break;
       }
