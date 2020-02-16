@@ -25,30 +25,30 @@ import { AxiosActionCreatorMeta } from "utils/axios/types";
 import InputMask from "react-input-mask";
 import { Country, AddressId } from "types/identity";
 
-interface StateProps {
+type StateProps = {
   fieldsOptions: AddressFieldsOptions;
   validatorOptions: AddressValidatorOptions;
   countryIsoCode: Country;
-}
+};
 
-interface FormData {
+type FormData = {
   line1: string;
   line2: string;
   city: string;
   state: string;
   postalCode: string;
-}
+};
 
-interface OutterProps {
+type OutterProps = {
   addressId: AddressId;
   handleCancel: () => void;
-}
+};
 
 type InnerProps = InjectedFormProps<FormData, Props> & StateProps;
 
 type Props = InnerProps & OutterProps;
 
-const CustomForm: FunctionComponent<Props> = ({
+const Update: FunctionComponent<Props> = ({
   handleSubmit,
   error,
   handleCancel,
@@ -61,7 +61,7 @@ const CustomForm: FunctionComponent<Props> = ({
   <Form onSubmit={handleSubmit}>
     <ValidationSummary anyTouched={anyTouched} error={error} />
     <FormGroup>
-      <FormField.CountryIsoCode placeholder={country.label} disabled />
+      <FormField.Country placeholder={country.label} disabled />
     </FormGroup>
     <Field
       type="text"
@@ -177,4 +177,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(CustomForm);
+export default enhance(Update);

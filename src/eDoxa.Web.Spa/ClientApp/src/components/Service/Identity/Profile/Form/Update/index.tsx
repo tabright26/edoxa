@@ -16,10 +16,13 @@ import {
   PROFILE_FIRST_NAME_REGEXP
 } from "utils/form/validators";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
+import { FirstName } from "types/identity";
 
-interface FormData {
-  firstName: string;
-}
+type FormData = {
+  firstName: FirstName;
+};
+
+type OwnProps = {};
 
 type StateProps = {};
 
@@ -31,7 +34,7 @@ type OutterProps = {
 
 type Props = InnerProps & OutterProps;
 
-const CustomForm: FunctionComponent<Props> = ({
+const Update: FunctionComponent<Props> = ({
   handleSubmit,
   handleCancel,
   error,
@@ -87,7 +90,7 @@ const CustomForm: FunctionComponent<Props> = ({
 
 const mapStateToProps: MapStateToProps<
   StateProps,
-  Props,
+  OwnProps,
   RootState
 > = state => {
   const { data } = state.root.user.profile;
@@ -110,7 +113,7 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel(),
+    onSubmitSuccess: (_result, _dispatch, { handleCancel }) => handleCancel(),
     validate: values => {
       const errors: FormErrors<FormData> = {};
       if (!values.firstName) {
@@ -123,4 +126,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(CustomForm);
+export default enhance(Update);

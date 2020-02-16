@@ -15,17 +15,17 @@ import { toastr } from "react-redux-toastr";
 import { LinkContainer } from "react-router-bootstrap";
 import { getDefaultPath } from "utils/coreui/constants";
 
-interface FormData {
+type FormData = {
   email: string;
 }
 
-interface OutterProps {}
+type OutterProps = {}
 
 type InnerProps = InjectedFormProps<FormData, Props>;
 
 type Props = InnerProps & OutterProps;
 
-const CustomForm: FunctionComponent<Props> = ({
+const Forgot: FunctionComponent<Props> = ({
   handleSubmit,
   error,
   submitting,
@@ -86,4 +86,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(CustomForm);
+export default enhance(Forgot);

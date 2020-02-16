@@ -2,33 +2,54 @@ import React, { useState, FunctionComponent, useEffect } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Badge from "components/Shared/Badge";
-import { connect } from "react-redux";
+import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 import UserPhoneForm from "components/Service/Identity/Phone/Form";
 import { compose } from "recompose";
 import { Loading } from "components/Shared/Loading";
 import { RootState } from "store/types";
 import { loadUserPhone } from "store/actions/identity";
 import Button from "components/Shared/Button";
+import { Phone } from "types/identity";
 
-const Phone: FunctionComponent<any> = ({
+type OwnProps = {};
+
+type StateProps = {
+  phone?: Phone;
+  loading: boolean;
+};
+
+type DispatchProps = {
+  loadUserPhone: () => void;
+};
+
+type InnerProps = StateProps & DispatchProps;
+
+type OutterProps = {
+  className?: string;
+};
+
+type Props = InnerProps & OutterProps;
+
+const Panel: FunctionComponent<Props> = ({
   className,
-  phone: { data, loading },
+  phone,
+  loading,
   loadUserPhone
 }) => {
   useEffect((): void => {
-    if (data === null) {
+    if (phone === null) {
       loadUserPhone();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const disabled = !data || buttonDisabled;
+  const disabled = !phone || buttonDisabled;
   return (
     <Card className={`card-accent-primary ${className}`}>
       <CardHeader className="d-flex">
         <strong className="text-uppercase my-auto">PHONE</strong>
-        {data && (
-          <Badge.Verified className="ml-3 my-auto" verified={data.verified} />
+        {phone && (
+          <Badge.Verified className="ml-3 my-auto" verified={phone.verified} />
         )}
         <Button.Link
           className="p-0 ml-auto my-auto"
@@ -53,7 +74,7 @@ const Phone: FunctionComponent<any> = ({
                   handleCancel={() => setButtonDisabled(false)}
                 />
               )}
-              {!disabled && <span>{data.number}</span>}
+              {!disabled && <span>{phone.number}</span>}
             </dd>
           </dl>
         )}
@@ -62,18 +83,27 @@ const Phone: FunctionComponent<any> = ({
   );
 };
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps: MapStateToProps<
+  StateProps,
+  OwnProps,
+  RootState
+> = state => {
   return {
-    phone: state.root.user.phone
+    phone: state.root.user.phone.data,
+    loading: state.root.user.phone.loading
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
+  dispatch: any
+) => {
   return {
     loadUserPhone: () => dispatch(loadUserPhone())
   };
 };
 
-const enhance = compose<any, any>(connect(mapStateToProps, mapDispatchToProps));
+const enhance = compose<InnerProps, OutterProps>(
+  connect(mapStateToProps, mapDispatchToProps)
+);
 
-export default enhance(Phone);
+export default enhance(Panel);

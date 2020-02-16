@@ -22,24 +22,24 @@ import queryString, { ParseOptions } from "query-string";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { push } from "connected-react-router";
 
-interface StateProps {}
-
-interface FormData {
+type FormData = {
   code: string;
   email: string;
   password: string;
   newPassword: string;
-}
+};
 
-interface OutterProps {}
+type OwnProps = RouteComponentProps;
 
-type InnerProps = InjectedFormProps<FormData, Props> &
-  StateProps &
-  RouteComponentProps;
+type StateProps = {};
+
+type OutterProps = {};
+
+type InnerProps = InjectedFormProps<FormData, Props> & StateProps;
 
 type Props = InnerProps & OutterProps;
 
-const CustomForm: FunctionComponent<Props> = ({
+const Reset: FunctionComponent<Props> = ({
   handleSubmit,
   error,
   submitting,
@@ -96,7 +96,7 @@ const CustomForm: FunctionComponent<Props> = ({
   </Form>
 );
 
-const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
+const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   _state,
   ownProps
 ) => {
@@ -142,4 +142,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(CustomForm);
+export default enhance(Reset);

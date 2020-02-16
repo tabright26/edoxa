@@ -7,17 +7,17 @@ import { RootState } from "store/types";
 import { CountryOptions } from "types";
 import { Label } from "reactstrap";
 
-interface OwnProps {
+type OwnProps = {
   label?: string;
   placeholder?: string;
   size?: string;
   disabled?: boolean;
   onChange?: (event: SyntheticEvent) => void;
-}
+};
 
-interface StateProps {
+type StateProps = {
   countries: CountryOptions[];
-}
+};
 
 type InnerProps = StateProps;
 
@@ -25,7 +25,7 @@ type OutterProps = OwnProps;
 
 type Props = InnerProps & OutterProps;
 
-const CountryField: FunctionComponent<Props> = ({
+const Country: FunctionComponent<Props> = ({
   countries,
   disabled = false,
   label = null,
@@ -65,4 +65,4 @@ const mapStateToProps: MapStateToProps<
 
 const enhance = compose<InnerProps, OutterProps>(connect(mapStateToProps));
 
-export default enhance(CountryField);
+export default enhance(Country);

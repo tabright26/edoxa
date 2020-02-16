@@ -17,20 +17,23 @@ import {
   PHONE_REGEXP
 } from "utils/form/validators";
 
-interface StateProps {}
-
-interface FormData {
+type FormData = {
   number: number;
-}
-interface OutterProps {
+};
+
+type OwnProps = {};
+
+type StateProps = {};
+
+type OutterProps = {
   handleCancel: () => void;
-}
+};
 
 type InnerProps = InjectedFormProps<FormData, Props> & StateProps;
 
 type Props = InnerProps & OutterProps;
 
-const CustomForm: FunctionComponent<Props> = ({
+const Update: FunctionComponent<Props> = ({
   handleSubmit,
   error,
   handleCancel,
@@ -57,7 +60,7 @@ const CustomForm: FunctionComponent<Props> = ({
 
 const mapStateToProps: MapStateToProps<
   StateProps,
-  Props,
+  OwnProps,
   RootState
 > = state => {
   const { data } = state.root.user.phone;
@@ -80,7 +83,7 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel(),
+    onSubmitSuccess: (_result, _dispatch, { handleCancel }) => handleCancel(),
     validate: values => {
       const errors: FormErrors<FormData> = {};
       if (!values.number) {
@@ -93,4 +96,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(CustomForm);
+export default enhance(Update);

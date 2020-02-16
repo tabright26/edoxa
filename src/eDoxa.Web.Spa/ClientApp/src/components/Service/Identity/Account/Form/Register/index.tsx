@@ -32,10 +32,6 @@ import {
 } from "utils/form/validators";
 import { COUNTRY_CA, Country } from "types/identity";
 
-type StateProps = {};
-
-type OwnProps = {};
-
 export interface RegisterUserAccountFormData {
   email: string;
   password: string;
@@ -43,6 +39,10 @@ export interface RegisterUserAccountFormData {
   countryIsoCode: Country;
   dob: string;
 }
+
+type StateProps = {};
+
+type OwnProps = {};
 
 type InnerProps = StateProps &
   InjectedFormProps<RegisterUserAccountFormData, Props>;
@@ -140,7 +140,7 @@ const Register: FunctionComponent<Props> = ({
               <FontAwesomeIcon icon={faFlag} />
             </InputGroupText>
           </InputGroupAddon>
-          <AddressField.CountryIsoCode size={null} placeholder="Country" />
+          <AddressField.Country size={null} placeholder="Country" />
         </InputGroup>
       </Col>
     </FormGroup>

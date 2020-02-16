@@ -16,7 +16,6 @@ import { RootActions } from "store/types";
 
 export const initialState: UserProfileState = {
   data: null,
-  error: null,
   loading: false
 };
 
@@ -24,50 +23,41 @@ export const reducer: Reducer<UserProfileState, RootActions> = produce(
   (draft: Draft<UserProfileState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_USER_PROFILE: {
-        draft.error = null;
         draft.loading = true;
         break;
       }
       case LOAD_USER_PROFILE_SUCCESS: {
         draft.data = action.payload.data;
-        draft.error = null;
         draft.loading = false;
         break;
       }
       case LOAD_USER_PROFILE_FAIL: {
-        draft.error = action.error;
         draft.loading = false;
         break;
       }
       case CREATE_USER_PROFILE: {
-        draft.error = null;
         draft.loading = false;
         break;
       }
       case CREATE_USER_PROFILE_SUCCESS: {
         draft.data = action.payload.data;
-        draft.error = null;
         draft.loading = false;
         break;
       }
       case CREATE_USER_PROFILE_FAIL: {
-        draft.error = action.error;
         draft.loading = false;
         break;
       }
       case UPDATE_USER_PROFILE: {
-        draft.error = null;
         draft.loading = false;
         break;
       }
       case UPDATE_USER_PROFILE_SUCCESS: {
         draft.data = action.payload.data;
-        draft.error = null;
         draft.loading = false;
         break;
       }
       case UPDATE_USER_PROFILE_FAIL: {
-        draft.error = action.error;
         draft.loading = false;
         break;
       }

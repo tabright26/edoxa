@@ -19,13 +19,13 @@ import {
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
-import { Gender, GENDER_MALE } from "types/identity";
+import { Gender, GENDER_MALE, FirstName, LastName } from "types/identity";
 
-interface FormData {
-  firstName: string;
-  lastName: string;
+type FormData = {
+  firstName: FirstName;
+  lastName: LastName;
   gender: Gender;
-}
+};
 
 type StateProps = {
   initialValues: {

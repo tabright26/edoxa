@@ -10,18 +10,18 @@ import { throwSubmissionError } from "utils/form/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { AddressId } from "types/identity";
 
-interface FormData {}
+type FormData = {};
 
-interface OutterProps {
+type OutterProps = {
   addressId: AddressId;
   handleCancel: () => void;
-}
+};
 
 type InnerProps = InjectedFormProps<FormData, Props>;
 
 type Props = InnerProps & OutterProps;
 
-const CustomForm: FunctionComponent<Props> = ({
+const Delete: FunctionComponent<Props> = ({
   handleSubmit,
   error,
   handleCancel,
@@ -57,4 +57,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(CustomForm);
+export default enhance(Delete);

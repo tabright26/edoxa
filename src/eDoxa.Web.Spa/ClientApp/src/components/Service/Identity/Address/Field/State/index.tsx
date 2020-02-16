@@ -7,19 +7,19 @@ import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import { Country } from "types/identity";
 
-interface OwnProps {
+type OwnProps = {
   label?: string;
   placeholder: string;
   countryIsoCode: Country;
-}
+};
 
-interface StateProps {
+type StateProps = {
   regions: CountryRegionOptions[];
-}
+};
 
 type Props = OwnProps & StateProps;
 
-const CountryField: FunctionComponent<Props> = ({
+const State: FunctionComponent<Props> = ({
   regions,
   label = null,
   placeholder
@@ -52,4 +52,4 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   };
 };
 
-export default connect(mapStateToProps)(CountryField);
+export default connect(mapStateToProps)(State);

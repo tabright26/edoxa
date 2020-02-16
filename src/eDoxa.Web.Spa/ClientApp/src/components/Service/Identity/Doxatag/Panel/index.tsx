@@ -3,37 +3,49 @@ import { Card, CardHeader, CardBody } from "reactstrap";
 import DoxatagForm from "components/Service/Identity/Doxatag/Form";
 import { compose } from "recompose";
 import { Loading } from "components/Shared/Loading";
-import { connect } from "react-redux";
+import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import { loadUserDoxatagHistory } from "store/actions/identity";
 import { produce, Draft } from "immer";
 import { Doxatag } from "types/identity";
 
-const Panel: FunctionComponent<any> = ({
+type OwnProps = {};
+
+type StateProps = {
+  doxatag?: Doxatag;
+  loading: boolean;
+};
+
+type DispatchProps = {
+  loadUserDoxatagHistory: () => void;
+};
+
+type InnerProps = StateProps & DispatchProps;
+
+type OutterProps = {
+  className?: string;
+};
+
+type Props = InnerProps & OutterProps;
+
+const Panel: FunctionComponent<Props> = ({
   className,
-  doxatag: { data, loading },
+  doxatag,
+  loading,
   loadUserDoxatagHistory
 }) => {
   useEffect((): void => {
-    if (data === null) {
+    if (doxatag === null) {
       loadUserDoxatagHistory();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const disabled = !data || buttonDisabled;
+  const disabled = !doxatag || buttonDisabled;
   return (
     <Card className={`card-accent-primary ${className}`}>
       <CardHeader className="d-flex">
         <strong className="text-uppercase my-auto">DOXATAG</strong>
-        {/* <Button.Link
-          className="p-0 ml-auto my-auto"
-          icon={faEdit}
-          disabled={disabled}
-          onClick={() => setButtonDisabled(true)}
-        >
-          UPDATE
-        </Button.Link> */}
       </CardHeader>
       <CardBody>
         {loading ? (
@@ -49,7 +61,7 @@ const Panel: FunctionComponent<any> = ({
               )}
               {!disabled && (
                 <span>
-                  {data.name}#{data.code}
+                  {doxatag.name}#{doxatag.code}
                 </span>
               )}
             </dd>
@@ -60,28 +72,34 @@ const Panel: FunctionComponent<any> = ({
   );
 };
 
-const mapStateToProps = (state: RootState) => {
-  const { data, error, loading } = state.root.user.doxatagHistory;
+const mapStateToProps: MapStateToProps<
+  StateProps,
+  OwnProps,
+  RootState
+> = state => {
+  const { data, loading } = state.root.user.doxatagHistory;
   const doxatags = produce(data, (draft: Draft<Doxatag[]>) => {
     draft.sort((left: Doxatag, right: Doxatag) =>
       left.timestamp < right.timestamp ? 1 : -1
     );
   });
+  const doxatag = doxatags[0] || null;
   return {
-    doxatag: {
-      data: doxatags[0] || null,
-      error,
-      loading
-    }
+    doxatag,
+    loading
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
+  dispatch: any
+) => {
   return {
     loadUserDoxatagHistory: () => dispatch(loadUserDoxatagHistory())
   };
 };
 
-const enhance = compose<any, any>(connect(mapStateToProps, mapDispatchToProps));
+const enhance = compose<InnerProps, OutterProps>(
+  connect(mapStateToProps, mapDispatchToProps)
+);
 
 export default enhance(Panel);

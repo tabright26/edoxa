@@ -22,7 +22,7 @@ import {
   getProfilePromotionalCodePath,
   getProfileChallengeHistoryPath
 } from "utils/coreui/constants";
-import EmailAlert from "components/Service/Identity/Email/Alert";
+import EmailAlert from "components/Service/Identity/Account/Email/Alert";
 
 const ProfileOverview = React.lazy(() => import("./Overview"));
 const ProfileDetails = React.lazy(() => import("./Details"));

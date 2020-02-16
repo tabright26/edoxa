@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import ProfilePanel from "components/Service/Identity/Profile/Panel";
 import EmailPanel from "components/Service/Identity/Email/Panel";
-import AddressPanel from "components/Service/Identity/Address/List";
+import AddressPanel from "components/Service/Identity/Address/Panel";
 
 const ProfileDetails: FunctionComponent = () => (
   <>

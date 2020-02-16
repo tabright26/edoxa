@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { Card, CardBody } from "reactstrap";
-import PasswordForm from "components/Service/Identity/Password/Form";
+import PasswordForm from "components/Service/Identity/Account/Password/Form";
 
 const Forgot: FunctionComponent = () => (
   <Card className="mx-4">

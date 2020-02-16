@@ -5,15 +5,36 @@ import { compose } from "recompose";
 import { Loading } from "components/Shared/Loading";
 import { RootState } from "store/types";
 import { loadUserEmail } from "store/actions/identity";
-import { connect } from "react-redux";
+import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
+import { Email } from "types/identity";
 
-const Email: FunctionComponent<any> = ({
+type OwnProps = {};
+
+type StateProps = {
+  email?: Email;
+  loading: boolean;
+};
+
+type DispatchProps = {
+  loadUserEmail: () => void;
+};
+
+type InnerProps = StateProps & DispatchProps;
+
+type OutterProps = {
+  className?: string;
+};
+
+type Props = InnerProps & OutterProps;
+
+const Panel: FunctionComponent<Props> = ({
   className,
-  email: { data, error, loading },
+  email,
+  loading,
   loadUserEmail
 }) => {
   useEffect((): void => {
-    if (data === null) {
+    if (email === null) {
       loadUserEmail();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -22,17 +43,17 @@ const Email: FunctionComponent<any> = ({
     <Card className={`card-accent-primary ${className}`}>
       <CardHeader className="d-flex">
         <strong className="text-uppercase my-auto">EMAIL</strong>
-        {data && (
-          <Badge.Verified className="ml-3 my-auto" verified={data.verified} />
+        {email && (
+          <Badge.Verified className="ml-3 my-auto" verified={email.verified} />
         )}
       </CardHeader>
       <CardBody>
         {loading ? (
           <Loading />
-        ) : data ? (
+        ) : email ? (
           <dl className="row mb-0">
             <dd className="col-sm-3 mb-0 text-muted">Email</dd>
-            <dd className="col-sm-9 mb-0">{data.address}</dd>
+            <dd className="col-sm-9 mb-0">{email.address}</dd>
           </dl>
         ) : (
           <span>Not found</span>
@@ -42,18 +63,27 @@ const Email: FunctionComponent<any> = ({
   );
 };
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps: MapStateToProps<
+  StateProps,
+  OwnProps,
+  RootState
+> = state => {
   return {
-    email: state.root.user.email
+    email: state.root.user.email.data,
+    loading: state.root.user.email.loading
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
+  dispatch: any
+) => {
   return {
     loadUserEmail: () => dispatch(loadUserEmail())
   };
 };
 
-const enhance = compose<any, any>(connect(mapStateToProps, mapDispatchToProps));
+const enhance = compose<InnerProps, OutterProps>(
+  connect(mapStateToProps, mapDispatchToProps)
+);
 
-export default enhance(Email);
+export default enhance(Panel);

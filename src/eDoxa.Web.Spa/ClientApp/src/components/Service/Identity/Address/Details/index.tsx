@@ -4,13 +4,13 @@ import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import { Address } from "types/identity";
 
-interface OwnProps {
+type OwnProps = {
   address: Address;
-}
+};
 
-interface StateProps {
+type StateProps = {
   countryName: string;
-}
+};
 
 type InnerProps = StateProps;
 
@@ -18,7 +18,7 @@ type OutterProps = OwnProps;
 
 type Props = InnerProps & OutterProps;
 
-const AddressDetails: FunctionComponent<Props> = ({ countryName, address }) => (
+const Details: FunctionComponent<Props> = ({ countryName, address }) => (
   <address className="text-uppercase m-0">
     <span>{address.line1}</span>
     <br />
@@ -46,4 +46,4 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
 
 const enhance = compose<InnerProps, OutterProps>(connect(mapStateToProps));
 
-export default enhance(AddressDetails);
+export default enhance(Details);

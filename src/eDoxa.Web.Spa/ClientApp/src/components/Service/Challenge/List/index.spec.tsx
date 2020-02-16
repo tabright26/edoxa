@@ -11,7 +11,7 @@ it("renders without crashing", () => {
         root: {
           challenge: {
             data: [],
-            error: null,
+
             loading: false
           }
         }

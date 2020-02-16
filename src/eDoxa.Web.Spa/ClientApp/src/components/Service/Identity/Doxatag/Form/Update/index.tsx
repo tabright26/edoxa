@@ -24,21 +24,21 @@ import produce, { Draft } from "immer";
 import authorizeService from "utils/oidc/AuthorizeService";
 import { Doxatag } from "types/identity";
 
-interface FormData {
+type FormData = {
   name: string;
-}
+};
 
-interface StateProps {}
+type StateProps = {};
 
-interface OutterProps {
+type OutterProps = {
   handleCancel: () => void;
-}
+};
 
 type InnerProps = InjectedFormProps<FormData, Props> & StateProps;
 
 type Props = InnerProps & OutterProps;
 
-const CustomForm: FunctionComponent<Props> = ({
+const Update: FunctionComponent<Props> = ({
   error,
   handleSubmit,
   submitting,
@@ -72,8 +72,9 @@ const mapStateToProps: MapStateToProps<
       left.timestamp < right.timestamp ? 1 : -1
     );
   });
+  const doxatag = doxatags[0] || null;
   return {
-    initialValues: doxatags[0] || null
+    initialValues: doxatag
   };
 };
 
@@ -91,7 +92,7 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (result, dispatch, { handleCancel }) => {
+    onSubmitSuccess: (_result, _dispatch, { handleCancel }) => {
       handleCancel();
       authorizeService.signIn({
         returnUrl: window.location.pathname
@@ -113,4 +114,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(CustomForm);
+export default enhance(Update);

@@ -27,22 +27,22 @@ import { withUserProfileCountry } from "utils/oidc/containers";
 import { HocUserProfileCountryStateProps } from "utils/oidc/containers/types";
 import { Country } from "types/identity";
 
-type OwnProps = HocUserProfileCountryStateProps;
-
-interface StateProps {
-  fieldsOptions: AddressFieldsOptions;
-  validatorOptions: AddressValidatorOptions;
-  countryIsoCode: Country;
-}
-
-interface FormData {
+type FormData = {
   countryIsoCode: string;
   line1: string;
   line2: string;
   city: string;
   state: string;
   postalCode: string;
-}
+};
+
+type OwnProps = HocUserProfileCountryStateProps;
+
+type StateProps = {
+  fieldsOptions: AddressFieldsOptions;
+  validatorOptions: AddressValidatorOptions;
+  countryIsoCode: Country;
+};
 
 type OutterProps = {
   handleCancel: () => void;
@@ -52,7 +52,7 @@ type InnerProps = InjectedFormProps<FormData, Props> & StateProps;
 
 type Props = InnerProps & OutterProps;
 
-const CustomForm: FunctionComponent<Props> = ({
+const Create: FunctionComponent<Props> = ({
   handleSubmit,
   error,
   handleCancel,
@@ -65,7 +65,7 @@ const CustomForm: FunctionComponent<Props> = ({
   <Form onSubmit={handleSubmit}>
     <ValidationSummary anyTouched={anyTouched} error={error} />
     <FormGroup>
-      <FormField.CountryIsoCode
+      <FormField.Country
         label={country.label}
         placeholder={country.placeholder}
         onChange={() => reset()}
@@ -191,4 +191,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(CustomForm);
+export default enhance(Create);

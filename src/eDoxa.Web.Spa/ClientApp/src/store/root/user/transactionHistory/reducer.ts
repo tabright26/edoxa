@@ -11,7 +11,6 @@ import { Transaction } from "types/cashier";
 
 export const initialState: UserTransactionState = {
   data: [],
-  error: null,
   loading: false
 };
 
@@ -22,7 +21,6 @@ export const reducer: Reducer<UserTransactionState, RootActions> = produce(
   (draft: Draft<UserTransactionState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_USER_TRANSACTION_HISTORY: {
-        draft.error = null;
         draft.loading = true;
         break;
       }
@@ -30,7 +28,6 @@ export const reducer: Reducer<UserTransactionState, RootActions> = produce(
         const { status, data } = action.payload;
         switch (status) {
           case 204: {
-            draft.error = null;
             draft.loading = false;
             break;
           }
@@ -44,7 +41,6 @@ export const reducer: Reducer<UserTransactionState, RootActions> = produce(
               }
             });
             draft.data.sort(compare);
-            draft.error = null;
             draft.loading = false;
             break;
           }
@@ -52,7 +48,6 @@ export const reducer: Reducer<UserTransactionState, RootActions> = produce(
         break;
       }
       case LOAD_USER_TRANSACTION_HISTORY_FAIL: {
-        draft.error = action.error;
         draft.loading = false;
         break;
       }

@@ -4,21 +4,45 @@ import { Card, CardHeader, CardBody } from "reactstrap";
 import UserProfileForm from "components/Service/Identity/Profile/Form";
 import { compose } from "recompose";
 import { Loading } from "components/Shared/Loading";
-import { connect } from "react-redux";
+import { connect, MapStateToProps, MapDispatchToProps } from "react-redux";
 import { RootState } from "store/types";
 import { loadUserProfile } from "store/actions/identity";
 import { withUserProfileDob } from "utils/oidc/containers";
 import Moment from "react-moment";
 import Button from "components/Shared/Button";
+import { UserProfile, UserDob } from "types/identity";
 
-const Profile: FunctionComponent<any> = ({
+type OwnProps = {};
+
+type StateProps = {
+  profile?: UserProfile;
+  loading: boolean;
+};
+
+type DispatchProps = {
+  loadUserProfile: () => void;
+};
+
+type InnerProps = StateProps &
+  DispatchProps & {
+    dob: UserDob;
+  };
+
+type OutterProps = {
+  className?: string;
+};
+
+type Props = InnerProps & OutterProps;
+
+const Panel: FunctionComponent<Props> = ({
   className,
-  profile: { data, loading },
+  profile,
+  loading,
   loadUserProfile,
   dob
 }) => {
   useEffect((): void => {
-    if (data === null) {
+    if (profile === null) {
       loadUserProfile();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -33,7 +57,7 @@ const Profile: FunctionComponent<any> = ({
           icon={faEdit}
           size="sm"
           uppercase
-          disabled={buttonDisabled || !data}
+          disabled={buttonDisabled || !profile}
           onClick={() => setButtonDisabled(true)}
         >
           UPDATE
@@ -42,7 +66,7 @@ const Profile: FunctionComponent<any> = ({
       <CardBody>
         {loading ? (
           <Loading />
-        ) : !data ? (
+        ) : !profile ? (
           <UserProfileForm.Create
             handleCancel={() => setButtonDisabled(false)}
           />
@@ -50,10 +74,10 @@ const Profile: FunctionComponent<any> = ({
           <dl className="row mb-0">
             <dd className="col-sm-3 text-muted">Name</dd>
             <dd className="col-sm-9">
-              {data.firstName} {data.lastName}
+              {profile.firstName} {profile.lastName}
             </dd>
             <dd className="col-sm-3 text-muted">Gender</dd>
-            <dd className="col-sm-9">{data.gender}</dd>
+            <dd className="col-sm-9">{profile.gender}</dd>
             <dd className="col-sm-3 mb-0 text-muted">Date of birth</dd>
             <dd className="col-sm-9 mb-0">
               <Moment date={[dob.year, dob.month - 1, dob.day]} format="ll" />
@@ -69,21 +93,28 @@ const Profile: FunctionComponent<any> = ({
   );
 };
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps: MapStateToProps<
+  StateProps,
+  OwnProps,
+  RootState
+> = state => {
   return {
-    profile: state.root.user.profile
+    profile: state.root.user.profile.data,
+    loading: state.root.user.profile.loading
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
+  dispatch: any
+) => {
   return {
     loadUserProfile: () => dispatch(loadUserProfile())
   };
 };
 
-const enhance = compose<any, any>(
+const enhance = compose<InnerProps, OutterProps>(
   withUserProfileDob,
   connect(mapStateToProps, mapDispatchToProps)
 );
 
-export default enhance(Profile);
+export default enhance(Panel);

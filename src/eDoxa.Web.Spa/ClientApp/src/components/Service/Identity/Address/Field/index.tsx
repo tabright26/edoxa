@@ -1,7 +1,7 @@
-import CountryIsoCode from "./CountryIsoCode";
+import Country from "./Country";
 import State from "./State";
 
 export default {
-  CountryIsoCode,
+  Country,
   State
 };

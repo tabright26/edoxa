@@ -1,10 +1,16 @@
 import React, { useState, FunctionComponent } from "react";
 import { faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
-import AddressDetails from "components/Service/Identity/Address/Details";
+import Details from "components/Service/Identity/Address/Details";
 import AddressForm from "components/Service/Identity/Address/Form";
 import Button from "components/Shared/Button";
+import { Address } from "types/identity";
 
-const AddressItem: FunctionComponent<any> = ({ hasMore, address }) => {
+type Props = {
+  hasMore: boolean;
+  address: Address;
+};
+
+const Item: FunctionComponent<Props> = ({ hasMore, address }) => {
   const [updateFormHidden, hideUpdateForm] = useState(true);
   const [deleteFormHidden, hideDeleteForm] = useState(true);
   return (
@@ -20,7 +26,7 @@ const AddressItem: FunctionComponent<any> = ({ hasMore, address }) => {
           </dd>
         ) : (
           <dd className="col-sm-5 m-0">
-            <AddressDetails address={address} />
+            <Details address={address} />
             {!deleteFormHidden && (
               <AddressForm.Delete
                 addressId={address.id}
@@ -57,4 +63,4 @@ const AddressItem: FunctionComponent<any> = ({ hasMore, address }) => {
   );
 };
 
-export default AddressItem;
+export default Item;
