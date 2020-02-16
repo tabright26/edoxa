@@ -96,14 +96,14 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
                             Id = default(Guid),
                             EntryFeeCurrency = default(int),
                             EntryFeeAmount = default(decimal),
-                            PayoutEntries = default(int)
+                            Entries = default(int)
                         })
                     .Select(
                         record =>
                         {
                             var payoutStrategy = new ChallengePayoutFactory().CreateInstance();
 
-                            var payoutEntries = new ChallengePayoutEntries(record.PayoutEntries);
+                            var payoutEntries = new ChallengePayoutEntries(record.Entries / 2);
 
                             var currency = CurrencyType.FromValue(record.EntryFeeCurrency)!;
 
