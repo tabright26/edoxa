@@ -4,47 +4,40 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import List from ".";
 import store from "store";
+import {
+  createChallenge,
+  createChallengeParticipant
+} from "test/service/challenges";
+import { LOAD_CHALLENGE_SUCCESS } from "store/actions/challenge/types";
+import { createAction } from "test/helper";
+import { GAME_LEAGUEOFLEGENDS } from "types/games";
+import { CHALLENGE_STATE_INSCRIPTION } from "types/challenges";
 
 it("renders without crashing", () => {
   // Arrange
-  // const challenges: ChallengesState = {
-  //   data: [
-  //     {
-  //       id: "123",
-  //       name: "",
-  //       state: "Inscription",
-  //       bestOf: 3,
-  //       entries: 10,
-  //       game: "LeagueOfLegends",
-  //       payoutEntries: 5,
-  //       participants: [
-  //         { id: "id1", user: null, challengeId: "123", score: 0, matches: [] }
-  //       ],
-  //       timeline: {
-  //         createdAt: 123123123,
-  //         startedAt: null,
-  //         endedAt: null,
-  //         closedAt: null
-  //       },
-  //       scoring: new Map<string, string>(),
-  //       payout: {
-  //         challengeId: "123",
-  //         entryFee: { type: CURRENCY_TYPE_TOKEN, amount: 0 },
-  //         prizePool: { type: CURRENCY_TYPE_TOKEN, amount: 200000 },
-  //         buckets: []
-  //       }
-  //     }
-  //   ],
-  //   loading: false,
-  //   error: null
-  // };
+  const challengeId = "ChallengeId";
+  const challengeParticipant = createChallengeParticipant(challengeId);
+  const challenge = createChallenge(
+    challengeId,
+    "ChallengeName",
+    GAME_LEAGUEOFLEGENDS,
+    CHALLENGE_STATE_INSCRIPTION,
+    3,
+    10,
+    [challengeParticipant]
+  );
+  const action = createAction(LOAD_CHALLENGE_SUCCESS, challenge);
+  store.dispatch(action);
 
   // Act
   const tree = renderer
     .create(
       <Provider store={store}>
         <MemoryRouter>
-          <List participantId="123" />
+          <List
+            challengeId={challenge.id}
+            participantId={challengeParticipant.id}
+          />
         </MemoryRouter>
       </Provider>
     )

@@ -1,4 +1,20 @@
 import { ReactWrapper } from "enzyme";
+import { RootActions } from "store/types";
+
+export function createAction(type: any, data: any): RootActions {
+  return {
+    type,
+    payload: {
+      status: 200,
+      statusText: "OK",
+      headers: {},
+      config: {},
+      data
+    },
+    error: null,
+    meta: null
+  };
+}
 
 export function findFieldByName(
   wrapper: ReactWrapper,

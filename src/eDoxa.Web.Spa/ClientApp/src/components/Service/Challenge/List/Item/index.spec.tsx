@@ -5,6 +5,7 @@ import { MemoryRouter } from "react-router-dom";
 import Item from ".";
 import { ChallengesState } from "store/root/challenge/types";
 import { CURRENCY_TYPE_TOKEN } from "types/cashier";
+import store from "store";
 
 it("renders without crashing", () => {
   // Arrange

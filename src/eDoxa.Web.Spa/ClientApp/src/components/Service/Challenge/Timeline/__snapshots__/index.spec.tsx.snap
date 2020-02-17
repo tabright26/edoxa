@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+Array [
+  <span
+    className="text-uppercase btn btn-block text-light bg-dark"
+  >
+    Timeline
+  </span>,
+  <span
+    className="btn btn-block btn-sm text-light mt-2 bg-primary"
+    title="Inscription (current)"
+  >
+    <time
+      dateTime={"1973-03-03T09:46:40.000Z"}
+    >
+      Mar 3, 1973 4:46 AM
+    </time>
+  </span>,
+  <span
+    className="btn btn-block btn-sm text-light mt-2 bg-secondary"
+    title="Started"
+  >
+    <span>
+      ...
+    </span>
+  </span>,
+  <span
+    className="btn btn-block btn-sm text-light mt-2 bg-secondary"
+    title="Ended"
+  >
+    <span>
+      ...
+    </span>
+  </span>,
+  <span
+    className="btn btn-block btn-sm text-light mt-2 bg-secondary"
+    title="Closed"
+  >
+    <span>
+      ...
+    </span>
+  </span>,
+]
+`;

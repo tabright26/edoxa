@@ -2,25 +2,10 @@ import React from "react";
 import renderer from "react-test-renderer";
 import List from ".";
 import { Provider } from "react-redux";
+import store from "store";
 
 it("renders without crashing", () => {
   // Act
-  const store: any = {
-    getState: () => {
-      return {
-        root: {
-          challenge: {
-            data: [],
-
-            loading: false
-          }
-        }
-      };
-    },
-    dispatch: action => {},
-    subscribe: () => {}
-  };
-
   const tree = renderer
     .create(
       <Provider store={store}>
