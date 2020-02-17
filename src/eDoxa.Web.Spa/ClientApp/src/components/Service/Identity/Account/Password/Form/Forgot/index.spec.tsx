@@ -11,7 +11,7 @@ import {
   findSubmitButton,
   findInputByName,
   findFormFeedback
-} from "utils/test/helpers";
+} from "test/helper";
 
 const shallow = global["shallow"];
 const mount = global["mount"];

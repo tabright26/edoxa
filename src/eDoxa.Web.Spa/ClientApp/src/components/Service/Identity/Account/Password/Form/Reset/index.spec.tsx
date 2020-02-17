@@ -11,7 +11,7 @@ import {
   findSubmitButton,
   findInputByName,
   findFormFeedback
-} from "utils/test/helpers";
+} from "test/helper";
 
 const shallow = global["shallow"];
 const mount = global["mount"];
@@ -53,7 +53,7 @@ describe("<UserPasswordResetForm />", () => {
 
     it("renders confirmPassword field", () => {
       const wrapper = createWrapper();
-      const field = findFieldByName(wrapper, "confirmPassword");
+      const field = findFieldByName(wrapper, "newPassword");
 
       expect(field.prop("type")).toBe("password");
       expect(field.prop("placeholder")).toBe("Confirm new password");

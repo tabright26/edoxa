@@ -11,7 +11,7 @@ import {
   findFieldByName,
   findSubmitButton,
   findCancelButton
-} from "utils/test/helpers";
+} from "test/helper";
 import { TRANSACTION_TYPE_DEPOSIT, CURRENCY_TYPE_MONEY } from "types/cashier";
 
 const shallow = global["shallow"];
