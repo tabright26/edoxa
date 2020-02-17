@@ -190,10 +190,12 @@
   ],
   "jest": {
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx}",
-      "!**/*index.js",
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/react-app-env.d.ts",
       "!src/serviceWorker.js",
-      "!src/polyfill.js"
+      "!src/serviceWorker.ts",
+      "!src/polyfill.js",
+      "!src/polyfill.ts"
     ]
   },
   "engines": {
