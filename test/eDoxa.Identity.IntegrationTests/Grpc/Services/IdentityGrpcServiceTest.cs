@@ -134,7 +134,10 @@ namespace eDoxa.Identity.IntegrationTests.Grpc.Services
 
             var client = new IdentityService.IdentityServiceClient(host.CreateChannel());
 
-            var request = new AddUserClaimRequest();
+            var request = new AddUserClaimRequest
+            {
+                UserId = user.Id.ToString()
+            };
 
             // Act
             var func = new Func<Task>(async () => await client.AddUserClaimAsync(request));
