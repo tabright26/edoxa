@@ -195,7 +195,11 @@ const GameIcon: FunctionComponent<GameIconProps> = ({
 
 const opts = {
   height: "200",
-  width: "350"
+  width: "350",
+  playerVars: {
+    // https://developers.google.com/youtube/player_parameters
+    autoplay: 0
+  }
 };
 
 const App = () => (
@@ -270,7 +274,15 @@ const App = () => (
       <Container>
         <h3 className="text-uppercase">How does it work?</h3>
         <div className="d-flex">
-          <YouTube opts={opts} className="mr-auto" videoId="tGvo3PmSRUc" />
+          <YouTube
+            opts={opts}
+            className="mr-auto"
+            videoId="tGvo3PmSRUc"
+            onReady={event => {
+              // access to player in all event handlers via event.target
+              event.target.pauseVideo();
+            }}
+          />
           <div className="text-muted d-flex ml-auto w-100">
             <LinkContainer to={getChallengesPath()}>
               <div className="m-auto">

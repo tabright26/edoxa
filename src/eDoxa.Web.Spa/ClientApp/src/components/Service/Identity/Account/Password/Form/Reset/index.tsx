@@ -83,7 +83,7 @@ const Reset: FunctionComponent<Props> = ({
       <Field
         type="password"
         name="newPassword"
-        placeholder="Repeat new password"
+        placeholder="Confirm new password"
         autoComplete="new-password"
         component={Input.Password}
       />

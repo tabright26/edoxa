@@ -35,11 +35,11 @@ const Generate: FunctionComponent<Props> = ({
     <ValidationSummary anyTouched={anyTouched} error={error} />
     <FormGroup>
       <Label>Summoner name</Label>
-      <Field name="summonerName" component={Input.Text} />
+      <Field type="text" name="summonerName" component={Input.Text} />
     </FormGroup>
     <FormGroup>
       <Label>Region</Label>
-      <Field name="region" component={Input.Select} disabled>
+      <Field type="select" name="region" component={Input.Select} disabled>
         <option value="NA">North America</option>
       </Field>
     </FormGroup>

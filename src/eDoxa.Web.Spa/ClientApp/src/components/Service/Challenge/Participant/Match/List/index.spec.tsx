@@ -39,12 +39,6 @@ it("renders without crashing", () => {
   //   error: null
   // };
 
-  // const store: any = {
-  //   getState: () => {},
-  //   dispatch: action => {},
-  //   subscribe: () => {}
-  // };
-
   // Act
   const tree = renderer
     .create(

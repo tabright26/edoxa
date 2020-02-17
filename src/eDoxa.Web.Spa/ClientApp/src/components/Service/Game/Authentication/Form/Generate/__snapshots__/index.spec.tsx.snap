@@ -37,7 +37,7 @@ exports[`renders correctly 1`] = `
     >
       Region
     </label>
-    <input
+    <select
       className="form-control-sm form-control"
       disabled={true}
       name="region"
@@ -46,9 +46,14 @@ exports[`renders correctly 1`] = `
       onDragStart={[Function]}
       onDrop={[Function]}
       onFocus={[Function]}
-      type="text"
-      value=""
-    />
+      value="NA"
+    >
+      <option
+        value="NA"
+      >
+        North America
+      </option>
+    </select>
   </div>
   <button
     aria-label={null}
