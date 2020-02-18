@@ -1,6 +1,6 @@
 ﻿// Filename: MoneyTest.cs
 // Date Created: 2019-11-25
-// 
+//
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
@@ -56,6 +56,22 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
 
             // Assert
             money.As<decimal>().Should().Be(result);
+        }
+
+        [Theory]
+        [InlineData(10, 1000)]
+        [InlineData(20, 2000)]
+        [InlineData(50, 5000)]
+        public void ToToken_ShouldBeResult(int amount, int result)
+        {
+            // Arrange
+            var money = new Money(amount);
+
+            // Act
+            var token = money.ToToken();
+
+            // Assert
+            token.Amount.Should().Be(result);
         }
     }
 }
