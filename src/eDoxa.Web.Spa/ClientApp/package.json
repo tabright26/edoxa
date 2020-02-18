@@ -48,7 +48,6 @@
     "formik": "^1.5.1",
     "humanize-duration": "^3.21.0",
     "immer": "^4.0.2",
-    "jest-junit": "^10.0.0",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
     "node-sass": "^4.13.1",
@@ -162,6 +161,7 @@
     "@types/yup": "^0.26.28",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
+    "jest-junit": "^10.0.0",
     "mutationobserver-shim": "^0.3.3",
     "react-scripts": "^3.3.0",
     "redux-mock-store": "^1.5.4",
@@ -175,6 +175,7 @@
     "test": "react-scripts test",
     "test:cov": "npm test -- --coverage --watchAll=false",
     "test:debug": "react-scripts --inspect-brk test --runInBand",
+    "test:ci": "react-scripts test --ci --coverage --reporters=default --reporters=jest-junit --watchAll=false",
     "eject": "react-scripts eject"
   },
   "bugs": {
@@ -202,6 +203,11 @@
       "!src/polyfill.js",
       "!src/polyfill.ts"
     ]
+  },
+  "jest-junit": {
+    "suiteName": "jest tests",
+    "outputDirectory": ".",
+    "outputName": "test-results.xml"
   },
   "engines": {
     "node": ">=8.10",
