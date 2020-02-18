@@ -39,16 +39,12 @@ import dota2Panel from "assets/img/arena/games/dota2/panel.png";
 import Layout from "components/App/Layout";
 import { Loading } from "components/Shared/Loading";
 import { LinkContainer } from "react-router-bootstrap";
-import {
-  getAccountRegisterPath,
-  getChallengesPath,
-  getProfileTransactionHistoryPath,
-  getDefaultPath
-} from "utils/coreui/constants";
+import { getAccountRegisterPath, getDefaultPath } from "utils/coreui/constants";
 import { ApplicationPaths } from "utils/oidc/ApiAuthorizationConstants";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import YouTube, { Options } from "react-youtube";
 import Beta from "components/App/Beta";
+import { sentenceCase } from "change-case";
 
 const Footer = React.lazy(() => import("components/App/Footer"));
 
@@ -257,7 +253,7 @@ const App = () => (
               <span className="text-primary">CASH</span>!
             </p>
             <span className="d-block">LIVE 2 PLAY</span>
-            <LinkContainer to={getChallengesPath()}>
+            <LinkContainer to={getAccountRegisterPath()}>
               <Button size="lg" color="primary" className="my-3">
                 PLAY 2 WIN
               </Button>
@@ -284,17 +280,17 @@ const App = () => (
             }}
           />
           <div className="text-muted d-flex ml-auto w-100">
-            <LinkContainer to={getChallengesPath()}>
+            <LinkContainer to={getAccountRegisterPath()}>
               <div className="m-auto">
                 <GameIcon icon={faTrophy} title="JOIN" subtitle="A CHALLENGE" />
               </div>
             </LinkContainer>
-            <LinkContainer to={getChallengesPath()}>
+            <LinkContainer to={getAccountRegisterPath()}>
               <div className="m-auto">
                 <GameIcon icon={faArchway} title="PLAY" subtitle="THE GAME" />
               </div>
             </LinkContainer>
-            <LinkContainer to={getProfileTransactionHistoryPath()}>
+            <LinkContainer to={getAccountRegisterPath()}>
               <div className="m-auto">
                 <GameIcon
                   icon={faCoins}
@@ -350,28 +346,38 @@ const App = () => (
               </CardHeader>
               <CardBody>
                 <dl className="row mb-0">
-                  <dt className="col-6 text-left">Kills</dt>
-                  <dd className="col-6 text-right text-success">+4</dd>
-                  <dt className="col-6 text-left">Assists</dt>
-                  <dd className="col-6 text-right text-success">+3.5</dd>
-                  <dt className="col-6 text-left">Deaths</dt>
+                  <dt className="col-6 text-left"> {sentenceCase("Kills")}</dt>
+                  <dd className="col-6 text-right text-success">+4.5</dd>
+                  <dt className="col-6 text-left"> {sentenceCase("Deaths")}</dt>
                   <dd className="col-6 text-right text-danger">-4</dd>
-                  <dt className="col-6 text-left">Minions</dt>
-                  <dd className="col-6 text-right text-success">+0.04</dd>
-                  <dt className="col-6 text-left">TotalDamageDealt</dt>
+                  <dt className="col-6 text-left">{sentenceCase("Assists")}</dt>
+                  <dd className="col-6 text-right text-success">+3.5</dd>
+                  <dt className="col-6 text-left">
+                    {sentenceCase("TotalDamageDealtToChampions")}
+                  </dt>
                   <dd className="col-6 text-right text-success">+0.0009</dd>
-                  <dt className="col-6 text-left">TotalDamageTaken</dt>
+                  <dt className="col-6 text-left">
+                    {sentenceCase("TotalDamageTaken")}
+                  </dt>
                   <dd className="col-6 text-right text-success">+0.00125</dd>
-                  <dt className="col-6 text-left">VisionScore</dt>
+                  <dt className="col-6 text-left">
+                    {sentenceCase("TotalMinionsKilled")}
+                  </dt>
+                  <dd className="col-6 text-right text-success">+0.04</dd>
+                  <dt className="col-6 text-left">
+                    {sentenceCase("VisionScore")}
+                  </dt>
                   <dd className="col-6 text-right text-success">+0.38</dd>
-                  <dt className="col-6 text-left mb-0">Win</dt>
+                  <dt className="col-6 text-left mb-0">
+                    {sentenceCase("Winner")}
+                  </dt>
                   <dd className="col-6 text-right text-success mb-0">+20</dd>
                 </dl>
               </CardBody>
             </Card>
           </Col>
           <Col md={12} className="text-center">
-            <LinkContainer to={getChallengesPath()}>
+            <LinkContainer to={getAccountRegisterPath()}>
               <Button size="lg" color="primary" className="mt-4">
                 PLAY NOW
               </Button>
@@ -395,7 +401,7 @@ const App = () => (
             commingSoon
           />
           <GamePanel
-            to={getChallengesPath()}
+            to={getAccountRegisterPath()}
             maxHeight="85px"
             className="mx-4"
             logo={leagueoflegendsLarge}
