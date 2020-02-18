@@ -47,7 +47,7 @@ import {
 } from "utils/coreui/constants";
 import { ApplicationPaths } from "utils/oidc/ApiAuthorizationConstants";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import YouTube from "react-youtube";
+import YouTube, { Options } from "react-youtube";
 import Beta from "components/App/Beta";
 
 const Footer = React.lazy(() => import("components/App/Footer"));
@@ -193,7 +193,7 @@ const GameIcon: FunctionComponent<GameIconProps> = ({
   );
 };
 
-const opts = {
+const opts: Options = {
   height: "200",
   width: "350",
   playerVars: {

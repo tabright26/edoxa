@@ -17,7 +17,6 @@ using eDoxa.Grpc.Protos.Payment.Requests;
 using eDoxa.Grpc.Protos.Payment.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
-using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 using eDoxa.ServiceBus.Abstractions;
@@ -34,8 +33,6 @@ using IdentityModel;
 using Microsoft.AspNetCore.TestHost;
 
 using Moq;
-
-using Stripe;
 
 using Xunit;
 

@@ -7,7 +7,7 @@ import { compose } from "recompose";
 import { ChallengeId, ChallengeTimeline } from "types/challenges";
 
 type Params = {
-  readonly challengeId: ChallengeId;
+  readonly challengeId?: ChallengeId;
 };
 
 type OwnProps = RouteComponentProps<Params> & Params;

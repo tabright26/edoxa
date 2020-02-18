@@ -4,6 +4,9 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
+using System;
+
+using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Repositories;
@@ -11,12 +14,27 @@ using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Strategies;
 using eDoxa.ServiceBus.Abstractions;
 
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+
 using Moq;
 
 namespace eDoxa.Cashier.TestHelper.Fixtures
 {
     public sealed class TestMockFixture
     {
+        private static readonly Lazy<CashierAppSettings> _cashierAppSettingsOptions = new Lazy<CashierAppSettings>(
+            () =>
+            {
+                var builder = new ConfigurationBuilder();
+
+                builder.AddJsonFile("appsettings.json", false);
+
+                var configuration = builder.Build();
+
+                return configuration.Get<CashierAppSettings>();
+            });
+
         public TestMockFixture()
         {
             AccountQuery = new Mock<IAccountQuery>();
@@ -56,5 +74,17 @@ namespace eDoxa.Cashier.TestHelper.Fixtures
         public Mock<IChallengePayoutFactory> ChallengePayoutFactory { get; }
 
         public Mock<IServiceBusPublisher> ServiceBusPublisher { get; }
+
+        public Mock<IOptionsSnapshot<CashierAppSettings>> CashierAppSettingsOptions
+        {
+            get
+            {
+                var mock = new Mock<IOptionsSnapshot<CashierAppSettings>>();
+
+                mock.Setup(snapshot => snapshot.Value).Returns(_cashierAppSettingsOptions.Value);
+
+                return mock;
+            }
+        }
     }
 }
