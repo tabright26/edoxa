@@ -48,6 +48,7 @@
     "formik": "^1.5.1",
     "humanize-duration": "^3.21.0",
     "immer": "^4.0.2",
+    "jest-junit": "^10.0.0",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
     "node-sass": "^4.13.1",
@@ -189,6 +190,10 @@
     "not op_mini all"
   ],
   "jest": {
+    "coverageReporters": [
+      "cobertura",
+      "html"
+    ],
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
       "!src/react-app-env.d.ts",
