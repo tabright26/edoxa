@@ -1,6 +1,6 @@
 ﻿// Filename: TransactionTest.cs
-// Date Created: 2019-12-26
-// 
+// Date Created: 2019-12-18
+//
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
@@ -22,6 +22,52 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
     {
         public TransactionTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
         {
+        }
+
+        [Fact]
+        public void MarkAsCanceled_WhenTransactionStatusPending_ShouldBeStatusSucceded()
+        {
+            // Arrange
+            var currency = Money.Twenty;
+            var description = new TransactionDescription("Transaction to cancel");
+            var type = TransactionType.Withdrawal;
+            var provider = new UtcNowDateTimeProvider();
+
+            var transaction = new Transaction(
+                currency,
+                description,
+                type,
+                provider);
+
+            // Act
+            transaction.MarkAsCanceled();
+
+            // Assert
+            transaction.Status.Should().Be(TransactionStatus.Canceled);
+        }
+
+        [Fact]
+        public void MarkAsCanceled_WhenTransactionStatusSucceeded_ShouldThrowInvalidOperationException()
+        {
+            // Arrange
+            var currency = Money.Twenty;
+            var description = new TransactionDescription("Transaction to cancel");
+            var type = TransactionType.Withdrawal;
+            var provider = new UtcNowDateTimeProvider();
+
+            var transaction = new Transaction(
+                currency,
+                description,
+                type,
+                provider);
+
+            transaction.MarkAsSucceeded();
+
+            // Act
+            var action = new Action(() => transaction.MarkAsCanceled());
+
+            // Assert
+            action.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -114,6 +160,50 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 
             // Assert
             action.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Price_WithTransactionFromMoney_ShouldBePriceMoney()
+        {
+            // Arrange
+            var currency = Money.Twenty;
+            var description = new TransactionDescription("Price to check");
+            var type = TransactionType.Withdrawal;
+            var provider = new UtcNowDateTimeProvider();
+
+            var transaction = new Transaction(
+                currency,
+                description,
+                type,
+                provider);
+
+            // Act Assert
+            transaction.Price.Should().NotBeNull();
+            var price = transaction.Price;
+            price.Amount.Should().Be(20);
+            price.Type.Should().Be(CurrencyType.Money);
+        }
+
+        [Fact]
+        public void Price_WithTransactionFromToken_ShouldBePriceMoney()
+        {
+            // Arrange
+            var currency = Token.FiftyThousand;
+            var description = new TransactionDescription("Price to check");
+            var type = TransactionType.Deposit;
+            var provider = new UtcNowDateTimeProvider();
+
+            var transaction = new Transaction(
+                currency,
+                description,
+                type,
+                provider);
+
+            // Act Assert
+            transaction.Price.Should().NotBeNull();
+            var price = transaction.Price;
+            price.Amount.Should().Be(500);
+            price.Type.Should().Be(CurrencyType.Money);
         }
 
         [Fact]
