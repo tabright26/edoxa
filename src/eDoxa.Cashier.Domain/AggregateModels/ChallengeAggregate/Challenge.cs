@@ -25,9 +25,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 
         public void Close(ChallengeScoreboard scoreboard)
         {
-            var payouts = new ChallengeParticipantPayouts();
+            var payouts = new ChallengeParticipantPayouts(scoreboard);
 
-            foreach (var bucket in scoreboard.Buckets)
+            foreach (var bucket in scoreboard.PayoutBuckets)
             {
                 for (var index = 0; index < bucket.Size; index++)
                 {
@@ -40,7 +40,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 
                     this.AddDomainEvent(new ChallengeParticipantPayoutDomainEvent(userId, bucket.Prize));
 
-                    payouts.Add(userId, new ChallengePayoutBucketPrize(bucket.Prize));
+                    payouts[userId] = new ChallengePayoutBucketPrize(bucket.Prize);
                 }
             }
 
@@ -48,7 +48,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
             {
                 this.AddDomainEvent(new ChallengeParticipantPayoutDomainEvent(userId, ChallengePayoutBucketPrize.Consolation));
 
-                payouts.Add(userId, new ChallengePayoutBucketPrize(ChallengePayoutBucketPrize.Consolation));
+                payouts[userId] = ChallengePayoutBucketPrize.Consolation;
             }
 
             this.AddDomainEvent(new ChallengeClosedDomainEvent(Id, payouts));
