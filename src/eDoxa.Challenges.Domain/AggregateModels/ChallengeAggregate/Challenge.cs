@@ -155,7 +155,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         // TODO: This should be refactored (security part).
         private bool CanSynchronize(Participant participant)
         {
-            return Timeline.EndedAt.HasValue && participant.SynchronizedAt < Timeline.EndedAt.Value.AddHours(2); // Security for matches synchronization.
+            return Timeline.EndedAt.HasValue && participant.SynchronizedAt < Timeline.EndedAt.Value.AddHours(2); // TODO: Should be externalized and set for each game. // Security for matches synchronization.
         }
     }
 

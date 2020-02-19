@@ -10,6 +10,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengePayoutBucketPrize : Currency
     {
+        public static readonly ChallengePayoutBucketPrize None = new ChallengePayoutBucketPrize();
         public static readonly ChallengePayoutBucketPrize Consolation = new ChallengePayoutBucketPrize(Token.MinValue);
 
         public ChallengePayoutBucketPrize(decimal amount, CurrencyType type) : base(amount, type)
@@ -18,6 +19,10 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
             {
                 throw new ArgumentException(nameof(amount));
             }
+        }
+
+        private ChallengePayoutBucketPrize() : base(0, CurrencyType.Token)
+        {
         }
 
         public ChallengePayoutBucketPrize(Currency currency) : this(currency.Amount, currency.Type)

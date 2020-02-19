@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { Row, Col } from "reactstrap";
+import { Row, Col, ColProps } from "reactstrap";
 import ChallengeItem from "./Item";
 import { Loading } from "components/Shared/Loading";
 import { compose } from "recompose";
@@ -21,12 +21,8 @@ type StateProps = { challenges: Challenge[]; loading: boolean };
 
 type InnerProps = StateProps;
 
-type OutterProps = {
+type OutterProps = ColProps & {
   userId?: UserId;
-  xs: string;
-  sm: string;
-  md: string;
-  lg: string;
 };
 
 type Props = InnerProps & OutterProps;
@@ -65,14 +61,15 @@ const List: FunctionComponent<Props> = ({
   xs,
   sm,
   md,
-  lg
+  lg,
+  xl
 }) =>
   loading ? (
     <Loading />
   ) : (
     <Row>
       {challenges.map((challenge, index) => (
-        <Col key={index} xs={xs} sm={sm} md={md} lg={lg}>
+        <Col key={index} xs={xs} sm={sm} md={md} lg={lg} xl={xl}>
           <ChallengeItem challenge={challenge} />
         </Col>
       ))}
