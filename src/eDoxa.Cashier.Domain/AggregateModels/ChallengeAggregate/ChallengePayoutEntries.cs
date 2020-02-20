@@ -1,6 +1,6 @@
 // Filename: ChallengePayoutEntries.cs
 // Date Created: 2019-11-25
-// 
+//
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
@@ -11,6 +11,7 @@ using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
+    // Francis: Pourquoi Payout Entries, pourquoi pas seulement ChallengeEntries ??? Je comprends pas le payout a rapport a quoi, ya déja bucket Size non ?
     public sealed class ChallengePayoutEntries : ValueObject
     {
         public static readonly ChallengePayoutEntries One = new ChallengePayoutEntries(1);
