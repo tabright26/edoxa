@@ -7,3 +7,13 @@ export function initializeReactGA(): void {
     history.listen(location => ReactGA.pageview(location.pathname));
   }
 }
+
+export function publishUserCreatedEvent() {
+  if (process.env.NODE_ENV === "production") {
+    ReactGA.event({
+      category: "Account",
+      action: "User registered to platform",
+      label: "User Created"
+    });
+  }
+}

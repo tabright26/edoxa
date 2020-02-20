@@ -23,6 +23,7 @@ import {
 import { loadStripePaymentMethods } from "store/actions/payment";
 import { MessengerCustomerChat } from "utils/facebook/MessengerCustomerChat";
 import { ToastrProvider } from "utils/toastr/Provider";
+import { CookiesProvider } from "react-cookie";
 
 loadUser(store, userManager).then(user => {
   if (user) {
@@ -36,19 +37,21 @@ store.dispatch<any>(loadChallengesStaticOptions());
 store.dispatch<any>(loadGamesStaticOptions());
 
 ReactDOM.render(
-  <Provider store={store}>
-    <OidcProvider store={store} userManager={userManager}>
-      <LocalizeProvider store={store} initialize={initialize}>
-        <StripeProvider
-          apiKey={process.env.REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY}
-        >
-          <App />
-        </StripeProvider>
-      </LocalizeProvider>
-    </OidcProvider>
-    <ToastrProvider />
-    <MessengerCustomerChat />
-  </Provider>,
+  <CookiesProvider>
+    <Provider store={store}>
+      <OidcProvider store={store} userManager={userManager}>
+        <LocalizeProvider store={store} initialize={initialize}>
+          <StripeProvider
+            apiKey={process.env.REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY}
+          >
+            <App />
+          </StripeProvider>
+        </LocalizeProvider>
+      </OidcProvider>
+      <ToastrProvider />
+      <MessengerCustomerChat />
+    </Provider>
+  </CookiesProvider>,
   document.getElementById("root")
 );
 
