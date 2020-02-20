@@ -14,9 +14,9 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
 {
-    public sealed class TokenTest : UnitTest
+    public sealed class ChallengePayoutBucketPrizeTest : UnitTest
     {
-        public TokenTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        public ChallengePayoutBucketPrizeTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
         {
         }
 
