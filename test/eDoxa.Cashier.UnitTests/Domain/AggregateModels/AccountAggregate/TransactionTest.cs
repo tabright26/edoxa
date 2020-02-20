@@ -211,23 +211,54 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
         {
             // Arrange
             var currency = Money.Fifty;
-            var description = new TransactionDescription("Test");
             var type = TransactionType.Deposit;
             var provider = new UtcNowDateTimeProvider();
 
             // Act
-            var transaction = new Transaction(
-                currency,
-                description,
-                type,
-                provider);
+            var transaction = new TransactionBuilder(type, currency).WithProvider(provider).Build();
 
             // Assert
             transaction.Timestamp.Should().Be(provider.DateTime);
             transaction.Currency.Should().Be(currency);
-            transaction.Description.Should().Be(description);
             transaction.Type.Should().Be(type);
             transaction.Status.Should().Be(TransactionStatus.Pending);
+        }
+
+        [Fact]
+        public void DescriptionToString_ShouldBeSame()
+        {
+            // Arrange
+            var currency = Money.Fifty;
+            var description = new TransactionDescription("Test");
+            var type = TransactionType.Deposit;
+            var provider = new UtcNowDateTimeProvider();
+
+            var transaction = new Transaction(currency, description, type, provider);
+
+            // Act Assert
+            transaction.Description.ToString().Should().Be("Test");
+        }
+
+        [Fact]
+        public void ConstructorWithDescription_WhenNoType_ShouldThrowInvalidOperationException()
+        {
+            // Arrange
+            var description = new TransactionDescription("Test");
+
+            // Act Assert
+            var action = new Action(() => new TransactionBuilder(TransactionType.All, new Money(500)).WithDescription(description).Build());
+            action.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void ConstructorWithProvider_WhenNoType_ShouldThrowInvalidOperationException()
+        {
+            // Arrange
+            var provider = new UtcNowDateTimeProvider();
+
+            // Act Assert
+            var action = new Action(() => new TransactionBuilder(TransactionType.All, new Token(100000)).WithProvider(provider).Build());
+            action.Should().Throw<InvalidOperationException>();
         }
     }
 }

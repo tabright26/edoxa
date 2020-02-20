@@ -120,7 +120,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 
         // Francis: Je sais vraiment pas si c"est nécessaire, mais je me rappel avoir vu dequoi par rapport au zéros dans les tests.
         [Fact]
-        public void GetHashCode_ShouldBeFromUserId()
+        public void GetHashCode_ShouldNotBeZero()
         {
             // Arrange
             var userId = new UserId();
