@@ -1,6 +1,6 @@
 ﻿// Filename: TransactionBuilder.cs
 // Date Created: 2019-12-26
-// 
+//
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
@@ -12,6 +12,8 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class TransactionBuilder : ITransactionBuilder
     {
+        // Francis: Refactor nécessaire, FormatCurrencyByType peux throw un exception avant que GetDefault peux throw la sienne. Bref, l'exception
+        // de GetDefaultDescription est impossible a throw parce que Format la throw avant.
         public TransactionBuilder(TransactionType type, Currency currency)
         {
             Type = type;
@@ -146,6 +148,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 }
             }
 
+            // Francis: Impossible de se rendre ici.
             throw InvalidOperationException(type, currency);
         }
 
