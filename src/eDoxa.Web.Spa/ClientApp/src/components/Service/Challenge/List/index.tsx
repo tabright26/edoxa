@@ -44,8 +44,8 @@ const lanetsChallenges = (
       .sort(
         (left, right) =>
           right.participants.length - left.participants.length ||
-          (left.name.startsWith("LAN ETS -")
-            ? right.name.startsWith("LAN ETS -")
+          (left.name.startsWith("DREAMHACK -")
+            ? right.name.startsWith("DREAMHACK -")
               ? 0
               : -1
             : 1) ||
