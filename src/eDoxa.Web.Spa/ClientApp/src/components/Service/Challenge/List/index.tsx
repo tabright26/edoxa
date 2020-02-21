@@ -5,7 +5,6 @@ import { Loading } from "components/Shared/Loading";
 import { compose } from "recompose";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
-import produce, { Draft } from "immer";
 import { HocUserProfileUserIdStateProps } from "utils/oidc/containers/types";
 import {
   CurrencyType,
@@ -29,30 +28,32 @@ type Props = InnerProps & OutterProps;
 
 const lanetsChallenges = (
   challenges: Challenge[],
-  currencyType: CurrencyType
-): Challenge => {
-  return (
-    challenges
-      .filter(
-        challenge =>
-          challenge.entries !== 30 &&
-          challenge.payout.entryFee.type.toUpperCase() ===
-            currencyType.toUpperCase() &&
-          challenge.state.toUpperCase() ===
-            CHALLENGE_STATE_INSCRIPTION.toUpperCase()
-      )
-      .sort(
-        (left, right) =>
-          right.participants.length - left.participants.length ||
-          (left.name.startsWith("DREAMHACK -")
-            ? right.name.startsWith("DREAMHACK -")
-              ? 0
-              : -1
-            : 1) ||
-          right.entries - left.entries ||
-          right.payout.entryFee.amount - left.payout.entryFee.amount
-      )[0] || null
-  );
+  currencyType: CurrencyType,
+  currencyAmount: number,
+  length: number = 1
+): Challenge[] => {
+  return challenges
+    .filter(
+      challenge =>
+        challenge.entries !== 30 &&
+        challenge.payout.entryFee.type.toUpperCase() ===
+          currencyType.toUpperCase() &&
+        challenge.payout.entryFee.amount === currencyAmount &&
+        challenge.state.toUpperCase() ===
+          CHALLENGE_STATE_INSCRIPTION.toUpperCase()
+    )
+    .sort(
+      (left, right) =>
+        right.participants.length - left.participants.length ||
+        (left.name.startsWith("DREAMHACK -")
+          ? right.name.startsWith("DREAMHACK -")
+            ? 0
+            : -1
+          : 1) ||
+        right.entries - left.entries ||
+        right.payout.entryFee.amount - left.payout.entryFee.amount
+    )
+    .filter((x, index) => index < length);
 };
 
 const List: FunctionComponent<Props> = ({
@@ -76,31 +77,38 @@ const List: FunctionComponent<Props> = ({
     </Row>
   );
 
+const filterChallenges = (challenges: Challenge[]) => {
+  let items: Challenge[] = [];
+  const fiveDollars = lanetsChallenges(challenges, CURRENCY_TYPE_MONEY, 5);
+  items = [...items, ...fiveDollars];
+  const twoDollars = lanetsChallenges(challenges, CURRENCY_TYPE_MONEY, 2);
+  items = [...items, ...twoDollars];
+  const threeDollars = lanetsChallenges(challenges, CURRENCY_TYPE_MONEY, 3);
+  items = [...items, ...threeDollars];
+  const twoHundredFiftyTokens = lanetsChallenges(
+    challenges,
+    CURRENCY_TYPE_TOKEN,
+    250,
+    2
+  );
+  items = [...items, ...twoHundredFiftyTokens];
+  const fiftyDollars = lanetsChallenges(challenges, CURRENCY_TYPE_MONEY, 50);
+  items = [...items, ...fiftyDollars];
+  return items;
+};
+
 const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   state,
   ownProps
 ) => {
   const { data, loading } = state.root.challenge;
   const challenges = ownProps.userId
-    ? produce(data, (draft: Draft<Challenge[]>) =>
-        draft.filter(challenge =>
-          challenge.participants.some(
-            participant => participant.userId === ownProps.userId
-          )
+    ? data.filter(challenge =>
+        challenge.participants.some(
+          participant => participant.userId === ownProps.userId
         )
       )
-    : produce(data, (draft: Draft<Challenge[]>) => {
-        const items: Challenge[] = [];
-        const money = lanetsChallenges(draft, CURRENCY_TYPE_MONEY);
-        if (money) {
-          items.push(money);
-        }
-        const token = lanetsChallenges(draft, CURRENCY_TYPE_TOKEN);
-        if (token) {
-          items.push(token);
-        }
-        return items;
-      });
+    : filterChallenges(data);
   return {
     challenges,
     loading
