@@ -17,7 +17,7 @@ import {
   getProfileChallengeHistoryPath,
   getProfilePaymentMethodsPath,
   getProfileGamesPath,
-  getProfilePromotionalCodePath,
+  getProfilePromotionPath,
   getAccountRegisterPath,
   getProfileOverviewPath
 } from "utils/coreui/constants";
@@ -108,8 +108,8 @@ class AppDropdown extends Component<any, any> {
             <LinkContainer to={getProfileTransactionHistoryPath()}>
               <DropdownItem>Transaction History</DropdownItem>
             </LinkContainer>
-            <LinkContainer to={getProfilePromotionalCodePath()}>
-              <DropdownItem>Promotional Code</DropdownItem>
+            <LinkContainer to={getProfilePromotionPath()}>
+              <DropdownItem>Promotion</DropdownItem>
             </LinkContainer>
             <DropdownItem header>Connections</DropdownItem>
             <LinkContainer to={getProfileGamesPath()}>

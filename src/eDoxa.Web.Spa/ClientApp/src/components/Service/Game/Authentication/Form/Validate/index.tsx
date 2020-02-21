@@ -10,14 +10,15 @@ import authorizeService from "utils/oidc/AuthorizeService";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { throwSubmissionError } from "utils/form/types";
 import { GameOptions } from "types/games";
+import { WorkflowProps } from "views/Workflow";
 
 interface FormData {}
 
-interface OutterProps {
+type OutterProps = WorkflowProps & {
   gameOptions: GameOptions;
   handleCancel: () => any;
   setAuthenticationFactor: (data: any) => any;
-}
+};
 
 type InnerProps = InjectedFormProps<FormData, Props>;
 
@@ -46,7 +47,14 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (_result, _dispatch, { gameOptions }) => {
+    onSubmitSuccess: (
+      _result,
+      _dispatch,
+      { gameOptions, nextWorkflowStep }
+    ) => {
+      if (nextWorkflowStep) {
+        nextWorkflowStep();
+      }
       authorizeService
         .signIn({
           returnUrl: window.location.pathname

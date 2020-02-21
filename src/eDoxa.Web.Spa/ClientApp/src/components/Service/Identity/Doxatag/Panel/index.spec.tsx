@@ -8,8 +8,7 @@ it("renders without crashing", () => {
   // Arrange
   const doxatagHistory: UserDoxatagHistoryState = {
     data: [{ name: "League of legends", userId: "testId", code: 1234, timestamp: 111111 }],
-    loading: false,
-    error: null
+    loading: false
   };
 
   const store: any = {

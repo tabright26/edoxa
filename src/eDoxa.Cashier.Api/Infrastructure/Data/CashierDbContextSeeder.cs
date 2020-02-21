@@ -118,25 +118,25 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
             await this.CommitAsync();
 
-            var startedAt = DateTimeOffset.FromUnixTimeMilliseconds(1581656400000).UtcDateTime;
+            var startedAt = DateTimeOffset.FromUnixTimeMilliseconds(1582261200000).UtcDateTime;
 
-            var duration = TimeSpan.FromDays(3);
+            var duration = TimeSpan.FromDays(4);
 
             var promotion1 = new Promotion(
-                "LANETS20REDCUP",
+                "DHANA20REDCUP",
                 new Money(5),
                 duration,
                 new DateTimeProvider(startedAt + duration));
 
-            promotion1.SetEntityId(PromotionId.Parse("ff5cd605-0209-4f5d-8dec-88673286416c"));
+            promotion1.SetEntityId(PromotionId.Parse("885cdd1e-0ed9-4fdc-9c29-d48a9d071cfd"));
 
             var promotion2 = new Promotion(
-                "LANETS20TOK",
+                "DHANA20TOK",
                 new Token(250),
                 duration,
                 new DateTimeProvider(startedAt + duration));
 
-            promotion2.SetEntityId(PromotionId.Parse("313ff1de-2432-40d3-b9e3-f319a001a979"));
+            promotion2.SetEntityId(PromotionId.Parse("263aa2ed-3f88-4070-96e6-a098814e44f3"));
 
             var promotions = new List<Promotion>
             {

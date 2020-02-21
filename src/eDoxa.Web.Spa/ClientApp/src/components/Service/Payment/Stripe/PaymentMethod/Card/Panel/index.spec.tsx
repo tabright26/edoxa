@@ -19,8 +19,7 @@ it("renders without crashing", () => {
         }
       }
     ],
-    loading: false,
-    error: null
+    loading: false
   };
 
   const store: any = {

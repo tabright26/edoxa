@@ -8,6 +8,7 @@ import { RootState } from "store/types";
 import { loadUserDoxatagHistory } from "store/actions/identity";
 import { produce, Draft } from "immer";
 import { Doxatag } from "types/identity";
+import { WorkflowProps } from "views/Workflow";
 
 type OwnProps = {};
 
@@ -22,7 +23,7 @@ type DispatchProps = {
 
 type InnerProps = StateProps & DispatchProps;
 
-type OutterProps = {
+type OutterProps = WorkflowProps & {
   className?: string;
 };
 
@@ -32,7 +33,8 @@ const Panel: FunctionComponent<Props> = ({
   className,
   doxatag,
   loading,
-  loadUserDoxatagHistory
+  loadUserDoxatagHistory,
+  nextWorkflowStep
 }) => {
   useEffect((): void => {
     if (doxatag === null) {
@@ -44,8 +46,11 @@ const Panel: FunctionComponent<Props> = ({
   const disabled = !doxatag || buttonDisabled;
   return (
     <Card className={`card-accent-primary ${className}`}>
-      <CardHeader className="d-flex">
-        <strong className="text-uppercase my-auto">DOXATAG</strong>
+      <CardHeader>
+        <strong className="d-block text-uppercase">DOXATAG</strong>
+        <small className="d-block mt-2 text-muted">
+          The DoxaTag is your alias
+        </small>
       </CardHeader>
       <CardBody>
         {loading ? (
@@ -53,10 +58,13 @@ const Panel: FunctionComponent<Props> = ({
         ) : (
           <dl className="row mb-0">
             <dd className="col-sm-3 mb-0 text-muted">DoxaTag</dd>
-            <dd className="col-sm-5 mb-0">
+            <dd
+              className={`${nextWorkflowStep ? "col-sm-7" : "col-sm-5"} mb-0`}
+            >
               {disabled && (
                 <DoxatagForm.Update
                   handleCancel={() => setButtonDisabled(false)}
+                  nextWorkflowStep={nextWorkflowStep}
                 />
               )}
               {!disabled && (

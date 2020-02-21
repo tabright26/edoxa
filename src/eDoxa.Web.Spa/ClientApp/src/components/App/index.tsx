@@ -22,8 +22,15 @@ import {
   getAccountRegisterPath,
   getAccountLogoutPath,
   getAccountLoginPath,
-  getDefaultPath
+  getDefaultPath,
+  getWorkflowStepsPath
 } from "utils/coreui/constants";
+import { compose } from "recompose";
+import { withWorkflow } from "utils/cookies/containers/withWorkflow";
+import { withCashierStaticOptions } from "utils/options/containers/withCashierStaticOptions";
+import { withGamesStaticOptions } from "utils/options/containers/withGamesStaticOptions";
+import { withChallengesStaticOptions } from "utils/options/containers/withChallengesStaticOptions";
+import { withIdentityStaticOptions } from "utils/options/containers/withIdentityStaticOptions";
 
 initializeReactGA();
 
@@ -45,6 +52,7 @@ const NoneLayout = React.lazy(() => import("components/App/Layout/None"));
 const Login = React.lazy(() => import("views/Account/Login"));
 const Logout = React.lazy(() => import("views/Account/Logout"));
 const Register = React.lazy(() => import("views/Account/Register"));
+const Workflow = React.lazy(() => import("views/Workflow"));
 
 const App: FunctionComponent = () => (
   <>
@@ -146,6 +154,11 @@ const App: FunctionComponent = () => (
             component={Home}
           />
           <Route<RouteProps>
+            path={getWorkflowStepsPath()}
+            name="Workflow"
+            render={() => <Workflow />}
+          />
+          <Route<RouteProps>
             path={getDefaultPath()}
             name="Default"
             render={() => <DefaultLayout />}
@@ -157,4 +170,12 @@ const App: FunctionComponent = () => (
   </>
 );
 
-export default App;
+const enhance = compose(
+  withCashierStaticOptions,
+  withGamesStaticOptions,
+  withChallengesStaticOptions,
+  withIdentityStaticOptions,
+  withWorkflow
+);
+
+export default enhance(App);

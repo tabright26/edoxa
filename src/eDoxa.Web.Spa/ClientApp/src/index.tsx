@@ -14,15 +14,10 @@ import { initialize } from "utils/localize/initialize";
 import { OidcProvider, loadUser } from "redux-oidc";
 import { userManager } from "utils/oidc/UserManager";
 import { loadUserTransactionHistory } from "store/actions/cashier";
-import {
-  loadIdentityStaticOptions,
-  loadCashierStaticOptions,
-  loadChallengesStaticOptions,
-  loadGamesStaticOptions
-} from "store/actions/static";
 import { loadStripePaymentMethods } from "store/actions/payment";
 import { MessengerCustomerChat } from "utils/facebook/MessengerCustomerChat";
 import { ToastrProvider } from "utils/toastr/Provider";
+import { CookiesProvider } from "react-cookie";
 
 loadUser(store, userManager).then(user => {
   if (user) {
@@ -30,25 +25,23 @@ loadUser(store, userManager).then(user => {
     store.dispatch<any>(loadStripePaymentMethods());
   }
 });
-store.dispatch<any>(loadIdentityStaticOptions());
-store.dispatch<any>(loadCashierStaticOptions());
-store.dispatch<any>(loadChallengesStaticOptions());
-store.dispatch<any>(loadGamesStaticOptions());
 
 ReactDOM.render(
-  <Provider store={store}>
-    <OidcProvider store={store} userManager={userManager}>
-      <LocalizeProvider store={store} initialize={initialize}>
-        <StripeProvider
-          apiKey={process.env.REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY}
-        >
-          <App />
-        </StripeProvider>
-      </LocalizeProvider>
-    </OidcProvider>
-    <ToastrProvider />
-    <MessengerCustomerChat />
-  </Provider>,
+  <CookiesProvider>
+    <Provider store={store}>
+      <OidcProvider store={store} userManager={userManager}>
+        <LocalizeProvider store={store} initialize={initialize}>
+          <StripeProvider
+            apiKey={process.env.REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY}
+          >
+            <App />
+          </StripeProvider>
+        </LocalizeProvider>
+      </OidcProvider>
+      <ToastrProvider />
+      <MessengerCustomerChat />
+    </Provider>
+  </CookiesProvider>,
   document.getElementById("root")
 );
 
