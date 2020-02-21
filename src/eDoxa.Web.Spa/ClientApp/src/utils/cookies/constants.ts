@@ -20,7 +20,7 @@ export function isRegisterVisited(cookies: Cookies): boolean {
 }
 export function setRegisterVisited(cookies: Cookies): void {
   cookies.set(EDOXA_REGISTER_VISITED, true, {
-    path: getHomePath(),
+    path: getDefaultPath(),
     expires: infiniteExpires()
   });
 }
