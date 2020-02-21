@@ -100,10 +100,10 @@ exports[`renders without crashing 1`] = `
         </li>
         <li
           className="list-group-item"
-          href="/profile/promotional-code"
+          href="/profile/promotion"
           onClick={[Function]}
         >
-          Promotional Code
+          Promotion
         </li>
       </ul>
     </div>

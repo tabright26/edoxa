@@ -23,6 +23,7 @@ import { AxiosActionCreatorMeta } from "utils/axios/types";
 import produce, { Draft } from "immer";
 import authorizeService from "utils/oidc/AuthorizeService";
 import { Doxatag } from "types/identity";
+import { WorkflowProps } from "views/Workflow";
 
 type FormData = {
   name: string;
@@ -30,7 +31,7 @@ type FormData = {
 
 type StateProps = {};
 
-type OutterProps = {
+type OutterProps = WorkflowProps & {
   handleCancel: () => void;
 };
 
@@ -42,7 +43,8 @@ const Update: FunctionComponent<Props> = ({
   error,
   handleSubmit,
   submitting,
-  anyTouched
+  anyTouched,
+  nextWorkflowStep
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary anyTouched={anyTouched} error={error} />
@@ -57,6 +59,15 @@ const Update: FunctionComponent<Props> = ({
       <Button.Submit loading={submitting} className="mr-2" size="sm">
         Save
       </Button.Submit>
+      {nextWorkflowStep && (
+        <Button.Link
+          className="float-right"
+          size="sm"
+          onClick={() => nextWorkflowStep()}
+        >
+          Skip
+        </Button.Link>
+      )}
     </FormGroup>
   </Form>
 );
@@ -92,8 +103,16 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (_result, _dispatch, { handleCancel }) => {
-      handleCancel();
+    onSubmitSuccess: (
+      _result,
+      _dispatch,
+      { handleCancel, nextWorkflowStep }
+    ) => {
+      if (nextWorkflowStep) {
+        nextWorkflowStep();
+      } else {
+        handleCancel();
+      }
       authorizeService.signIn({
         returnUrl: window.location.pathname
       });

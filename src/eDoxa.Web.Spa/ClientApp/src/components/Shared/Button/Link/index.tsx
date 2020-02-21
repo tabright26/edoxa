@@ -28,7 +28,7 @@ export const Link: FunctionComponent<Props> = ({
     disabled={disabled}
     onClick={onClick}
   >
-    <small className={`${uppercase && "text-uppercase"}`}>
+    <small className={`my-auto ${uppercase && "text-uppercase"}`}>
       {icon && <FontAwesomeIcon icon={icon} />} {children}
     </small>
   </Button>

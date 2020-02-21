@@ -31,7 +31,11 @@ import {
   DOB_REQUIRED
 } from "utils/form/validators";
 import { COUNTRY_CA, Country } from "types/identity";
-import { isRegisterVisited, setRegisterVisited } from "utils/cookies/constants";
+import {
+  isRegisterVisited,
+  setRegisterVisited,
+  setWorkflowStep
+} from "utils/cookies/constants";
 import { withCookies, ReactCookieProps } from "react-cookie";
 import { publishUserCreatedEvent } from "utils/ga";
 
@@ -195,7 +199,8 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (_result, dispatch) => {
+    onSubmitSuccess: (_result, dispatch, { cookies }) => {
+      setWorkflowStep(cookies, 0);
       publishUserCreatedEvent();
       dispatch(push("/authentication/login"));
     },

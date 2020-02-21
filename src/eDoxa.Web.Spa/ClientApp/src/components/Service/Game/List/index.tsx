@@ -5,11 +5,11 @@ import GameListItem from "components/Service/Game/List/Item";
 import GameCredentialModal from "components/Service/Game/Credential/Modal";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
-import { GameOptions } from "types/games";
+import { Game } from "types/games";
 
 type OwnProps = {};
 
-type StateProps = { games: GameOptions[] };
+type StateProps = { games: Game[] };
 
 type InnerProps = StateProps;
 
@@ -20,8 +20,8 @@ type Props = InnerProps & OutterProps;
 const List: FunctionComponent<Props> = ({ games }) => (
   <>
     <CardDeck className="my-4">
-      {games.map((gameOptions, index) => (
-        <GameListItem key={index} gameOptions={gameOptions} />
+      {games.map((game, index) => (
+        <GameListItem key={index} game={game} />
       ))}
     </CardDeck>
     <GameCredentialModal.Link />
@@ -35,7 +35,7 @@ const mapStateToProps: MapStateToProps<
   RootState
 > = state => {
   return {
-    games: state.static.games.games
+    games: state.static.games.games.map(x => x.name)
   };
 };
 

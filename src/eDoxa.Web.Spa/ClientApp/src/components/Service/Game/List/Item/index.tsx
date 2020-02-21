@@ -17,12 +17,12 @@ const style: React.CSSProperties = {
   borderRadius: "25px"
 };
 
-interface OwnProps {
-  gameOptions: GameOptions;
-}
+type OwnProps = {
+  game: Game;
+};
 
 type StateProps = {
-  game: Game;
+  gameOptions: GameOptions;
 };
 
 interface DispatchProps {
@@ -86,11 +86,13 @@ const Item: FunctionComponent<Props> = ({
 };
 
 const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
-  _state,
+  state,
   ownProps
 ) => {
   return {
-    game: ownProps.gameOptions.name
+    gameOptions: state.static.games.games.find(
+      x => x.name.toUpperCase() === ownProps.game.toUpperCase()
+    )
   };
 };
 
@@ -100,13 +102,11 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
 ) => {
   return {
     showLinkGameAccountCredentialModal: () =>
-      dispatch(
-        show(LINK_GAME_CREDENTIAL_MODAL, { gameOptions: ownProps.gameOptions })
-      ),
+      dispatch(show(LINK_GAME_CREDENTIAL_MODAL, { game: ownProps.game })),
     showUnlinkGameAccountCredentialModal: () =>
       dispatch(
         show(UNLINK_GAME_CREDENTIAL_MODAL, {
-          gameOptions: ownProps.gameOptions
+          game: ownProps.game
         })
       )
   };

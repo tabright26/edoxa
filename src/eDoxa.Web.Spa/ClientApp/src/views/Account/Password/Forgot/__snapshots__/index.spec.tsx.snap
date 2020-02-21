@@ -37,7 +37,9 @@ exports[`renders correctly 1`] = `
         />
         <div
           className="invalid-feedback"
-        />
+        >
+          Email is required
+        </div>
       </div>
       <div
         className="mb-0 d-flex form-group"
@@ -59,7 +61,7 @@ exports[`renders correctly 1`] = `
           type="button"
         >
           <small
-            className="null"
+            className="my-auto null"
           >
              
             Return to login page
