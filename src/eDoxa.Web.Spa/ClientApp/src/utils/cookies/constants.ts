@@ -1,6 +1,5 @@
 import { Cookies } from "react-cookie";
 import {
-  getHomePath,
   getDefaultPath,
   getWorkflowStepsPath,
   getChallengesPath

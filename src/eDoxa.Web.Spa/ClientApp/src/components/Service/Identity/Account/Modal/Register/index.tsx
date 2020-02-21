@@ -15,7 +15,7 @@ type Props = InnerProps & OutterProps;
 const Register: FunctionComponent<Props> = ({ show, handleHide }) => (
   <Modal backdrop="static" centered isOpen={show} toggle={handleHide}>
     <ModalHeader className="bg-gray-900" toggle={handleHide}>
-      <h4 className="text-light">
+      <h3 className="text-light">
         <strong className="text-uppercase">
           REGISTER{" "}
           <span className="text-primary" style={{ fontSize: "125%" }}>
@@ -27,7 +27,7 @@ const Register: FunctionComponent<Props> = ({ show, handleHide }) => (
           </span>{" "}
           USD!
         </strong>
-      </h4>
+      </h3>
       <ModalSubtitle>Create your account</ModalSubtitle>
     </ModalHeader>
     <ModalBody>{show && <AccountForm.Register />}</ModalBody>
