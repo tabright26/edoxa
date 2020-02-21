@@ -9,7 +9,7 @@ interface Props {
 const Panel: FunctionComponent<Props> = ({ className = null }) => (
   <Card className={`card-accent-primary ${className}`}>
     <CardHeader className="d-flex">
-      <strong className="text-uppercase my-auto">PROMOTIONAL CODE</strong>
+      <strong className="text-uppercase my-auto">COUPON</strong>
     </CardHeader>
     <CardBody>
       <dl className="row mb-0">

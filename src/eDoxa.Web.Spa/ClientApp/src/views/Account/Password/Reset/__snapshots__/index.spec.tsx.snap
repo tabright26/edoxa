@@ -116,7 +116,7 @@ exports[`renders correctly 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           onFocus={[Function]}
-          placeholder="Repeat new password"
+          placeholder="Confirm new password"
           type="password"
           value=""
         />

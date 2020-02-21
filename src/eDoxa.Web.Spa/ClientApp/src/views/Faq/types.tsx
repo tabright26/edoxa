@@ -365,7 +365,7 @@ export const questions: Question[] = [
           The payout distribution is dependent on the number of participants and
           the entry fee.
         </li>
-        <li>Bottom 50% will get a consolation prize of 2500 tokens.</li>
+        <li>Bottom 50% will get a consolation prize of 250 tokens.</li>
       </ul>
     ]
   },

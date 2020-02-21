@@ -19,16 +19,16 @@ import {
   getProfileSecurityPath,
   getProfileDetailsPath,
   getError404Path,
-  getProfilePromotionalCodePath,
+  getProfilePromotionPath,
   getProfileChallengeHistoryPath
 } from "utils/coreui/constants";
-import EmailAlert from "components/Service/Identity/Account/Email/Alert";
+//import EmailAlert from "components/Service/Identity/Account/Email/Alert";
 
 const ProfileOverview = React.lazy(() => import("./Overview"));
 const ProfileDetails = React.lazy(() => import("./Details"));
 const ProfileSecurity = React.lazy(() => import("./Security"));
 const ProfileConnections = React.lazy(() => import("./Games"));
-const ProfilePromotionalCode = React.lazy(() => import("./PromotionalCode"));
+const ProfilePromotion = React.lazy(() => import("./PromotionalCode"));
 const ProfilePaymentMethods = React.lazy(() => import("./PaymentMethods"));
 const ProfileTransactionHistory = React.lazy(() =>
   import("./TransactionHistory")
@@ -37,11 +37,11 @@ const ProfileChallengeHistory = React.lazy(() => import("./ChallengeHistory"));
 
 const Profile: FunctionComponent = () => (
   <>
-    <Row>
+    {/* <Row>
       <Col xs="12" sm="12" md="12" lg="11" xl="9">
         <EmailAlert />
       </Col>
-    </Row>
+    </Row> */}
     <Row>
       <Col xs="12" sm="12" md="3" lg="3" xl="2">
         <Card className="mt-4">
@@ -83,8 +83,8 @@ const Profile: FunctionComponent = () => (
             <LinkContainer to={getProfileTransactionHistoryPath()}>
               <ListGroupItem>Transaction History</ListGroupItem>
             </LinkContainer>
-            <LinkContainer to={getProfilePromotionalCodePath()}>
-              <ListGroupItem>Promotional Code</ListGroupItem>
+            <LinkContainer to={getProfilePromotionPath()}>
+              <ListGroupItem>Promotion</ListGroupItem>
             </LinkContainer>
           </ListGroup>
         </Card>
@@ -141,10 +141,10 @@ const Profile: FunctionComponent = () => (
               component={ProfileTransactionHistory}
             />
             <Route<RouteProps>
-              path={getProfilePromotionalCodePath()}
+              path={getProfilePromotionPath()}
               exact
-              name="Promotional Code"
-              component={ProfilePromotionalCode}
+              name="Promotion"
+              component={ProfilePromotion}
             />
             <Route<RouteProps>
               path={getProfileChallengeHistoryPath()}

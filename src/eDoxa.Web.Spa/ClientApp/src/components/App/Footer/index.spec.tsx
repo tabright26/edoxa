@@ -3,15 +3,9 @@ import renderer from "react-test-renderer";
 import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import Footer from ".";
+import store from "store";
 
 it("renders without crashing", () => {
-  // Arrange
-  const store: any = {
-    getState: () => {},
-    dispatch: action => {},
-    subscribe: () => {}
-  };
-
   // Act
   const tree = renderer
     .create(

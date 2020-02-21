@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import {
   FormGroup,
   Form,
@@ -31,6 +31,13 @@ import {
   DOB_REQUIRED
 } from "utils/form/validators";
 import { COUNTRY_CA, Country } from "types/identity";
+import {
+  isRegisterVisited,
+  setRegisterVisited,
+  setWorkflowStep
+} from "utils/cookies/constants";
+import { withCookies, ReactCookieProps } from "react-cookie";
+import { publishUserCreatedEvent } from "utils/ga";
 
 export interface RegisterUserAccountFormData {
   email: string;
@@ -45,7 +52,8 @@ type StateProps = {};
 type OwnProps = {};
 
 type InnerProps = StateProps &
-  InjectedFormProps<RegisterUserAccountFormData, Props>;
+  InjectedFormProps<RegisterUserAccountFormData, Props> &
+  ReactCookieProps;
 
 type OutterProps = OwnProps;
 
@@ -55,106 +63,114 @@ const Register: FunctionComponent<Props> = ({
   handleSubmit,
   error,
   submitting,
-  anyTouched
-}) => (
-  <Form onSubmit={handleSubmit}>
-    <ValidationSummary anyTouched={anyTouched} error={error} />
-    <InputGroup className="mb-3">
-      <InputGroupAddon addonType="prepend">
-        <InputGroupText>@</InputGroupText>
-      </InputGroupAddon>
-      <Field
-        type="text"
-        name="email"
-        placeholder="Email"
-        size={null}
-        autoComplete="email"
-        component={Input.Text}
-      />
-    </InputGroup>
-    <FormGroup row className="mb-3">
-      <Col sm={6}>
-        <InputGroup>
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText>
-              <i className="icon-lock"></i>
-            </InputGroupText>
-          </InputGroupAddon>
-          <Field
-            type="password"
-            name="password"
-            placeholder="Password"
-            size={null}
-            autoComplete="password"
-            component={Input.Password}
-          />
-        </InputGroup>
-      </Col>
-      <Col sm={6}>
-        <InputGroup>
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText>
-              <i className="icon-lock"></i>
-            </InputGroupText>
-          </InputGroupAddon>
-          <Field
-            type="password"
-            name="newPassword"
-            placeholder="Confirm password"
-            size={null}
-            autoComplete="new-password"
-            component={Input.Password}
-          />
-        </InputGroup>
-      </Col>
-    </FormGroup>
-    <hr className="border-secondary" />
-    <FormGroup row className="mb-4">
-      <Col sm={6}>
-        <InputGroup>
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText>
-              <FontAwesomeIcon icon={faBirthdayCake} />
-            </InputGroupText>
-          </InputGroupAddon>
-          <Field
-            type="text"
-            name="dob"
-            component={Input.Text}
-            placeholder="MM/DD/YYYY"
-            tag={InputMask}
-            mask="11/11/1111"
-            maskChar={null}
-            size={null}
-            formatChars={{
-              "1": "[0-9]",
-              A: "[A-Z]"
-            }}
-          />
-        </InputGroup>
-      </Col>
-      <Col sm={6}>
-        <InputGroup>
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText>
-              <FontAwesomeIcon icon={faFlag} />
-            </InputGroupText>
-          </InputGroupAddon>
-          <AddressField.Country size={null} placeholder="Country" />
-        </InputGroup>
-      </Col>
-    </FormGroup>
-    <p className="mb-3">
-      By clicking this button, you agree to the{" "}
-      <Link to={getLegalTermsOfUsePath()}>terms of use</Link>.
-    </p>
-    <FormGroup className="mb-0">
-      <Button.Submit loading={submitting} block>
-        Create Account
-      </Button.Submit>
-    </FormGroup>
-  </Form>
-);
+  anyTouched,
+  cookies
+}) => {
+  useEffect(() => {
+    if (!isRegisterVisited(cookies)) {
+      setRegisterVisited(cookies);
+    }
+  }, [cookies]);
+  return (
+    <Form onSubmit={handleSubmit}>
+      <ValidationSummary anyTouched={anyTouched} error={error} />
+      <InputGroup className="mb-3">
+        <InputGroupAddon addonType="prepend">
+          <InputGroupText>@</InputGroupText>
+        </InputGroupAddon>
+        <Field
+          type="text"
+          name="email"
+          placeholder="Email"
+          size={null}
+          autoComplete="email"
+          component={Input.Text}
+        />
+      </InputGroup>
+      <FormGroup row className="mb-3">
+        <Col sm={6}>
+          <InputGroup>
+            <InputGroupAddon addonType="prepend">
+              <InputGroupText>
+                <i className="icon-lock"></i>
+              </InputGroupText>
+            </InputGroupAddon>
+            <Field
+              type="password"
+              name="password"
+              placeholder="Password"
+              size={null}
+              autoComplete="password"
+              component={Input.Password}
+            />
+          </InputGroup>
+        </Col>
+        <Col sm={6}>
+          <InputGroup>
+            <InputGroupAddon addonType="prepend">
+              <InputGroupText>
+                <i className="icon-lock"></i>
+              </InputGroupText>
+            </InputGroupAddon>
+            <Field
+              type="password"
+              name="newPassword"
+              placeholder="Confirm password"
+              size={null}
+              autoComplete="new-password"
+              component={Input.Password}
+            />
+          </InputGroup>
+        </Col>
+      </FormGroup>
+      <hr className="border-secondary" />
+      <FormGroup row className="mb-4">
+        <Col sm={6}>
+          <InputGroup>
+            <InputGroupAddon addonType="prepend">
+              <InputGroupText>
+                <FontAwesomeIcon icon={faBirthdayCake} />
+              </InputGroupText>
+            </InputGroupAddon>
+            <Field
+              type="text"
+              name="dob"
+              component={Input.Text}
+              placeholder="MM/DD/YYYY"
+              tag={InputMask}
+              mask="11/11/1111"
+              maskChar={null}
+              size={null}
+              formatChars={{
+                "1": "[0-9]",
+                A: "[A-Z]"
+              }}
+            />
+          </InputGroup>
+        </Col>
+        <Col sm={6}>
+          <InputGroup>
+            <InputGroupAddon addonType="prepend">
+              <InputGroupText>
+                <FontAwesomeIcon icon={faFlag} />
+              </InputGroupText>
+            </InputGroupAddon>
+            <AddressField.Country size={null} placeholder="Country" />
+          </InputGroup>
+        </Col>
+      </FormGroup>
+      <p className="mb-3">
+        By clicking this button, you agree to the{" "}
+        <Link to={getLegalTermsOfUsePath()}>terms of use</Link>.
+      </p>
+      <FormGroup className="mb-0">
+        <Button.Submit loading={submitting} block>
+          Create Account
+        </Button.Submit>
+      </FormGroup>
+    </Form>
+  );
+};
 
 const mapStateToProps: MapStateToProps<
   StateProps,
@@ -169,6 +185,7 @@ const mapStateToProps: MapStateToProps<
 };
 
 const enhance = compose<InnerProps, OutterProps>(
+  withCookies,
   connect(mapStateToProps),
   reduxForm<RegisterUserAccountFormData, Props>({
     form: REGISTER_USER_ACCOUNT_FORM,
@@ -182,7 +199,9 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (_result, dispatch) => {
+    onSubmitSuccess: (_result, dispatch, { cookies }) => {
+      setWorkflowStep(cookies, 0);
+      publishUserCreatedEvent();
       dispatch(push("/authentication/login"));
     },
     validate: values => {

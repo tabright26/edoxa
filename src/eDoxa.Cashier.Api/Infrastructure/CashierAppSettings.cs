@@ -8,6 +8,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
+using eDoxa.Grpc.Protos.Cashier.Options;
 using eDoxa.Seedwork.Application.AppSettings;
 using eDoxa.Seedwork.Application.AppSettings.Options;
 
@@ -25,6 +26,8 @@ namespace eDoxa.Cashier.Api.Infrastructure
 
         [Required]
         public EndpointsOptions Endpoints { get; set; }
+
+        public IntegrationEventOptions IntegrationEvent { get; set; }
     }
 
     public sealed class EndpointsOptions : AuthorityEndpointsOptions

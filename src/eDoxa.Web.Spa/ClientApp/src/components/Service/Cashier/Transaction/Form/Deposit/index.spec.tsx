@@ -11,7 +11,7 @@ import {
   findFieldByName,
   findSubmitButton,
   findCancelButton
-} from "utils/test/helpers";
+} from "test/helper";
 import { StripeProvider, Elements } from "react-stripe-elements";
 import { TRANSACTION_TYPE_DEPOSIT, CURRENCY_TYPE_MONEY } from "types/cashier";
 

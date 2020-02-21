@@ -47,9 +47,9 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   const challenge = data.find(
     challenge =>
       challenge.id ===
-      (ownProps.match
-        ? ownProps.match.params.challengeId
-        : ownProps.challengeId)
+      (ownProps.challengeId
+        ? ownProps.challengeId
+        : ownProps.match.params.challengeId)
   );
   const participant = challenge.participants.find(
     participant => participant.id === ownProps.participantId

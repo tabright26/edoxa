@@ -44,7 +44,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                 .ReturnsAsync(new DomainValidationResult<IAccount>())
                 .Verifiable();
 
-            var handler = new UserCreatedIntegrationEventHandler(TestMock.AccountService.Object, mockLogger.Object);
+            var handler = new UserCreatedIntegrationEventHandler(TestMock.CashierAppSettingsOptions.Object, TestMock.AccountService.Object, mockLogger.Object);
 
             var integrationEvent = new UserCreatedIntegrationEvent
             {

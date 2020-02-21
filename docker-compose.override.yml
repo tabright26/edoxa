@@ -92,7 +92,7 @@ services:
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity-api
       - Serilog__Sink__Seq=http://seq
-      - LeagueOfLegends__ApiKey=RGAPI-db3e65e3-add3-4d18-a518-291875f72b51
+      - LeagueOfLegends__ApiKey=RGAPI-819334ce-d2da-403c-ba4c-1d8c017e69ee
     ports:
       - "5005:80"
       - "9005:81"

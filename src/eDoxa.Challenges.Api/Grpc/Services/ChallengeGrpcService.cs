@@ -102,6 +102,8 @@ namespace eDoxa.Challenges.Api.Grpc.Services
 
         public override async Task<CreateChallengeResponse> CreateChallenge(CreateChallengeRequest request, ServerCallContext context)
         {
+            // TODO: Validation...
+
             var result = await _challengeService.CreateChallengeAsync(
                 new ChallengeName(request.Name),
                 request.Game.ToEnumeration<Game>(),

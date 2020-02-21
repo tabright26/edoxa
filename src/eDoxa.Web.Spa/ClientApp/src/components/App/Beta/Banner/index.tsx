@@ -10,15 +10,20 @@ export const Banner: FunctionComponent = () =>
         platform! The team wants to help unlock every gamer’s potential so that
         they can be proud to live their eSport dream. Please feel free to
         contact us with our live chat below or our{" "}
-        <Badge
-          color="dark"
-          onClick={() => (window.location.href = REACT_APP_DISCORD_URL)}
-          style={{
-            cursor: "pointer"
-          }}
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={REACT_APP_DISCORD_URL}
         >
-          Discord
-        </Badge>{" "}
+          <Badge
+            color="dark"
+            style={{
+              cursor: "pointer"
+            }}
+          >
+            Discord
+          </Badge>
+        </a>{" "}
         server to provide feedback and suggestions about eDoxa.gg.
       </Container>
     </Alert>

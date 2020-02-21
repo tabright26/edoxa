@@ -3,9 +3,28 @@
 option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.Options";
 
 import "cashier_dtos.proto";
+import "cashier_enums.proto";
 import "custom_types.proto";
 
 package edoxa.services.cashier;
+
+message IntegrationEventOptions {
+  UserCreatedOptions userCreated = 1;
+
+  message UserCreatedOptions {
+    PromotionOptions promotion = 1;
+
+    message PromotionOptions {
+      bool enabled = 1;
+      CurrencyOptions currency = 2;
+    } 
+  }
+}
+
+message CurrencyOptions {
+  EnumCurrencyType type = 1;
+  int64 amount = 2;
+}
 
 message CashierApiOptions {
   StaticOptions static = 1;

@@ -81,6 +81,14 @@ export function getNewsFeedsPath(): string {
   return "/news-feeds";
 }
 
+function getWorkflowPath(): string {
+  return "/workflow";
+}
+
+export function getWorkflowStepsPath(step: number = null): string {
+  return `${getWorkflowPath()}/steps/${step ? step : ":step"}`;
+}
+
 export function getProfilePath(): string {
   return "/profile";
 }
@@ -105,8 +113,8 @@ export function getProfilePaymentMethodsPath(): string {
   return getProfilePath() + "/payment-methods";
 }
 
-export function getProfilePromotionalCodePath(): string {
-  return getProfilePath() + "/promotional-code";
+export function getProfilePromotionPath(): string {
+  return getProfilePath() + "/promotion";
 }
 
 export function getProfileGamesPath(): string {

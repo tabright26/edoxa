@@ -17,18 +17,12 @@ namespace eDoxa.Payment.TestHelper.Fixtures
         {
             ServiceBusPublisher = new Mock<IServiceBusPublisher>();
             StripeCustomerService = new Mock<IStripeCustomerService>();
-            StripeInvoiceItemService = new Mock<IStripeInvoiceItemService>();
-            StripeInvoiceService = new Mock<IStripeInvoiceService>();
             StripePaymentMethodService = new Mock<IStripePaymentMethodService>();
         }
 
         public Mock<IServiceBusPublisher> ServiceBusPublisher { get; }
 
         public Mock<IStripeCustomerService> StripeCustomerService { get; }
-
-        public Mock<IStripeInvoiceItemService> StripeInvoiceItemService { get; }
-
-        public Mock<IStripeInvoiceService> StripeInvoiceService { get; }
 
         public Mock<IStripePaymentMethodService> StripePaymentMethodService { get; }
     }

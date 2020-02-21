@@ -11,6 +11,7 @@ import { throwSubmissionError } from "utils/form/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { connect } from "react-redux";
 import { Game } from "types/games";
+import { WorkflowProps } from "views/Workflow";
 
 interface FormData {}
 
@@ -18,7 +19,7 @@ type InnerProps = InjectedFormProps<FormData, Props> & {
   stripe: stripe.Stripe;
 };
 
-type OutterProps = {
+type OutterProps = WorkflowProps & {
   game: Game;
   setAuthenticationFactor: (data: any) => any;
 };
@@ -29,23 +30,33 @@ const Generate: FunctionComponent<Props> = ({
   handleSubmit,
   error,
   submitting,
-  anyTouched
+  anyTouched,
+  nextWorkflowStep
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary anyTouched={anyTouched} error={error} />
     <FormGroup>
       <Label>Summoner name</Label>
-      <Field name="summonerName" component={Input.Text} />
+      <Field type="text" name="summonerName" component={Input.Text} />
     </FormGroup>
     <FormGroup>
       <Label>Region</Label>
-      <Field name="region" component={Input.Select} disabled>
+      <Field type="select" name="region" component={Input.Select} disabled>
         <option value="NA">North America</option>
       </Field>
     </FormGroup>
     <Button.Submit loading={submitting} className="w-25">
       Search
     </Button.Submit>
+    {nextWorkflowStep && (
+      <Button.Link
+        className="float-right"
+        size="sm"
+        onClick={() => nextWorkflowStep()}
+      >
+        Skip
+      </Button.Link>
+    )}
   </Form>
 );
 

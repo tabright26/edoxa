@@ -105,8 +105,10 @@ namespace eDoxa.Cashier.IntegrationTests.Grpc.Services
 
             var client = new CashierService.CashierServiceClient(host.CreateChannel());
 
-            // Act Assert
+            // Act 
             var func = new Func<Task>(async () => await client.CreateChallengePayoutAsync(request));
+            
+            // Assert
             func.Should().Throw<RpcException>();
         }
 

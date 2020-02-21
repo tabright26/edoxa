@@ -49,25 +49,10 @@ Array [
       </a>
     </li>
     <li
-      className="page-item active"
+      className="page-item"
     >
       <a
-        aria-current="page"
-        aria-label="Page 1 is your current page"
-        className="page-link"
-        onClick={[Function]}
-        onKeyPress={[Function]}
-        role="button"
-        tabIndex="0"
-      >
-        1
-      </a>
-    </li>
-    <li
-      className="page-item disabled"
-    >
-      <a
-        aria-disabled="true"
+        aria-disabled="false"
         className="page-link"
         onClick={[Function]}
         onKeyPress={[Function]}

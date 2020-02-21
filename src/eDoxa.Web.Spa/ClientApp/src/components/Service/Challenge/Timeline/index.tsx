@@ -7,10 +7,10 @@ import { compose } from "recompose";
 import { ChallengeId, ChallengeTimeline } from "types/challenges";
 
 type Params = {
-  readonly challengeId: ChallengeId;
+  readonly challengeId?: ChallengeId;
 };
 
-type OwnProps = RouteComponentProps<Params>;
+type OwnProps = RouteComponentProps<Params> & Params;
 
 type StateProps = {
   readonly state: string;
@@ -19,7 +19,7 @@ type StateProps = {
 
 type InnerProps = OwnProps & StateProps;
 
-type OutterProps = {};
+type OutterProps = Params;
 
 type Props = InnerProps & OutterProps;
 
@@ -57,7 +57,11 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
 ) => {
   const { data } = state.root.challenge;
   const challenge = data.find(
-    challenge => challenge.id === ownProps.match.params.challengeId
+    challenge =>
+      challenge.id ===
+      (ownProps.challengeId
+        ? ownProps.challengeId
+        : ownProps.match.params.challengeId)
   );
   return {
     state: challenge.state,

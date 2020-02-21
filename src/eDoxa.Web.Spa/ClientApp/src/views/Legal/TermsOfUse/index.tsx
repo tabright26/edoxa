@@ -14,13 +14,13 @@ const TermsOfUse: FunctionComponent<LocalizeContextProps> = () => {
   return (
     <Container>
       <h5 className="text-uppercase my-4">Terms of Use</h5>
-      {items.map((item, index) => (
+      {items.map(({ content, title }, index) => (
         <Card
           key={index}
           className="card-accent-primary mt-4 mb-0 text-justify"
         >
-          <CardHeader className="text-uppercase">{item.title}</CardHeader>
-          <CardBody>{item.content}</CardBody>
+          <CardHeader className="text-uppercase">{title}</CardHeader>
+          <CardBody>{content}</CardBody>
         </Card>
       ))}
     </Container>

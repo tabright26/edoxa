@@ -31,7 +31,7 @@ export const Default: FunctionComponent = () => {
         </Suspense>
       </AppHeader>
       <div className="app-body">
-        <AppSidebar fixed minimized display="lg">
+        <AppSidebar fixed minimized={false} display="md">
           <AppSidebarHeader />
           <AppSidebarForm />
           <Suspense fallback={<Loading />}>

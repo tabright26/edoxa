@@ -42,7 +42,7 @@ const Challenges: FunctionComponent<Props> = ({ loadChallenges }) => {
           </Card>
         </Col>
       </Row>
-      <ChallengeList xs="12" sm="12" md="12" lg="6" />
+      <ChallengeList xs="12" sm="12" md="12" lg="12" xl="6" />
     </>
   );
 };
