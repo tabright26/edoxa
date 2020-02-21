@@ -16,7 +16,7 @@ import {
   HocUserProfileGameIsAuthenticatedStateProps
 } from "utils/oidc/containers/types";
 import { ChallengeId, CHALLENGE_STATE_INSCRIPTION } from "types/challenges";
-import { Game, GameOptions } from "types/games";
+import { Game } from "types/games";
 
 type Params = {
   readonly challengeId?: ChallengeId;
@@ -29,7 +29,6 @@ type OwnProps = RouteComponentProps<Params> &
 type StateProps = {
   readonly canRegister: boolean;
   readonly game: Game;
-  readonly gameOptions: GameOptions;
 };
 
 type DispatchProps = {
@@ -54,7 +53,7 @@ const Register: FunctionComponent<Props> = ({
   isAuthenticated,
   canRegister,
   dispatch,
-  gameOptions
+  game
 }) =>
   canRegister &&
   (isAuthenticated ? (
@@ -66,7 +65,7 @@ const Register: FunctionComponent<Props> = ({
       onClick={() =>
         dispatch(
           show(LINK_GAME_CREDENTIAL_MODAL, {
-            gameOptions
+            game
           })
         )
       }
@@ -93,8 +92,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
       !challenge.participants.some(
         participant => participant.userId === ownProps.userId
       ),
-    game: challenge.game,
-    gameOptions: state.static.games.games.find(x => x.name === challenge.game)
+    game: challenge.game
   };
 };
 
