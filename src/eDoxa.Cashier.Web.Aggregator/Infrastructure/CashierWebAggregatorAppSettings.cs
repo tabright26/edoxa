@@ -8,31 +8,19 @@
 
 using System.ComponentModel.DataAnnotations;
 
-using eDoxa.Seedwork.Application.AppSettings;
-using eDoxa.Seedwork.Application.AppSettings.Options;
-
-using IdentityServer4.Models;
+using eDoxa.Seedwork.Application.Options;
 
 namespace eDoxa.Cashier.Web.Aggregator.Infrastructure
 {
-    public class CashierWebAggregatorAppSettings : IHasApiResourceAppSettings<EndpointsOptions>
+    public class CashierWebAggregatorAppSettings
     {
         [Required]
-        public ApiResource ApiResource { get; set; }
+        public AuthorityOptions Authority { get; set; }
 
         [Required]
-        public string Authority { get; set; }
+        public ServiceOptions Service { get; set; }
 
         [Required]
-        public EndpointsOptions Endpoints { get; set; }
-    }
-
-    public class EndpointsOptions : AuthorityEndpointsOptions
-    {
-        [Required]
-        public string CashierUrl { get; set; }
-
-        [Required]
-        public string PaymentUrl { get; set; }
+        public GrpcOptions Grpc { get; set; }
     }
 }

@@ -8,20 +8,16 @@
 
 using System.ComponentModel.DataAnnotations;
 
+using eDoxa.Seedwork.Application.Options;
+
 namespace eDoxa.Challenges.Workers.Infrastructure
 {
     public class ChallengesWorkersAppSettings
     {
         [Required]
-        public EndpointsOptions Endpoints { get; set; }
-    }
-
-    public sealed class EndpointsOptions
-    {
-        [Required]
-        public string ChallengesUrl { get; set; }
+        public ServiceOptions Service { get; set; }
 
         [Required]
-        public string GamesUrl { get; set; }
+        public GrpcOptions Grpc { get; set; }
     }
 }

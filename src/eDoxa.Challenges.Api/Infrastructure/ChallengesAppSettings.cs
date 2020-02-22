@@ -8,26 +8,13 @@
 
 using System.ComponentModel.DataAnnotations;
 
-using eDoxa.Seedwork.Application.AppSettings;
-using eDoxa.Seedwork.Application.AppSettings.Options;
-
-using IdentityServer4.Models;
+using eDoxa.Seedwork.Application.Options;
 
 namespace eDoxa.Challenges.Api.Infrastructure
 {
-    public class ChallengesAppSettings : IHasApiResourceAppSettings<EndpointsOptions>
+    public class ChallengesAppSettings
     {
         [Required]
-        public ApiResource ApiResource { get; set; }
-
-        [Required]
-        public string Authority { get; set; }
-
-        [Required]
-        public EndpointsOptions Endpoints { get; set; }
-    }
-
-    public class EndpointsOptions : AuthorityEndpointsOptions
-    {
+        public AuthorityOptions Authority { get; set; }
     }
 }

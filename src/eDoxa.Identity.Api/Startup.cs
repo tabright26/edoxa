@@ -46,15 +46,12 @@ using MediatR;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
-using static eDoxa.Seedwork.Application.ApiResources;
 
 namespace eDoxa.Identity.Api
 {
@@ -71,25 +68,24 @@ namespace eDoxa.Identity.Api
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration, IHostEnvironment environment)
         {
             Configuration = configuration;
-            HostingEnvironment = hostingEnvironment;
-            AppSettings = configuration.GetAppSettings<IdentityAppSettings>(IdentityApi);
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
 
-        public IWebHostEnvironment HostingEnvironment { get; }
+        public IHostEnvironment Environment { get; }
 
-        private IdentityAppSettings AppSettings { get; }
+        private IdentityAppSettings AppSettings => Configuration.Get<IdentityAppSettings>();
     }
 
     public partial class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAppSettings<IdentityAppSettings>(Configuration);
+            services.AddOptions<IdentityAppSettings>().Bind(Configuration).ValidateDataAnnotations();
 
             services.Configure<IdentityApiOptions>(Configuration.GetSection("Api"));
 
@@ -104,7 +100,7 @@ namespace eDoxa.Identity.Api
                 options =>
                 {
                     options.CompatibilityMode = PasswordHasherCompatibilityMode.IdentityV3;
-                    options.IterationCount = HostingEnvironment.IsProduction() ? 100000 : 1;
+                    options.IterationCount = Environment.IsProduction() ? 100000 : 1;
                 });
 
             services.AddHealthChecks()
@@ -134,7 +130,7 @@ namespace eDoxa.Identity.Api
 
             services.AddMediatR(typeof(Startup));
 
-            services.AddCustomIdentityServer(HostingEnvironment, AppSettings);
+            services.AddCustomIdentityServer(Environment, AppSettings);
 
             //services.AddAuthentication().AddIdentityServerJwt();
 
@@ -143,8 +139,8 @@ namespace eDoxa.Identity.Api
                 .AddIdentityServerAuthentication(
                     options =>
                     {
-                        options.ApiName = AppSettings.ApiResource.Name;
-                        options.Authority = AppSettings.Endpoints.IdentityUrl;
+                        options.ApiName = ApiResources.IdentityApi.Name;
+                        options.Authority = AppSettings.Authority.InternalUrl;
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
@@ -198,14 +194,14 @@ namespace eDoxa.Identity.Api
         {
             this.ConfigureServices(services);
 
-            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, ApiResources.IdentityApi, AppSettings.Authority);
         }
 
         public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber)
         {
             this.Configure(application, subscriber);
 
-            application.UseSwagger(AppSettings);
+            application.UseSwagger(ApiResources.IdentityApi);
         }
     }
 
@@ -213,7 +209,7 @@ namespace eDoxa.Identity.Api
     {
         public void ConfigureTestServices(IServiceCollection services)
         {
-            services.AddAppSettings<IdentityAppSettings>(Configuration);
+            services.Configure<IdentityAppSettings>(Configuration);
 
             services.Configure<IdentityApiOptions>(Configuration.GetSection("Api"));
 

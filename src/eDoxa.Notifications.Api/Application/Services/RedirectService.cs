@@ -13,23 +13,18 @@ namespace eDoxa.Notifications.Api.Application.Services
 {
     public class RedirectService : IRedirectService
     {
-        private readonly IOptions<NotificationsAppSettings> _optionsSnapshot;
+        private readonly IOptions<NotificationsAppSettings> _options;
 
-        public RedirectService(IOptionsSnapshot<NotificationsAppSettings> optionsSnapshot)
+        public RedirectService(IOptionsSnapshot<NotificationsAppSettings> options)
         {
-            _optionsSnapshot = optionsSnapshot;
+            _options = options;
         }
 
-        private NotificationsAppSettings AppSettings => _optionsSnapshot.Value;
+        private NotificationsAppSettings Options => _options.Value;
 
         public string RedirectToWebSpa(string url = "/")
         {
-            return $"{AppSettings.WebSpaUrl}{url}";
-        }
-
-        public string RedirectToAuthority(string url = "/")
-        {
-            return $"{AppSettings.Authority}{url}";
+            return $"{Options.Client.Web.Endpoints.SpaUrl}{url}";
         }
     }
 }

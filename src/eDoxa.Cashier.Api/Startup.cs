@@ -46,8 +46,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using static eDoxa.Seedwork.Application.ApiResources;
-
 namespace eDoxa.Cashier.Api
 {
     public partial class Startup
@@ -66,25 +64,24 @@ namespace eDoxa.Cashier.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            AppSettings = configuration.GetAppSettings<CashierAppSettings>(CashierApi);
         }
 
         public IConfiguration Configuration { get; }
 
-        private CashierAppSettings AppSettings { get; }
+        private CashierAppSettings AppSettings => Configuration.Get<CashierAppSettings>();
     }
 
     public partial class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAppSettings<CashierAppSettings>(Configuration);
+            services.AddOptions<CashierAppSettings>().Bind(Configuration).ValidateDataAnnotations();
 
             services.Configure<CashierApiOptions>(Configuration.GetSection("Api"));
             
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
-                .AddCustomIdentityServer(AppSettings)
+                .AddCustomIdentityServer(AppSettings.Authority)
                 .AddCustomAzureKeyVault(Configuration)
                 .AddCustomSqlServer(Configuration)
                 .AddCustomAzureServiceBusTopic(Configuration);
@@ -109,8 +106,8 @@ namespace eDoxa.Cashier.Api
                 .AddIdentityServerAuthentication(
                     options =>
                     {
-                        options.ApiName = AppSettings.ApiResource.Name;
-                        options.Authority = AppSettings.Endpoints.IdentityUrl;
+                        options.ApiName = ApiResources.CashierApi.Name;
+                        options.Authority = AppSettings.Authority.InternalUrl;
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
@@ -155,14 +152,14 @@ namespace eDoxa.Cashier.Api
         {
             this.ConfigureServices(services);
 
-            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, ApiResources.CashierApi, AppSettings.Authority);
         }
 
         public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber)
         {
             this.Configure(application, subscriber);
 
-            application.UseSwagger(AppSettings);
+            application.UseSwagger(ApiResources.CashierApi);
         }
     }
 
@@ -170,7 +167,7 @@ namespace eDoxa.Cashier.Api
     {
         public void ConfigureTestServices(IServiceCollection services)
         {
-            services.AddAppSettings<CashierAppSettings>(Configuration);
+            services.Configure<CashierAppSettings>(Configuration);
 
             services.Configure<CashierApiOptions>(Configuration.GetSection("Api"));
             

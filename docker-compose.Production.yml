@@ -10,7 +10,7 @@ services:
       - seq
       - redis
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - REACT_APP_AUTHORITY=http://${HOST:-localhost}:5000
       - REACT_APP_CASHIER_WEB_GATEWAY_URL=http://${HOST:-localhost}:5202
       - REACT_APP_CHALLENGES_WEB_GATEWAY_URL=http://${HOST:-localhost}:5203
@@ -27,8 +27,10 @@ services:
       - REACT_APP_INSTAGRAM_URL=https://www.instagram.com/edoxagg/
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity-api
+      - Authority__InternalUrl=http://identity-api
+      - Authority__ExternalUrl=http://${HOST:-localhost}:5000
+      - Gateway__Web__Endpoints__CashierUrl=http://cashier-web-gateway
+      - Gateway__Web__Endpoints__ChallengesUrl=http://challenges-web-gateway
       - Serilog__Sink__Seq=http://seq
     ports:
       - "5300:80"

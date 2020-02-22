@@ -10,6 +10,6 @@ namespace eDoxa.Seedwork.Application.Options
 {
     public sealed class ClientWebEndpointsOptions
     {
-        public string WebSpaUrl { get; set; }
+        public string SpaUrl { get; set; }
     }
 }

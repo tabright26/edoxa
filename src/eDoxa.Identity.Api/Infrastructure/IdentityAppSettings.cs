@@ -9,57 +9,23 @@
 using System.ComponentModel.DataAnnotations;
 
 using eDoxa.Grpc.Protos.Identity.Options;
-using eDoxa.Seedwork.Application.AppSettings;
-using eDoxa.Seedwork.Application.AppSettings.Options;
-
-using IdentityServer4.Models;
+using eDoxa.Seedwork.Application.Options;
 
 namespace eDoxa.Identity.Api.Infrastructure
 {
-    public class IdentityAppSettings : IHasApiResourceAppSettings<AuthorityEndpointsOptions>
+    public class IdentityAppSettings
     {
         [Required]
-        public ApiResource ApiResource { get; set; }
+        public AuthorityOptions Authority { get; set; }
 
         [Required]
-        public string Authority { get; set; }
+        public ClientOptions Client { get; set; }
 
-        [Required]
-        public string WebSpaUrl { get; set; }
+        public ServiceOptions Service { get; set; }
 
-        [Required]
-        public AuthorityEndpointsOptions Endpoints { get; set; }
-
-        public SwaggerOptions Swagger { get; set; }
+        public AggregatorOptions Aggregator { get; set; }
 
         [Required]
         public AdministratorOptions Administrator { get; set; }
-    }
-
-    public sealed class SwaggerOptions
-    {
-        [Required]
-        public SwaggerEndpointsOptions Endpoints { get; set; }
-    }
-
-    public sealed class SwaggerEndpointsOptions
-    {
-        public string IdentityUrl { get; set; }
-
-        public string PaymentUrl { get; set; }
-
-        public string CashierUrl { get; set; }
-
-        public string NotificationsUrl { get; set; }
-
-        public string ChallengesUrl { get; set; }
-
-        public string GamesUrl { get; set; }
-        
-        public string ClansUrl { get; set; }
-
-        public string ChallengesWebAggregatorUrl { get; set; }
-
-        public string CashierWebAggregatorUrl { get; set; }
     }
 }
