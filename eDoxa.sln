@@ -26,7 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cashier", "Cashier", "{9F1CD6C1-8419-4262-B7AE-F66C530B9EC7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web Apps", "Web Apps", "{E8C72A66-8993-427D-A2BA-73B170309B32}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{E8C72A66-8993-427D-A2BA-73B170309B32}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Cashier.Domain", "src\eDoxa.Cashier.Domain\eDoxa.Cashier.Domain.csproj", "{A9B47528-7CFE-4614-AB77-1DA20808FE4B}"
 EndProject
@@ -185,7 +185,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Challenges.Web.Gateway", "C
 		src\eDoxa.Gateways\Challenges.Web.Gateway\envoy.yaml = src\eDoxa.Gateways\Challenges.Web.Gateway\envoy.yaml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Redis", "src\eDoxa.Redis\eDoxa.Redis.csproj", "{439DDC22-ED4B-41AD-B58A-D5EEC8AADEC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Redis", "src\eDoxa.Redis\eDoxa.Redis.csproj", "{439DDC22-ED4B-41AD-B58A-D5EEC8AADEC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
