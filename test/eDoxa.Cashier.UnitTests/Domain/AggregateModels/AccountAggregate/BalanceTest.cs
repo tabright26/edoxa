@@ -1,6 +1,6 @@
 ﻿// Filename: BalanceTest.cs
 // Date Created: 2019-11-25
-// 
+//
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
@@ -82,6 +82,17 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             balance.Available.Should().Be(Token.FiveHundred);
             balance.CurrencyType.Should().Be(CurrencyType.Token);
             balance.Pending.Should().Be(decimal.Zero);
+        }
+
+        [Fact]
+        public void GetHashCode_ShouldNotBeZero()
+        {
+            // Arrange
+            var transactions = CreateTransactions().ToList();
+            var balance = new Balance(transactions, CurrencyType.Token);
+
+            // Act Assert
+            balance.GetHashCode().Should().NotBe(0);
         }
     }
 }

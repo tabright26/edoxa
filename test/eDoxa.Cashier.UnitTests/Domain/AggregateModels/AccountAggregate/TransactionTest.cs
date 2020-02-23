@@ -1,6 +1,6 @@
 ﻿// Filename: TransactionTest.cs
-// Date Created: 2019-12-26
-// 
+// Date Created: 2019-12-18
+//
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
@@ -22,6 +22,52 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
     {
         public TransactionTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
         {
+        }
+
+        [Fact]
+        public void MarkAsCanceled_WhenTransactionStatusPending_ShouldBeStatusSucceded()
+        {
+            // Arrange
+            var currency = Money.Twenty;
+            var description = new TransactionDescription("Transaction to cancel");
+            var type = TransactionType.Withdraw;
+            var provider = new UtcNowDateTimeProvider();
+
+            var transaction = new Transaction(
+                currency,
+                description,
+                type,
+                provider);
+
+            // Act
+            transaction.MarkAsCanceled();
+
+            // Assert
+            transaction.Status.Should().Be(TransactionStatus.Canceled);
+        }
+
+        [Fact]
+        public void MarkAsCanceled_WhenTransactionStatusSucceeded_ShouldThrowInvalidOperationException()
+        {
+            // Arrange
+            var currency = Money.Twenty;
+            var description = new TransactionDescription("Transaction to cancel");
+            var type = TransactionType.Withdraw;
+            var provider = new UtcNowDateTimeProvider();
+
+            var transaction = new Transaction(
+                currency,
+                description,
+                type,
+                provider);
+
+            transaction.MarkAsSucceeded();
+
+            // Act
+            var action = new Action(() => transaction.MarkAsCanceled());
+
+            // Assert
+            action.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -117,7 +163,69 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
         }
 
         [Fact]
+        public void Price_WithTransactionFromMoney_ShouldBePriceMoney()
+        {
+            // Arrange
+            var currency = Money.Twenty;
+            var description = new TransactionDescription("Price to check");
+            var type = TransactionType.Withdraw;
+            var provider = new UtcNowDateTimeProvider();
+
+            var transaction = new Transaction(
+                currency,
+                description,
+                type,
+                provider);
+
+            // Act Assert
+            transaction.Price.Should().NotBeNull();
+            var price = transaction.Price;
+            price.Amount.Should().Be(20);
+            price.Type.Should().Be(CurrencyType.Money);
+        }
+
+        [Fact]
+        public void Price_WithTransactionFromToken_ShouldBePriceMoney()
+        {
+            // Arrange
+            var currency = Token.FiftyThousand;
+            var description = new TransactionDescription("Price to check");
+            var type = TransactionType.Deposit;
+            var provider = new UtcNowDateTimeProvider();
+
+            var transaction = new Transaction(
+                currency,
+                description,
+                type,
+                provider);
+
+            // Act Assert
+            transaction.Price.Should().NotBeNull();
+            var price = transaction.Price;
+            price.Amount.Should().Be(500);
+            price.Type.Should().Be(CurrencyType.Money);
+        }
+
+        [Fact]
         public void Transaction_WithConstructor_ShouldBeValid()
+        {
+            // Arrange
+            var currency = Money.Fifty;
+            var type = TransactionType.Deposit;
+            var provider = new UtcNowDateTimeProvider();
+
+            // Act
+            var transaction = new TransactionBuilder(type, currency).WithProvider(provider).Build();
+
+            // Assert
+            transaction.Timestamp.Should().Be(provider.DateTime);
+            transaction.Currency.Should().Be(currency);
+            transaction.Type.Should().Be(type);
+            transaction.Status.Should().Be(TransactionStatus.Pending);
+        }
+
+        [Fact]
+        public void DescriptionToString_ShouldBeSame()
         {
             // Arrange
             var currency = Money.Fifty;
@@ -125,19 +233,32 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             var type = TransactionType.Deposit;
             var provider = new UtcNowDateTimeProvider();
 
-            // Act
-            var transaction = new Transaction(
-                currency,
-                description,
-                type,
-                provider);
+            var transaction = new Transaction(currency, description, type, provider);
 
-            // Assert
-            transaction.Timestamp.Should().Be(provider.DateTime);
-            transaction.Currency.Should().Be(currency);
-            transaction.Description.Should().Be(description);
-            transaction.Type.Should().Be(type);
-            transaction.Status.Should().Be(TransactionStatus.Pending);
+            // Act Assert
+            transaction.Description.ToString().Should().Be("Test");
+        }
+
+        [Fact]
+        public void ConstructorWithDescription_WhenNoType_ShouldThrowInvalidOperationException()
+        {
+            // Arrange
+            var description = new TransactionDescription("Test");
+
+            // Act Assert
+            var action = new Action(() => new TransactionBuilder(TransactionType.All, new Money(500)).WithDescription(description).Build());
+            action.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void ConstructorWithProvider_WhenNoType_ShouldThrowInvalidOperationException()
+        {
+            // Arrange
+            var provider = new UtcNowDateTimeProvider();
+
+            // Act Assert
+            var action = new Action(() => new TransactionBuilder(TransactionType.All, new Token(100000)).WithProvider(provider).Build());
+            action.Should().Throw<InvalidOperationException>();
         }
     }
 }

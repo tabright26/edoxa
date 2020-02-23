@@ -1,6 +1,6 @@
 ﻿// Filename: ChallengeTest.cs
 // Date Created: 2020-02-08
-// 
+//
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
@@ -79,6 +79,81 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.ChallengeAggregate
 
             // Assert
             challenge.DomainEvents.Where(domainEvent => domainEvent is ChallengeParticipantPayoutDomainEvent).Should().HaveCount(participantCount);
+        }
+
+        [Fact]
+        public void Equals_WithSameId_ShouldBeTrue()
+        {
+            // Arrange
+            var challengeId = new ChallengeId();
+            var factory = new ChallengePayoutFactory();
+            var instance = factory.CreateInstance();
+
+            var scoreboard = new Dictionary<UserId, decimal?>
+            {
+                { new UserId(), 50 },
+                { new UserId(), 100 }
+            };
+
+            var challenge1 = new Challenge(
+                challengeId,
+                instance.GetChallengePayout(new ChallengePayoutEntries(scoreboard.Count / 2), new EntryFee(100, CurrencyType.Money)));
+
+            var challenge2 = new Challenge(
+                challengeId,
+                instance.GetChallengePayout(new ChallengePayoutEntries(scoreboard.Count / 2), new EntryFee(100, CurrencyType.Money)));
+
+            // Act Assert
+            challenge1.Equals(challenge2).Should().BeTrue();
+        }
+
+        [Fact]
+        public void Equals_WithEmptyObject_ShouldBeFalse()
+        {
+            // Arrange
+            var challengeId = new ChallengeId();
+            var factory = new ChallengePayoutFactory();
+            var instance = factory.CreateInstance();
+
+            var scoreboard = new Dictionary<UserId, decimal?>
+            {
+                { new UserId(), 50 },
+                { new UserId(), 100 }
+            };
+
+            var challenge1 = new Challenge(
+                challengeId,
+                instance.GetChallengePayout(new ChallengePayoutEntries(scoreboard.Count / 2), new EntryFee(100, CurrencyType.Money)));
+
+            var challenge2 =  new {
+                challengeId
+            };
+
+            // Act Assert
+            challenge1.Equals(challenge2).Should().BeFalse();
+
+        }
+
+        [Fact]
+        public void GetHashCode_ShouldNotBeZero()
+        {
+            // Arrange
+            var challengeId = new ChallengeId();
+            var factory = new ChallengePayoutFactory();
+            var instance = factory.CreateInstance();
+
+            var scoreboard = new Dictionary<UserId, decimal?>
+            {
+                { new UserId(), 50 },
+                { new UserId(), 100 }
+            };
+
+            var challenge = new Challenge(
+                challengeId,
+                instance.GetChallengePayout(new ChallengePayoutEntries(scoreboard.Count / 2), new EntryFee(100, CurrencyType.Money)));
+
+            // Act Assert
+            challenge.GetHashCode().Should().NotBe(0);
         }
     }
 }

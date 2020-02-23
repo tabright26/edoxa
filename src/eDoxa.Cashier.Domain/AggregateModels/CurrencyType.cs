@@ -1,6 +1,6 @@
 ﻿// Filename: CurrencyType.cs
 // Date Created: 2019-11-25
-// 
+//
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
@@ -11,6 +11,7 @@ using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.AggregateModels
 {
+    // Francis: c'est quoi le nom de ce patron la ??? sa a tu rapport avec value et name ?
     [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class CurrencyType : Enumeration<CurrencyType>
     {

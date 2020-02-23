@@ -1,6 +1,6 @@
 ﻿// Filename: AccountTest.cs
 // Date Created: 2019-11-25
-// 
+//
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
@@ -58,6 +58,76 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             var action = new Action(() => account.GetBalanceFor(currencyType));
 
             action.Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
+        public void FindTransaction_WithAdministratorAccount_ShouldBeTrue()
+        {
+            // Arrange
+            var userId = new UserId();
+            var admin = Account.CreateTestAdministrator(userId);
+            var transaction = new TransactionBuilder(TransactionType.Deposit, new Money(50)).Build();
+
+            // Act
+            admin.CreateTransaction(transaction);
+
+            // Assert
+            admin.FindTransaction(transaction.Id).Should().NotBeNull();
+            admin.FindTransaction(transaction.Id).Should().Be(transaction);
+        }
+
+        [Fact]
+        public void FindTransaction_WithAdministratorAccount_ShouldThrowInvalidOperationException()
+        {
+            // Arrange
+            var userId = new UserId();
+            var admin = Account.CreateTestAdministrator(userId);
+
+            // Act Assert
+            var action = new Action(() => admin.FindTransaction(new TransactionId()));
+            action.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Equals_WithSameId_ShouldBeTrue()
+        {
+            // Arrange
+            var userId = new UserId();
+            var account = new Account(userId);
+
+            var diffAccount = new Account(userId);
+            var transaction = new TransactionBuilder(TransactionType.Deposit, new Money(50)).Build();
+            diffAccount.CreateTransaction(transaction);
+
+            // Act Assert
+            account.Equals(diffAccount).Should().BeTrue();
+        }
+
+        [Fact]
+        public void Equals_WithEmptyObject_ShouldBeFalse()
+        {
+            // Arrange
+            var userId = new UserId();
+            var account = new Account(userId);
+
+            var diffAccount =  new {
+                userId
+            };
+
+            // Act Assert
+            account.Equals(diffAccount).Should().BeFalse();
+        }
+
+        // Francis: Je sais vraiment pas si c"est nécessaire, mais je me rappel avoir vu dequoi par rapport au zéros dans les tests.
+        [Fact]
+        public void GetHashCode_ShouldNotBeZero()
+        {
+            // Arrange
+            var userId = new UserId();
+            var account = new Account(userId);
+
+            // Act Assert
+            account.GetHashCode().Should().NotBe(0);
         }
     }
 }
