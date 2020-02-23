@@ -1,12 +1,14 @@
-﻿// Filename: CsvReaderExtensions.cs
-// Date Created: 2019-08-21
+﻿// Filename: StreamExtensions.cs
+// Date Created: 2019-12-18
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
+using System.Globalization;
 using System.IO;
 
 using CsvHelper;
+using CsvHelper.Configuration;
 
 namespace eDoxa.Seedwork.Infrastructure.CsvHelper.Extensions
 {
@@ -14,13 +16,12 @@ namespace eDoxa.Seedwork.Infrastructure.CsvHelper.Extensions
     {
         public static CsvReader OpenCsvReader(this Stream stream)
         {
-            var streamReader = new StreamReader(stream);
-
-            var csvReader = new CsvReader(streamReader);
-
-            csvReader.Configuration.Delimiter = ",";
-
-            return csvReader;
+            return new CsvReader(
+                new StreamReader(stream),
+                new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    Delimiter = ","
+                });
         }
     }
 }
