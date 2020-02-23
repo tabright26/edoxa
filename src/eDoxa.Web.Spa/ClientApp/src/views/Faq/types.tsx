@@ -8,6 +8,8 @@ import {
 } from "utils/coreui/constants";
 import { Link } from "react-router-dom";
 import { Badge } from "reactstrap";
+import Support from "components/Shared/Support";
+import { Discord } from "components/Shared/Social";
 
 export const NEW_USERS_GROUP_ID = "NEW_USERS_GROUP";
 export const ACCOUNT_GROUP_ID = "ACCOUNT_GROUP";
@@ -78,9 +80,8 @@ export const questions: Question[] = [
         We are only at the beginning of our journey to become the #1 enabler of
         eSport talent in the world. We have a robust road map for the product,
         and this will change based on the feedback we get from you. Please
-        contact us here or you can contact us{" "}
-        <Link to={process.env.REACT_APP_DISCORD_URL}>here</Link> at{" "}
-        <Link to="emailto:support@edoxa.gg">support@edoxa.gg</Link>.
+        contact us <Discord>here</Discord> or you can contact us at{" "}
+        <Support.EmailAddress />.
       </p>
     ]
   },
@@ -560,8 +561,7 @@ export const questions: Question[] = [
       <p className="mb-0">
         After an internal investigation has been completed and the account is
         deemed a Smurf, it will be permanently suspended from eDoxa.gg. You can
-        also report Smurf accounts at{" "}
-        <Link to="emailto:support@edoxa.gg">support@edoxa.gg</Link>..
+        also report Smurf accounts at <Support.EmailAddress />.
       </p>
     ]
   },
@@ -572,8 +572,7 @@ export const questions: Question[] = [
       <p className="mb-0">
         In most cases, eDoxa.gg does not allow refunds once a result has been
         finalized. If you believe a mistake is made on your part, please contact
-        us at <Link to="emailto:support@edoxa.gg">support@edoxa.gg</Link>. and
-        we can sort out a possible solution.
+        us at <Support.EmailAddress /> and we can sort out a possible solution.
       </p>
     ]
   },

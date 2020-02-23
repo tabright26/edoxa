@@ -8,6 +8,7 @@ import {
   TRANSACTION_STATUS_SUCCEEDED,
   TRANSACTION_STATUS_PENDING
 } from "types/cashier";
+import Support from "components/Shared/Support";
 
 const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
   const [open, setOpen] = useState(false);
@@ -57,7 +58,7 @@ const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
           <p className="text-muted text-justify">
             Pending transactions are in the process of getting validated. If the
             transaction stay for longer than 5 minutes please contact{" "}
-            <a href="mailto:support@edoxa.gg">support@edoxa.gg</a>.
+            <Support.EmailAddress />.
           </p>
           <DepositMoney />
           <WithdrawMoney />

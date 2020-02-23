@@ -123,7 +123,12 @@ exports[`renders without crashing 1`] = `
           If you open an account and/or participate in any tournament or game offered on the Site while located in a prohibited jurisdiction, you will be in violation of the law of such jurisdiction and these T&Cs, and subject to having your account suspended or terminated and all winnings (if any) voided.
         </li>
         <li>
-          You may establish only one account per person to participate in the Services offered on the Website. In the event eDoxa discovers that you have opened more than one account per person, in addition to any other rights that eDoxa may have, eDoxa reserves the right to suspend or terminate any or all of your accounts and terminate, withhold or revoke the awarding of any prizes. You are responsible for maintaining the confidentiality of your login names and passwords and you accept responsibility for all activities, charges, and damages that occur under your account. It shall be a violation of these Terms of Use to allow any other person to use your account to participate in any contest. If you have reason to believe that someone is using your account without your permission, you should contact us immediately at support@edoxa.gg. We will not be responsible for any loss or damage resulting from your failure to notify us of unauthorized use. If we request registration information from you, you must provide us with accurate and complete information and must update the information when it changes.
+          You may establish only one account per person to participate in the Services offered on the Website. In the event eDoxa discovers that you have opened more than one account per person, in addition to any other rights that eDoxa may have, eDoxa reserves the right to suspend or terminate any or all of your accounts and terminate, withhold or revoke the awarding of any prizes. You are responsible for maintaining the confidentiality of your login names and passwords and you accept responsibility for all activities, charges, and damages that occur under your account. It shall be a violation of these Terms of Use to allow any other person to use your account to participate in any contest. If you have reason to believe that someone is using your account without your permission, you should contact us immediately at
+           
+          <a
+            href="mailto:undefined"
+          />
+          . We will not be responsible for any loss or damage resulting from your failure to notify us of unauthorized use. If we request registration information from you, you must provide us with accurate and complete information and must update the information when it changes.
         </li>
         <li>
           “Authorized Account Holder” is defined as the natural person from 18 years of age or older who is assigned to an e-mail address by an Internet access provider, on-line service provider, or other organization (e.g., business, educational institution, etc.) that is responsible for assigning e-mail addresses for the domain associated with the submitted e-mail address for registration on the Website. By inputting a payment method to participate in real money contests, the Authorized Account Holder hereby affirms that the Authorized Account Holder is the lawful owner of the payment method account used to make any deposit(s) on the Website or the lawful owner of the payment method provided explicit consent to use it. It shall be a violation of these Terms of Use for any Authorized Account Holder to submit payment using any payment method that is not owned by the Authorized Account Holder or provided consent.
@@ -520,7 +525,15 @@ exports[`renders without crashing 1`] = `
       <p
         className="mb-0"
       >
-        If members suspect that feedback left for them is in violation of the Site's feedback policy and constitutes abuse, they are encouraged to email support@edoxa.gg to report this violation. eDoxa will also offer the opportunity to members to withdraw feedback if both members mutually agree to the removal of a specified comment or feedback rating. Both members must email support@edoxa.gg.
+        If members suspect that feedback left for them is in violation of the Site's feedback policy and constitutes abuse, they are encouraged to email 
+        <a
+          href="mailto:undefined"
+        />
+         to report this violation. eDoxa will also offer the opportunity to members to withdraw feedback if both members mutually agree to the removal of a specified comment or feedback rating. Both members must email 
+        <a
+          href="mailto:undefined"
+        />
+        .
       </p>
     </div>
   </div>
@@ -576,7 +589,11 @@ exports[`renders without crashing 1`] = `
       <p
         className="mb-0"
       >
-        If you wish to report a violation of our Anti-Spam Policy, please forward all evidence of abuse to support@edoxa.gg please refer responsibly.
+        If you wish to report a violation of our Anti-Spam Policy, please forward all evidence of abuse to 
+        <a
+          href="mailto:undefined"
+        />
+         please refer responsibly.
       </p>
     </div>
   </div>

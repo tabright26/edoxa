@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { Alert, Container, Badge } from "reactstrap";
-import { REACT_APP_BETA_ALERT_DISPLAYED, REACT_APP_DISCORD_URL } from "keys";
+import { REACT_APP_BETA_ALERT_DISPLAYED } from "keys";
+import { Discord } from "components/Shared/Social";
 
 export const Banner: FunctionComponent = () =>
   REACT_APP_BETA_ALERT_DISPLAYED === "true" ? (
@@ -10,11 +11,7 @@ export const Banner: FunctionComponent = () =>
         platform! The team wants to help unlock every gamer’s potential so that
         they can be proud to live their eSport dream. Please feel free to
         contact us with our live chat below or our{" "}
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href={REACT_APP_DISCORD_URL}
-        >
+        <Discord>
           <Badge
             color="dark"
             style={{
@@ -23,7 +20,7 @@ export const Banner: FunctionComponent = () =>
           >
             Discord
           </Badge>
-        </a>{" "}
+        </Discord>
         server to provide feedback and suggestions about eDoxa.gg.
       </Container>
     </Alert>

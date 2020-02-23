@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import Support from "components/Shared/Support";
 
 export type Item = {
   title?: string;
@@ -120,7 +121,9 @@ export const items: Item[] = [
         directed to our Privacy Officer who can be reached as follows:
       </p>,
       <ul className="mb-0">
-        <li>eDoxa Privacy Officer Email: support@edoxa.gg</li>
+        <li>
+          eDoxa Privacy Officer Email: <Support.EmailAddress />.
+        </li>
       </ul>
     ]
   },
@@ -657,7 +660,7 @@ export const items: Item[] = [
         applicable law, such as for the investigation of claims or the defense
         of an action, and some Personal Information may remain in back-up
         storage for this purpose. If you wish to delete your data, you can
-        contact support via support@edoxa.gg.
+        contact support via <Support.EmailAddress />.
       </p>,
       <p className="mb-0">
         In the event that an individual wishes to challenge eDoxa’s compliance
