@@ -14,7 +14,11 @@ const Rules: FunctionComponent = () => (
           BAN WITH NO REFUNDS.
         </strong>
       </p>
-      <ol className="pl-3">
+      <ol className="pl-3 mb-0">
+        <li>
+          EVERY PARTICIPANT WILL WIN A REWARD, the top 50% will win money based
+          on the payout structure and the bottom 50% will get 250 Tokens.
+        </li>
         <li>You can register to multiple Challenges at a time.</li>
         <li>
           We start recording your in-game stats when the Challenge state is
@@ -26,8 +30,8 @@ const Rules: FunctionComponent = () => (
         </li>
         <li>You can play multiple matches in the designated time frame.</li>
         <li>
-          Based on the "Best of" 1/3/5, we will only use the best scored matches
-          to tabulate your final score.
+          Based on the "Best of" 1/3/5, we will only use the best 1/3/5 scored
+          matches to tabulate your final score.
         </li>
         <li>
           Match synchronisation can take up to 120 minutes or more to be
@@ -38,7 +42,7 @@ const Rules: FunctionComponent = () => (
           the "Closed" state.
         </li>
       </ol>
-      <Register className="w-100 mt-2 text-uppercase" />
+      <Register className="w-100 mt-4 text-uppercase" />
     </CardBody>
   </Card>
 );
