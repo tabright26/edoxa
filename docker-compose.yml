@@ -13,6 +13,9 @@ services:
   seq:
     image: datalust/seq:latest
 
+  stripe:
+    image: stripe/stripe-cli:latest
+
   identity-api:
     image: ${ACR_REGISTRY:-edoxa}/identity-api:${ACR_TAG:-latest}
     build:

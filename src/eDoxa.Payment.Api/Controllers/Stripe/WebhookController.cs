@@ -11,6 +11,7 @@ using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -18,22 +19,27 @@ using Newtonsoft.Json;
 
 using Stripe;
 
+using Swashbuckle.AspNetCore.Annotations;
+
 namespace eDoxa.Payment.Api.Controllers.Stripe
 {
     [Route("api/stripe/webhook")]
-    public class StripeWebHook : Controller
+    public class WebhookController : Controller
     {
         private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly ILogger _logger;
 
-        public StripeWebHook(IServiceBusPublisher serviceBusPublisher, ILogger<StripeWebHook> logger)
+        public WebhookController(IServiceBusPublisher serviceBusPublisher, ILogger<WebhookController> logger)
         {
             _serviceBusPublisher = serviceBusPublisher;
             _logger = logger;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index()
+        [SwaggerOperation("Handle Stripe webhook.")]
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> HandleWebhookAsync()
         {
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
 
@@ -119,6 +125,8 @@ namespace eDoxa.Payment.Api.Controllers.Stripe
             }
             catch (StripeException exception)
             {
+                _logger.LogError(exception, "Stripe webhook error.");
+
                 return this.BadRequest();
             }
         }

@@ -24,6 +24,9 @@ services:
     ports:
       - "5400:80"
 
+  stripe:
+    command: --api-key sk_test_xRMH8A7bagp2Auj7YPqNihlY listen --forward-to=http://${HOST:-localhost}:5202/payment/api/stripe/webhook --latest
+      
   identity-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -104,7 +107,7 @@ services:
       - ConnectionStrings__SqlServer=${NOTIFICATIONS_SQLSERVER_CONNECTIONSTRING}
       - Authority__InternalUrl=http://identity-api
       - Authority__ExternalUrl=http://${HOST:-localhost}:5000
-      - WebSpaUrl=http://${HOST:-localhost}:5300
+      - Client__Web__Endpoints__SpaUrl=http://${HOST:-localhost}:5300
       - Serilog__Sink__Seq=http://seq
     ports:
       - "5011:80"
