@@ -12,12 +12,6 @@ COPY . .
 WORKDIR /tmp/src/eDoxa.Identity.Api
 RUN dotnet publish -c Release -o /app
 
-FROM build AS unit-tests
-WORKDIR /tmp/test/eDoxa.Identity.UnitTests
-
-FROM build AS integration-tests
-WORKDIR /tmp/test/eDoxa.Identity.IntegrationTests
-
 FROM build AS publish
 
 FROM base AS final

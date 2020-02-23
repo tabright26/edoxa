@@ -12,12 +12,6 @@ COPY . .
 WORKDIR /tmp/src/eDoxa.Notifications.Api
 RUN dotnet publish -c Release -o /app
 
-FROM build AS unit-tests
-WORKDIR /tmp/test/eDoxa.Notifications.UnitTests
-
-FROM build AS integration-tests
-WORKDIR /tmp/test/eDoxa.Notifications.IntegrationTests
-
 FROM build AS publish
 
 FROM base AS final

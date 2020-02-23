@@ -12,12 +12,6 @@ COPY . .
 WORKDIR /tmp/src/eDoxa.Games.Api
 RUN dotnet publish -c Release -o /app
 
-FROM build AS unit-tests
-WORKDIR /tmp/test/eDoxa.Games.UnitTests
-
-FROM build AS integration-tests
-WORKDIR /tmp/test/eDoxa.Games.IntegrationTests
-
 FROM build AS publish
 
 FROM base AS final
