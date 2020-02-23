@@ -9,7 +9,6 @@ using System.Linq;
 
 using eDoxa.Cashier.Api.Application.Factories;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.DomainEvents;
 using eDoxa.Cashier.TestHelper;

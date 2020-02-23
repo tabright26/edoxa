@@ -4,8 +4,6 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using System;
-
 using eDoxa.Cashier.Api.Application.Factories;
 using eDoxa.Cashier.Api.Application.Strategies;
 using eDoxa.Cashier.Domain.AggregateModels;

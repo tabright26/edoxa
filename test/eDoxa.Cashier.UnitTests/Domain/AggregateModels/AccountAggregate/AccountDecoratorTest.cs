@@ -7,8 +7,6 @@
 using System;
 using System.Collections.Generic;
 
-using Bogus.DataSets;
-
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
