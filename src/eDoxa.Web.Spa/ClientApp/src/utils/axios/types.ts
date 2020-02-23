@@ -35,13 +35,9 @@ export interface AxiosAction<ActionType, TData = any> {
   meta: AxiosActionMeta;
 }
 
-export interface AxiosState<
-  AxiosDataState = any,
-  AxiosErrorState = string | AxiosError<AxiosErrorData>
-> {
+export interface AxiosState<AxiosDataState = any> {
   readonly data: AxiosDataState;
   readonly loading: boolean;
-  readonly error?: AxiosErrorState;
 }
 
 export type Resolve = (result: any) => void;

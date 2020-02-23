@@ -3,6 +3,7 @@ import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import Profile from ".";
+import store from "store";
 
 it("renders without crashing", () => {
   // Arrange
@@ -67,7 +68,7 @@ it("renders without crashing", () => {
   //         amount: 100
   //       },
   //       description: "test",
-  //       type: TRANSACTION_TYPE_WITHDRAWAL,
+  //       type: TRANSACTION_TYPE_WITHDRAW,
   //       status: TRANSACTION_STATUS_SUCCEEDED,
   //       id: "3"
   //     }
@@ -127,12 +128,6 @@ it("renders without crashing", () => {
   //   loading: false,
   //   error: null
   // };
-
-  const store: any = {
-    getState: () => {},
-    dispatch: action => {},
-    subscribe: () => {}
-  };
 
   // Act
   const tree = renderer

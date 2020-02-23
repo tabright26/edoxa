@@ -11,7 +11,6 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Grpc.Protos.Payment.Options;
 using eDoxa.Payment.Api.Grpc.Services;
 using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
@@ -65,21 +64,18 @@ namespace eDoxa.Payment.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            AppSettings = configuration.GetAppSettings<PaymentAppSettings>(ApiResources.PaymentApi);
         }
 
         public IConfiguration Configuration { get; }
 
-        public PaymentAppSettings AppSettings { get; }
+        private PaymentAppSettings AppSettings => Configuration.Get<PaymentAppSettings>();
     }
 
     public partial class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAppSettings<PaymentAppSettings>(Configuration);
-
-            services.Configure<PaymentApiOptions>(Configuration.GetSection("Api"));
+            services.AddOptions<PaymentAppSettings>().Bind(Configuration).ValidateDataAnnotations();
 
             services.AddStripe(Configuration);
 
@@ -87,7 +83,7 @@ namespace eDoxa.Payment.Api
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
-                .AddCustomIdentityServer(AppSettings)
+                .AddCustomIdentityServer(AppSettings.Authority)
                 .AddCustomAzureKeyVault(Configuration)
                 .AddCustomAzureServiceBusTopic(Configuration);
 
@@ -114,8 +110,8 @@ namespace eDoxa.Payment.Api
                 .AddIdentityServerAuthentication(
                     options =>
                     {
-                        options.ApiName = AppSettings.ApiResource.Name;
-                        options.Authority = AppSettings.Endpoints.IdentityUrl;
+                        options.ApiName = ApiResources.PaymentApi.Name;
+                        options.Authority = AppSettings.Authority.InternalUrl;
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
@@ -158,14 +154,14 @@ namespace eDoxa.Payment.Api
         {
             this.ConfigureServices(services);
 
-            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, ApiResources.PaymentApi, AppSettings.Authority);
         }
 
         public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber)
         {
             this.Configure(application, subscriber);
 
-            application.UseSwagger(AppSettings);
+            application.UseSwagger(ApiResources.PaymentApi);
         }
     }
 
@@ -173,9 +169,7 @@ namespace eDoxa.Payment.Api
     {
         public void ConfigureTestServices(IServiceCollection services)
         {
-            services.AddAppSettings<PaymentAppSettings>(Configuration);
-
-            services.Configure<PaymentApiOptions>(Configuration.GetSection("Api"));
+            services.Configure<PaymentAppSettings>(Configuration);
 
             services.AddCustomCors();
 

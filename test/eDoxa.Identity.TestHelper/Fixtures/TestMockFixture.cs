@@ -1,12 +1,14 @@
 ﻿// Filename: TestMockFixture.cs
 // Date Created: 2020-02-02
-// 
+//
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Identity.Domain.Repositories;
 using eDoxa.Identity.Domain.Services;
 using eDoxa.ServiceBus.Abstractions;
+
+using IdentityServer4.Services;
 
 using Moq;
 
@@ -24,12 +26,14 @@ namespace eDoxa.Identity.TestHelper.Fixtures
             RoleService = new Mock<IRoleService>();
             SignInService = new Mock<ISignInService>();
             UserService = new Mock<IUserService>();
+            EventService = new Mock<IEventService>();
+            IdentityServerInteractionService = new Mock<IIdentityServerInteractionService>();
         }
 
         public Mock<IServiceBusPublisher> ServiceBusPublisher { get; }
 
         public Mock<IAddressRepository> AddressRepository { get; }
-        
+
         public Mock<IDoxatagRepository> DoxatagRepository { get; }
 
         public Mock<IAddressService> AddressService { get; }
@@ -41,5 +45,9 @@ namespace eDoxa.Identity.TestHelper.Fixtures
         public Mock<ISignInService> SignInService { get; }
 
         public Mock<IUserService> UserService { get; }
+
+        public Mock<IEventService> EventService { get; }
+
+        public Mock<IIdentityServerInteractionService> IdentityServerInteractionService { get; }
     }
 }

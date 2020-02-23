@@ -1,6 +1,9 @@
 import { reducer, initialState } from "./reducer";
 import { AxiosError } from "axios";
-import { LOAD_USER_PROFILE_SUCCESS, LOAD_USER_PROFILE_FAIL } from "store/actions/identity/types";
+import {
+  LOAD_USER_PROFILE_SUCCESS,
+  LOAD_USER_PROFILE_FAIL
+} from "store/actions/identity/types";
 
 const informations200Data = { name: "Gabriel", gender: "Male" };
 
@@ -17,7 +20,7 @@ describe("user personal info reducer", () => {
     };
     const state = {
       data: informations200Data,
-      error: null,
+
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);
@@ -36,7 +39,6 @@ describe("user personal info reducer", () => {
     };
     const state = {
       data: initialState.data,
-      error: error,
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);

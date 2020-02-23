@@ -1,11 +1,12 @@
 ﻿// Filename: ApplicationBuilderExtensions.cs
-// Date Created: 2019-11-29
+// Date Created: 2019-12-18
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Application.AppSettings;
 using eDoxa.Swagger.Extensions;
+
+using IdentityServer4.Models;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -15,12 +16,12 @@ namespace eDoxa.Seedwork.Application.Swagger
 {
     public static class ApplicationBuilderExtensions
     {
-        public static void UseSwagger(this IApplicationBuilder application, IHasApiResourceAppSettings appSettings)
+        public static void UseSwagger(this IApplicationBuilder application, ApiResource apiResource)
         {
             application.UseSwagger(
                 application.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>(),
-                appSettings.ApiResource.GetSwaggerClientId(),
-                appSettings.ApiResource.GetSwaggerClientName());
+                apiResource.GetSwaggerClientId(),
+                apiResource.GetSwaggerClientName());
         }
     }
 }

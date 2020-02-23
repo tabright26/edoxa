@@ -5,7 +5,6 @@
 // Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Stripe.Services.Abstractions;
@@ -40,7 +39,6 @@ namespace eDoxa.Stripe.Services
                 Currency = Options.Invoice.Currency,
                 Amount = amount,
                 Description = description,
-                TaxRates = Options.Invoice.TaxRates.ToList(),
                 Metadata = new Dictionary<string, string>
                 {
                     [nameof(transactionId)] = transactionId

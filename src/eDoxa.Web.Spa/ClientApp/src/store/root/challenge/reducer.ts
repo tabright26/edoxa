@@ -19,7 +19,6 @@ import { RootActions } from "store/types";
 
 export const initialState: ChallengesState = {
   data: [],
-  error: null,
   loading: false
 };
 
@@ -27,14 +26,12 @@ export const reducer: Reducer<ChallengesState, RootActions> = produce(
   (draft: Draft<ChallengesState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_CHALLENGES:
-        draft.error = null;
         draft.loading = true;
         break;
       case LOAD_CHALLENGES_SUCCESS: {
         const { status, data } = action.payload;
         switch (status) {
           case 204: {
-            draft.error = null;
             draft.loading = false;
             break;
           }
@@ -47,7 +44,6 @@ export const reducer: Reducer<ChallengesState, RootActions> = produce(
                 draft.data[index] = challenge;
               }
             });
-            draft.error = null;
             draft.loading = false;
             break;
           }
@@ -55,18 +51,15 @@ export const reducer: Reducer<ChallengesState, RootActions> = produce(
         break;
       }
       case LOAD_CHALLENGES_FAIL:
-        draft.error = action.error;
         draft.loading = false;
         break;
       case LOAD_CHALLENGE_HISTORY:
-        draft.error = null;
         draft.loading = true;
         break;
       case LOAD_CHALLENGE_HISTORY_SUCCESS: {
         const { status, data } = action.payload;
         switch (status) {
           case 204: {
-            draft.error = null;
             draft.loading = false;
             break;
           }
@@ -79,7 +72,6 @@ export const reducer: Reducer<ChallengesState, RootActions> = produce(
                 draft.data[index] = challenge;
               }
             });
-            draft.error = null;
             draft.loading = false;
             break;
           }
@@ -87,11 +79,9 @@ export const reducer: Reducer<ChallengesState, RootActions> = produce(
         break;
       }
       case LOAD_CHALLENGE_HISTORY_FAIL:
-        draft.error = action.error;
         draft.loading = false;
         break;
       case LOAD_CHALLENGE:
-        draft.error = null;
         draft.loading = true;
         break;
       case LOAD_CHALLENGE_SUCCESS: {
@@ -100,16 +90,13 @@ export const reducer: Reducer<ChallengesState, RootActions> = produce(
         index === -1
           ? draft.data.push(challenge)
           : (draft.data[index] = challenge);
-        draft.error = null;
         draft.loading = false;
         break;
       }
       case LOAD_CHALLENGE_FAIL:
-        draft.error = action.error;
         draft.loading = false;
         break;
       case REGISTER_CHALLENGE_PARTICIPANT:
-        draft.error = null;
         draft.loading = true;
         break;
       case REGISTER_CHALLENGE_PARTICIPANT_SUCCESS: {
@@ -117,12 +104,10 @@ export const reducer: Reducer<ChallengesState, RootActions> = produce(
         draft.data
           .find(challenge => challenge.id === participant.challengeId)
           .participants.push(participant);
-        draft.error = null;
         draft.loading = false;
         break;
       }
       case REGISTER_CHALLENGE_PARTICIPANT_FAIL:
-        draft.error = action.error;
         draft.loading = false;
         break;
     }

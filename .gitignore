@@ -323,3 +323,4 @@ healthchecksdb
 /NuGet.config
 
 *.trx
+/src/eDoxa.Web.Spa/ClientApp/test-results.xml

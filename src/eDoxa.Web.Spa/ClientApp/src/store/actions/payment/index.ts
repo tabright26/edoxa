@@ -1,16 +1,4 @@
 import {
-  LOAD_STRIPE_ACCOUNT,
-  LOAD_STRIPE_ACCOUNT_SUCCESS,
-  LOAD_STRIPE_ACCOUNT_FAIL,
-  LOAD_STRIPE_BANKACCOUNT,
-  LOAD_STRIPE_BANKACCOUNT_SUCCESS,
-  LOAD_STRIPE_BANKACCOUNT_FAIL,
-  UPDATE_STRIPE_BANKACCOUNT,
-  UPDATE_STRIPE_BANKACCOUNT_SUCCESS,
-  UPDATE_STRIPE_BANKACCOUNT_FAIL,
-  LOAD_STRIPE_CUSTOMER,
-  LOAD_STRIPE_CUSTOMER_SUCCESS,
-  LOAD_STRIPE_CUSTOMER_FAIL,
   UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD,
   UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_SUCCESS,
   UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_FAIL,
@@ -26,10 +14,6 @@ import {
   UPDATE_STRIPE_PAYMENTMETHOD,
   UPDATE_STRIPE_PAYMENTMETHOD_SUCCESS,
   UPDATE_STRIPE_PAYMENTMETHOD_FAIL,
-  LoadStripeAccountActionCreator,
-  LoadStripeBankAccountActionCreator,
-  UpdateStripeBankAccountActionCreator,
-  LoadStripeCustomerActionCreator,
   UpdateStripeCustomerDefaultPaymentMethodActionCreator,
   LoadStripePaymentMethodsActionCreator,
   UpdateStripePaymentMethodActionCreator,
@@ -37,83 +21,14 @@ import {
   DetachStripePaymentMethodActionCreator
 } from "./types";
 
-import { AXIOS_PAYLOAD_CLIENT_CASHIER } from "utils/axios/types";
-
-export function loadStripeAccount(): LoadStripeAccountActionCreator {
-  return {
-    types: [
-      LOAD_STRIPE_ACCOUNT,
-      LOAD_STRIPE_ACCOUNT_SUCCESS,
-      LOAD_STRIPE_ACCOUNT_FAIL
-    ],
-    payload: {
-      client: AXIOS_PAYLOAD_CLIENT_CASHIER,
-      request: {
-        method: "GET",
-        url: "/payment/api/stripe/account"
-      }
-    }
-  };
-}
-
-export function loadStripeBankAccount(): LoadStripeBankAccountActionCreator {
-  return {
-    types: [
-      LOAD_STRIPE_BANKACCOUNT,
-      LOAD_STRIPE_BANKACCOUNT_SUCCESS,
-      LOAD_STRIPE_BANKACCOUNT_FAIL
-    ],
-    payload: {
-      client: AXIOS_PAYLOAD_CLIENT_CASHIER,
-      request: {
-        method: "GET",
-        url: "/payment/api/stripe/bank-account"
-      }
-    }
-  };
-}
-
-export function updateStripeBankAccount(
-  token: stripe.Token
-): UpdateStripeBankAccountActionCreator {
-  return {
-    types: [
-      UPDATE_STRIPE_BANKACCOUNT,
-      UPDATE_STRIPE_BANKACCOUNT_SUCCESS,
-      UPDATE_STRIPE_BANKACCOUNT_FAIL
-    ],
-    payload: {
-      client: AXIOS_PAYLOAD_CLIENT_CASHIER,
-      request: {
-        method: "POST",
-        url: "/payment/api/stripe/bank-account",
-        data: {
-          token: token.id
-        }
-      }
-    }
-  };
-}
-
-export function loadStripeCustomer(): LoadStripeCustomerActionCreator {
-  return {
-    types: [
-      LOAD_STRIPE_CUSTOMER,
-      LOAD_STRIPE_CUSTOMER_SUCCESS,
-      LOAD_STRIPE_CUSTOMER_FAIL
-    ],
-    payload: {
-      client: AXIOS_PAYLOAD_CLIENT_CASHIER,
-      request: {
-        method: "GET",
-        url: "/payment/api/stripe/customer"
-      }
-    }
-  };
-}
+import {
+  AXIOS_PAYLOAD_CLIENT_CASHIER,
+  AxiosActionCreatorMeta
+} from "utils/axios/types";
+import { StripePaymentMethodId } from "types/payment";
 
 export function updateStripeCustomerDefaultPaymentMethod(
-  paymentMethodId
+  paymentMethodId: StripePaymentMethodId
 ): UpdateStripeCustomerDefaultPaymentMethodActionCreator {
   return {
     types: [
@@ -175,7 +90,8 @@ export function updateStripePaymentMethod(
 
 export function attachStripePaymentMethod(
   paymentMethod: stripe.paymentMethod.PaymentMethod,
-  defaultPaymentMethod: boolean = false
+  defaultPaymentMethod: boolean = false,
+  meta: AxiosActionCreatorMeta
 ): AttachStripePaymentMethodActionCreator {
   return {
     types: [
@@ -192,7 +108,8 @@ export function attachStripePaymentMethod(
           defaultPaymentMethod
         }
       }
-    }
+    },
+    meta
   };
 }
 

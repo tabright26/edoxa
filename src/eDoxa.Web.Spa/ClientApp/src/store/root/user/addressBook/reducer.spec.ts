@@ -38,7 +38,7 @@ describe("user address book reducer", () => {
     };
     const state = {
       data: addressBook200Data,
-      error: null,
+
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);
@@ -51,7 +51,7 @@ describe("user address book reducer", () => {
     };
     const state = {
       data: removeExpectedState,
-      error: null,
+
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);
@@ -86,7 +86,6 @@ describe("user address book reducer", () => {
     };
     const state = {
       data: initialState.data,
-      error,
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);

@@ -10,7 +10,12 @@ import {
 import { StaticOptionsState } from "./types";
 
 const initialState: StaticOptionsState = {
-  identity: null,
+  identity: {
+    countries: [],
+    addressBook: {
+      limit: 0
+    }
+  },
   cashier: null,
   challenges: null,
   games: null

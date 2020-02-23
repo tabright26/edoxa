@@ -48,7 +48,7 @@ namespace eDoxa.Payment.Api.Controllers.Stripe
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> FetchPaymentMethodsAsync()
         {
-            var customerId = HttpContext.GetStripeCustomertId();
+            var customerId = HttpContext.GetStripeCustomerId();
 
             var paymentMethods = await _stripePaymentMethodService.FetchPaymentMethodsAsync(customerId);
 
@@ -79,7 +79,7 @@ namespace eDoxa.Payment.Api.Controllers.Stripe
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> AttachPaymentMethodAsync(string paymentMethodId, [FromBody] AttachStripePaymentMethodRequest request)
         {
-            var customerId = HttpContext.GetStripeCustomertId();
+            var customerId = HttpContext.GetStripeCustomerId();
 
             var result = await _stripePaymentMethodService.AttachPaymentMethodAsync(paymentMethodId, customerId, request.DefaultPaymentMethod);
 
@@ -112,7 +112,7 @@ namespace eDoxa.Payment.Api.Controllers.Stripe
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> SetDefaultPaymentMethodAsync(string paymentMethodId)
         {
-            var customerId = HttpContext.GetStripeCustomertId();
+            var customerId = HttpContext.GetStripeCustomerId();
 
             var customer = await _stripeCustomerService.SetDefaultPaymentMethodAsync(customerId, paymentMethodId);
 

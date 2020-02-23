@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect } from "react";
 import { compose } from "recompose";
 import { connect, MapDispatchToProps } from "react-redux";
 import { loadChallengeHistory } from "store/actions/challenge";
-import ChallengeList from "components/Challenge/List";
+import ChallengeList from "components/Service/Challenge/List";
 import { withUserProfileUserId } from "utils/oidc/containers";
 import { HocUserProfileUserIdStateProps } from "utils/oidc/containers/types";
 

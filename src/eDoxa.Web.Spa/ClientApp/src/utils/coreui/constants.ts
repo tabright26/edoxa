@@ -1,7 +1,13 @@
-import { ChallengeId, ClanId } from "types";
+import { questionGroups, QuestionGroupId } from "views/Faq/types";
+import { ChallengeId } from "types/challenges";
+import { ClanId } from "types/clans";
+
+export function getDefaultPath(): string {
+  return "/";
+}
 
 export function getHomePath(): string {
-  return "/";
+  return "/home";
 }
 
 function getErrorPath(httpCode: number): string {
@@ -52,16 +58,35 @@ export function getPasswordResetPath(): string {
   return "/password/reset";
 }
 
-export function getTermsOfServicesPath(): string {
-  return "/terms-of-services";
+export function getLegalTermsOfUsePath(): string {
+  return "/legal/terms-of-use";
 }
 
-export function getFaqPath(): string {
-  return "/faq";
+export function getLegalPrivacyPolicyPath(): string {
+  return "/legal/privacy-policy";
+}
+
+export function getFaqPath(questionGroupId: QuestionGroupId = null): string {
+  if (questionGroupId) {
+    var questionGroup = questionGroups.find(
+      questionGroup => questionGroup.id === questionGroupId
+    );
+    return `/faq/${questionGroup.path}`;
+  } else {
+    return "/faq";
+  }
 }
 
 export function getNewsFeedsPath(): string {
   return "/news-feeds";
+}
+
+function getWorkflowPath(): string {
+  return "/workflow";
+}
+
+export function getWorkflowStepsPath(step: number = null): string {
+  return `${getWorkflowPath()}/steps/${step ? step : ":step"}`;
 }
 
 export function getProfilePath(): string {
@@ -88,8 +113,8 @@ export function getProfilePaymentMethodsPath(): string {
   return getProfilePath() + "/payment-methods";
 }
 
-export function getProfilePromotionalCodePath(): string {
-  return getProfilePath() + "/promotional-code";
+export function getProfilePromotionPath(): string {
+  return getProfilePath() + "/promotion";
 }
 
 export function getProfileGamesPath(): string {

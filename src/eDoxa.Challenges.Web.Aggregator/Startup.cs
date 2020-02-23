@@ -41,8 +41,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using static eDoxa.Seedwork.Application.ApiResources;
-
 namespace eDoxa.Challenges.Web.Aggregator
 {
     public partial class Startup
@@ -62,27 +60,26 @@ namespace eDoxa.Challenges.Web.Aggregator
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            AppSettings = configuration.GetAppSettings<ChallengesWebAggregatorAppSettings>(ChallengesWebAggregator);
         }
 
         public IConfiguration Configuration { get; }
 
-        private ChallengesWebAggregatorAppSettings AppSettings { get; }
+        private ChallengesWebAggregatorAppSettings AppSettings => Configuration.Get<ChallengesWebAggregatorAppSettings>();
     }
 
     public partial class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAppSettings<ChallengesWebAggregatorAppSettings>(Configuration);
+            services.AddOptions<ChallengesWebAggregatorAppSettings>().Bind(Configuration).ValidateDataAnnotations();
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
                 .AddCustomAzureKeyVault(Configuration)
-                .AddCustomUrlGroup(AppSettings.Endpoints.IdentityUrl, AppServices.IdentityApi)
-                .AddCustomUrlGroup(AppSettings.Endpoints.CashierUrl, AppServices.CashierApi)
-                .AddCustomUrlGroup(AppSettings.Endpoints.ChallengesUrl, AppServices.ChallengesApi)
-                .AddCustomUrlGroup(AppSettings.Endpoints.GamesUrl, AppServices.GamesApi);
+                .AddCustomUrlGroup(AppSettings.Service.Endpoints.IdentityUrl, AppServices.IdentityApi)
+                .AddCustomUrlGroup(AppSettings.Service.Endpoints.CashierUrl, AppServices.CashierApi)
+                .AddCustomUrlGroup(AppSettings.Service.Endpoints.ChallengesUrl, AppServices.ChallengesApi)
+                .AddCustomUrlGroup(AppSettings.Service.Endpoints.GamesUrl, AppServices.GamesApi);
 
             services.AddCustomCors();
 
@@ -98,8 +95,8 @@ namespace eDoxa.Challenges.Web.Aggregator
                 .AddIdentityServerAuthentication(
                     options =>
                     {
-                        options.ApiName = AppSettings.ApiResource.Name;
-                        options.Authority = AppSettings.Endpoints.IdentityUrl;
+                        options.ApiName = ApiResources.ChallengesWebAggregator.Name;
+                        options.Authority =  AppSettings.Authority.InternalUrl;
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
@@ -108,19 +105,19 @@ namespace eDoxa.Challenges.Web.Aggregator
 
             services.AddTransient<AccessTokenDelegatingHandler>();
 
-            services.AddGrpcClient<CashierService.CashierServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.CashierUrl}:81"))
+            services.AddGrpcClient<CashierService.CashierServiceClient>(options => options.Address = new Uri(AppSettings.Grpc.Service.Endpoints.CashierUrl))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddRetryPolicyHandler()
                 .AddCircuitBreakerPolicyHandler();
 
-            services.AddGrpcClient<IdentityService.IdentityServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.IdentityUrl}:81"))
+            services.AddGrpcClient<IdentityService.IdentityServiceClient>(options => options.Address = new Uri(AppSettings.Grpc.Service.Endpoints.IdentityUrl))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddRetryPolicyHandler()
                 .AddCircuitBreakerPolicyHandler();
 
-            services.AddGrpcClient<ChallengeService.ChallengeServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.ChallengesUrl}:81"))
+            services.AddGrpcClient<ChallengeService.ChallengeServiceClient>(options => options.Address = new Uri(AppSettings.Grpc.Service.Endpoints.ChallengesUrl))
                 .ConfigureChannel(
                     options =>
                     {
@@ -131,7 +128,7 @@ namespace eDoxa.Challenges.Web.Aggregator
                 .AddRetryPolicyHandler()
                 .AddCircuitBreakerPolicyHandler();
 
-            services.AddGrpcClient<GameService.GameServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.GamesUrl}:81"))
+            services.AddGrpcClient<GameService.GameServiceClient>(options => options.Address = new Uri(AppSettings.Grpc.Service.Endpoints.GamesUrl))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddRetryPolicyHandler()
@@ -141,7 +138,6 @@ namespace eDoxa.Challenges.Web.Aggregator
         public void ConfigureContainer(ContainerBuilder builder)
         {
         }
-
         public void Configure(IApplicationBuilder application)
         {
             application.UseProblemDetails();
@@ -172,8 +168,8 @@ namespace eDoxa.Challenges.Web.Aggregator
 
             services.AddSwagger(
                 XmlCommentsFilePath,
-                AppSettings,
-                AppSettings,
+                ApiResources.ChallengesWebAggregator,
+                AppSettings.Authority,
                 Scopes.CashierApi,
                 Scopes.GamesApi,
                 Scopes.ChallengesApi);
@@ -183,7 +179,7 @@ namespace eDoxa.Challenges.Web.Aggregator
         {
             this.Configure(application);
 
-            application.UseSwagger(AppSettings);
+            application.UseSwagger(ApiResources.ChallengesWebAggregator);
         }
     }
 

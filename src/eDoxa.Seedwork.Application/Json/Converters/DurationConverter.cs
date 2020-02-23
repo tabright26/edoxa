@@ -24,7 +24,7 @@ namespace eDoxa.Seedwork.Application.Json.Converters
             }
             else
             {
-                writer.WriteValue(value.ToTimeSpan().TotalSeconds);
+                writer.WriteValue(value.ToTimeSpan().TotalMilliseconds);
             }
         }
 
@@ -36,7 +36,7 @@ namespace eDoxa.Seedwork.Application.Json.Converters
             JsonSerializer serializer
         )
         {
-            return reader.Value != null ? Duration.FromTimeSpan(TimeSpan.FromSeconds(Convert.ToInt64(reader.Value))) : null;
+            return reader.Value != null ? Duration.FromTimeSpan(TimeSpan.FromMilliseconds(Convert.ToInt64(reader.Value))) : null;
         }
     }
 }

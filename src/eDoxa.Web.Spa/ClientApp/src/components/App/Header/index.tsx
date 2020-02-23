@@ -5,17 +5,17 @@ import {
   AppSidebarToggler,
   AppAsideToggler
 } from "@coreui/react";
-import AppDropdown from "components/App/Dropdown";
+import AppDropdown from "components/App/Header/Dropdown";
 import logo from "assets/img/brand/logo.png";
 import sygnet from "assets/img/brand/sygnet.png";
-import { getHomePath } from "utils/coreui/constants";
-import AppNav from "components/App/Nav";
+import { getDefaultPath } from "utils/coreui/constants";
+import AppNav from "components/App/Header/Nav";
 
 const Header: FunctionComponent = () => {
   return (
     <Fragment>
       <AppSidebarToggler className="d-lg-none" display="md" mobile />
-      <LinkContainer to={getHomePath()}>
+      <LinkContainer to={getDefaultPath()}>
         <AppNavbarBrand
           full={{ src: logo, width: 85, height: 30, alt: "eDoxa Logo" }}
           minimized={{ src: sygnet, width: 30, height: 30, alt: "eDoxa Logo" }}

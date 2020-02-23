@@ -8,34 +8,19 @@
 
 using System.ComponentModel.DataAnnotations;
 
-using eDoxa.Seedwork.Application.AppSettings;
-using eDoxa.Seedwork.Application.AppSettings.Options;
-
-using IdentityServer4.Models;
+using eDoxa.Seedwork.Application.Options;
 
 namespace eDoxa.Challenges.Web.Aggregator.Infrastructure
 {
-    public class ChallengesWebAggregatorAppSettings : IHasApiResourceAppSettings<EndpointsOptions>
+    public class ChallengesWebAggregatorAppSettings
     {
         [Required]
-        public ApiResource ApiResource { get; set; }
+        public AuthorityOptions Authority { get; set; }
 
         [Required]
-        public string Authority { get; set; }
+        public ServiceOptions Service { get; set; }
 
         [Required]
-        public EndpointsOptions Endpoints { get; set; }
-    }
-
-    public class EndpointsOptions : AuthorityEndpointsOptions
-    {
-        [Required]
-        public string CashierUrl { get; set; }
-
-        [Required]
-        public string ChallengesUrl { get; set; }
-
-        [Required]
-        public string GamesUrl { get; set; }
+        public GrpcOptions Grpc { get; set; }
     }
 }

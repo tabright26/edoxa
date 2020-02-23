@@ -1,7 +1,7 @@
-import { LogoutToken } from "types";
+import { AccountLogoutToken } from "types/identity";
 
 export type UserAccountState = {
   logout: {
-    token: LogoutToken;
+    token: AccountLogoutToken;
   };
 };

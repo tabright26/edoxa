@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+<div
+  className="row"
+>
+  <div
+    className="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-2"
+  >
+    <div
+      className="card"
+    >
+      <div
+        className="card-header"
+      >
+        <strong
+          className="text-uppercase"
+        >
+          Table of content
+        </strong>
+      </div>
+      <ul
+        className="list-group list-group-flush"
+      >
+        <li
+          className="list-group-item"
+          href="/faq/new-users"
+          onClick={[Function]}
+        >
+          New users
+        </li>
+        <li
+          className="list-group-item"
+          href="/faq/account"
+          onClick={[Function]}
+        >
+          Account
+        </li>
+        <li
+          className="list-group-item"
+          href="/faq/challenges"
+          onClick={[Function]}
+        >
+          Challenges
+        </li>
+        <li
+          className="list-group-item"
+          href="/faq/cashier"
+          onClick={[Function]}
+        >
+          Cashier
+        </li>
+        <li
+          className="list-group-item"
+          href="/faq/legality"
+          onClick={[Function]}
+        >
+          Legality
+        </li>
+        <li
+          className="list-group-item"
+          href="/faq/rules"
+          onClick={[Function]}
+        >
+          Rules
+        </li>
+        <li
+          className="list-group-item"
+          href="/faq/security"
+          onClick={[Function]}
+        >
+          Security
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div
+    className="col-12 col-sm-12 col-md-8 col-lg-7 col-xl-6"
+  >
+    <h5
+      className="text-uppercase my-4"
+    >
+      FREQUENTLY ASKED QUESTIONS
+    </h5>
+  </div>
+</div>
+`;

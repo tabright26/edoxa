@@ -21,7 +21,7 @@ namespace eDoxa.Identity.Api.Services
         {
             AllowedOrigins = new HashSet<string>
             {
-                appSettings.Value.WebSpaUrl
+                appSettings.Value.Client.Web.Endpoints.SpaUrl
             };
         }
     }

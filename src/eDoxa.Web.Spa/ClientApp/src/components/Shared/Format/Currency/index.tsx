@@ -4,7 +4,7 @@ import {
   Currency as CurrencyDto,
   CURRENCY_TYPE_MONEY,
   CURRENCY_TYPE_TOKEN
-} from "types";
+} from "types/cashier";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDollarSign } from "@fortawesome/free-solid-svg-icons";
 import { faGg } from "@fortawesome/free-brands-svg-icons";

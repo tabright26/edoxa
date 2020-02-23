@@ -10,7 +10,7 @@ interface Props {
 export const Cancel: FunctionComponent<Props> = ({
   className = null,
   onClick = null,
-  size = "sm"
+  size = null
 }) => (
   <Button
     className={className}

@@ -13,10 +13,21 @@ exports[`renders without crashing 1`] = `
     |
   </span>
   <a
-    href="/terms-of-services"
+    href="/legal/terms-of-use"
     onClick={[Function]}
   >
-    Terms of Services
+    Terms of Use
+  </a>
+  <span
+    className="mx-2"
+  >
+    |
+  </span>
+  <a
+    href="/legal/privacy-policy"
+    onClick={[Function]}
+  >
+    Privacy Policy
   </a>
 </div>
 `;

@@ -5,7 +5,7 @@
 // Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Grpc.Protos.CustomTypes;
-using eDoxa.Seedwork.Application.AppSettings;
+using eDoxa.Seedwork.Application.Options;
 using eDoxa.Swagger.Extensions;
 using eDoxa.Swagger.Filters;
 using eDoxa.Swagger.Options;
@@ -24,16 +24,16 @@ namespace eDoxa.Seedwork.Application.Swagger
         public static void AddSwagger(
             this IServiceCollection services,
             string xmlCommentsFilePath,
-            IHasApiResourceAppSettings apiResourceAppSettings,
-            IHasAuthorityAppSettings authorityAppSettings,
+            ApiResource apiResource,
+            AuthorityOptions authority,
             params Scope[] scopes
         )
         {
             services.AddSwagger(
-                authorityAppSettings.Authority,
-                apiResourceAppSettings.ApiResource.Name,
-                apiResourceAppSettings.ApiResource.DisplayName,
-                apiResourceAppSettings.ApiResource.Description,
+                authority.ExternalUrl,
+                apiResource.Name,
+                apiResource.DisplayName,
+                apiResource.Description,
                 xmlCommentsFilePath,
                 options =>
                 {

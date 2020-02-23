@@ -8,22 +8,13 @@
 
 using System.ComponentModel.DataAnnotations;
 
-using eDoxa.Seedwork.Application.AppSettings;
-using eDoxa.Seedwork.Application.AppSettings.Options;
-
-using IdentityServer4.Models;
+using eDoxa.Seedwork.Application.Options;
 
 namespace eDoxa.Clans.Api.Infrastructure
 {
-    public class ClansAppSettings : IHasApiResourceAppSettings<AuthorityEndpointsOptions>
+    public class ClansAppSettings
     {
         [Required]
-        public ApiResource ApiResource { get; set; }
-
-        [Required]
-        public string Authority { get; set; }
-
-        [Required]
-        public AuthorityEndpointsOptions Endpoints { get; set; }
+        public AuthorityOptions Authority { get; set; }
     }
 }

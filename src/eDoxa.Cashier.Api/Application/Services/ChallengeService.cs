@@ -51,15 +51,20 @@ namespace eDoxa.Cashier.Api.Application.Services
             CancellationToken cancellationToken = default
         )
         {
+            var result = new DomainValidationResult<IChallenge>();
+
             var strategy = _challengePayoutFactory.CreateInstance();
+
+            if (payoutEntries == 0)
+            {
+                return result.AddFailedPreconditionError("Challenge payout entries cannot be zero.");
+            }
 
             var payout = strategy.GetChallengePayout(payoutEntries, entryFee);
 
-            var result = new DomainValidationResult<IChallenge>();
-
             if (payout == null)
             {
-                result.AddFailedPreconditionError("Invalid payout structure. Payout entries doesn't match the chart.");
+                return result.AddFailedPreconditionError("Invalid payout structure. Payout entries doesn't match the chart.");
             }
 
             if (result.IsValid)

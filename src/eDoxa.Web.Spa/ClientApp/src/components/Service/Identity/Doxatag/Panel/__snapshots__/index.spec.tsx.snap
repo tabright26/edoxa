@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+<div
+  className="card-accent-primary undefined card"
+>
+  <div
+    className="card-header"
+  >
+    <strong
+      className="d-block text-uppercase"
+    >
+      DOXATAG
+    </strong>
+    <small
+      className="d-block mt-2 text-muted"
+    >
+      The DoxaTag is your alias
+    </small>
+  </div>
+  <div
+    className="card-body"
+  >
+    <dl
+      className="row mb-0"
+    >
+      <dd
+        className="col-sm-3 mb-0 text-muted"
+      >
+        DoxaTag
+      </dd>
+      <dd
+        className="col-sm-5 mb-0"
+      >
+        <span>
+          League of legends
+          #
+          1234
+        </span>
+      </dd>
+    </dl>
+  </div>
+</div>
+`;

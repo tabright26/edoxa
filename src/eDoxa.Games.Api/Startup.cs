@@ -47,8 +47,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using static eDoxa.Seedwork.Application.ApiResources;
-
 namespace eDoxa.Games.Api
 {
     public partial class Startup
@@ -67,25 +65,24 @@ namespace eDoxa.Games.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            AppSettings = configuration.GetAppSettings<GamesAppSettings>(GamesApi);
         }
 
-        private GamesAppSettings AppSettings { get; }
-
         public IConfiguration Configuration { get; }
+
+        private GamesAppSettings AppSettings => Configuration.Get<GamesAppSettings>();
     }
 
     public partial class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAppSettings<GamesAppSettings>(Configuration);
+            services.AddOptions<GamesAppSettings>().Bind(Configuration).ValidateDataAnnotations();
 
             services.Configure<GamesApiOptions>(Configuration.GetSection("Api"));
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
-                .AddCustomIdentityServer(AppSettings)
+                .AddCustomIdentityServer(AppSettings.Authority)
                 .AddCustomAzureKeyVault(Configuration)
                 .AddCustomRedis(Configuration)
                 .AddCustomSqlServer(Configuration)
@@ -113,8 +110,8 @@ namespace eDoxa.Games.Api
                 .AddIdentityServerAuthentication(
                     options =>
                     {
-                        options.ApiName = AppSettings.ApiResource.Name;
-                        options.Authority = AppSettings.Endpoints.IdentityUrl;
+                        options.ApiName = ApiResources.GamesApi.Name;
+                        options.Authority =  AppSettings.Authority.InternalUrl;
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
@@ -157,14 +154,14 @@ namespace eDoxa.Games.Api
         {
             this.ConfigureServices(services);
 
-            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, ApiResources.GamesApi, AppSettings.Authority);
         }
 
         public void ConfigureDevelopment(IApplicationBuilder application)
         {
             this.Configure(application);
 
-            application.UseSwagger(AppSettings);
+            application.UseSwagger(ApiResources.GamesApi);
         }
     }
 
@@ -172,7 +169,7 @@ namespace eDoxa.Games.Api
     {
         public void ConfigureTestServices(IServiceCollection services)
         {
-            services.AddAppSettings<GamesAppSettings>(Configuration);
+            services.Configure<GamesAppSettings>(Configuration);
 
             services.Configure<GamesApiOptions>(Configuration.GetSection("Api"));
 

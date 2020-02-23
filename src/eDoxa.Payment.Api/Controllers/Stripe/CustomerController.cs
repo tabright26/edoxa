@@ -39,9 +39,9 @@ namespace eDoxa.Payment.Api.Controllers.Stripe
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StripeCustomerDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> FetchCustomerAsync()
+        public async Task<IActionResult> FindCustomerAsync()
         {
-            var customerId = HttpContext.GetStripeCustomertId();
+            var customerId = HttpContext.GetStripeCustomerId();
 
             var customer = await _stripeCustomerService.FindCustomerAsync(customerId);
 

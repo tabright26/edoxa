@@ -17,10 +17,11 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
         public static void UseIntegrationEventSubscriptions(this IServiceBusSubscriber subscriber)
         {
             subscriber.Subscribe<UserCreatedIntegrationEvent, UserCreatedIntegrationEventHandler>();
-            subscriber.Subscribe<UserDepositSucceededIntegrationEvent, UserDepositSucceededIntegrationEventHandler>();
-            subscriber.Subscribe<UserDepositFailedIntegrationEvent, UserDepositFailedIntegrationEventHandler>();
-            subscriber.Subscribe<UserWithdrawalSucceededIntegrationEvent, UserWithdrawalSucceededIntegrationEventHandler>();
-            subscriber.Subscribe<UserWithdrawalFailedIntegrationEvent, UserWithdrawalFailedIntegrationEventHandler>();
+            subscriber.Subscribe<UserStripePaymentIntentSucceededIntegrationEvent, UserStripePaymentIntentSucceededIntegrationEventHandler>();
+            subscriber.Subscribe<UserStripePaymentIntentPaymentFailedIntegrationEvent, UserStripePaymentIntentPaymentFailedIntegrationEventHandler>();
+            subscriber.Subscribe<UserStripePaymentIntentCanceledIntegrationEvent, UserStripePaymentIntentCanceledIntegrationEventHandler>();
+            subscriber.Subscribe<UserWithdrawSucceededIntegrationEvent, UserWithdrawSucceededIntegrationEventHandler>();
+            subscriber.Subscribe<UserWithdrawFailedIntegrationEvent, UserWithdrawFailedIntegrationEventHandler>();
             subscriber.Subscribe<ChallengeSynchronizedIntegrationEvent, ChallengeSynchronizedIntegrationEventHandler>();
             subscriber.Subscribe<ChallengeParticipantRegisteredIntegrationEvent, ChallengeParticipantRegisteredIntegrationEventHandler>();
             subscriber.Subscribe<RegisterChallengeParticipantFailedIntegrationEvent, RegisterChallengeParticipantFailedIntegrationEventHandler>();

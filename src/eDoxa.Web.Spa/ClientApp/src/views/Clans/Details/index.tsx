@@ -1,8 +1,8 @@
 import React, { useEffect, useState, FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { withClans } from "store/root/organization/clan/container";
-import CandidatureWidget from "components/Clan/Candidature/Widget";
-import ClanInfo from "components/Clan/Summary";
+import CandidatureWidget from "components/Service/Clan/Candidature/Widget";
+import ClanInfo from "components/Service/Clan/Summary";
 import { compose } from "recompose";
 
 const ClanDetailsIndex: FunctionComponent<any> = ({

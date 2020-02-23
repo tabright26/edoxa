@@ -60,27 +60,27 @@ namespace eDoxa.Identity.Api.Application.Services
 
         public override Task<User> FindByNameAsync(string userName)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override Task<IdentityResult> SetUserNameAsync(User user, string userName)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override string GetUserName(ClaimsPrincipal principal)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override Task<string> GetUserNameAsync(User user)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override Task UpdateNormalizedUserNameAsync(User user)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override async Task<IdentityResult> CreateAsync(User user)

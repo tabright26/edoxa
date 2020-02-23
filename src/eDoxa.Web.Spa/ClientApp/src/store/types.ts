@@ -1,19 +1,16 @@
 import { reducer as rootReducer } from "store/reducer";
 import {
-  LoadStripeBankAccountAction,
-  UpdateStripeBankAccountAction,
   LoadStripePaymentMethodsAction,
   AttachStripePaymentMethodAction,
   DetachStripePaymentMethodAction,
   UpdateStripePaymentMethodAction,
-  LoadStripeCustomerAction,
-  UpdateStripeCustomerDefaultPaymentMethodAction,
-  LoadStripeAccountAction
+  UpdateStripeCustomerDefaultPaymentMethodAction
 } from "./actions/payment/types";
 import {
   LoadUserTransactionHistoryAction,
-  CreateUserTransactionAction,
-  RedeemPromotionAction
+  DepositTransactionAction,
+  RedeemPromotionAction,
+  WithdrawTransactionAction
 } from "./actions/cashier/types";
 import {
   LoadChallengesAction,
@@ -39,7 +36,8 @@ import {
   DeleteUserAddressAction,
   RegisterUserAccountAction,
   LoginUserAccountAction,
-  LogoutUserAccountAction
+  LogoutUserAccountAction,
+  ResendUserEmailAction
 } from "./actions/identity/types";
 import {
   UnlinkGameCredentialAction,
@@ -65,10 +63,9 @@ import {
 export type RootState = ReturnType<typeof rootReducer>;
 
 export type RootActions =
-  | LoadStripeBankAccountAction
-  | UpdateStripeBankAccountAction
   | LoadUserTransactionHistoryAction
-  | CreateUserTransactionAction
+  | DepositTransactionAction
+  | WithdrawTransactionAction
   | RedeemPromotionAction
   | LoadChallengesAction
   | LoadChallengeAction
@@ -78,9 +75,7 @@ export type RootActions =
   | AttachStripePaymentMethodAction
   | DetachStripePaymentMethodAction
   | UpdateStripePaymentMethodAction
-  | LoadStripeCustomerAction
   | UpdateStripeCustomerDefaultPaymentMethodAction
-  | LoadStripeAccountAction
   | LoadUserPhoneAction
   | UpdateUserPhoneAction
   | ForgotUserPasswordAction
@@ -114,4 +109,5 @@ export type RootActions =
   | LoadClanInvitationAction
   | SendClanInvitationAction
   | AcceptClanInvitationAction
-  | DeclineClanInvitationAction;
+  | DeclineClanInvitationAction
+  | ResendUserEmailAction;

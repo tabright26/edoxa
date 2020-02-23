@@ -26,13 +26,58 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Extensions
             await publisher.PublishAsync(integrationEvent);
         }
 
-        public static async Task PublishUserDepositSucceededIntegrationEventAsync(
+        public static async Task PublishUserStripePaymentIntentCanceledIntegrationEventAsync(
+            this IServiceBusPublisher publisher,
+            UserId userId,
+            TransactionId transactionId
+        )
+        {
+            var integrationEvent = new UserStripePaymentIntentCanceledIntegrationEvent
+            {
+                UserId = userId,
+                TransactionId = transactionId
+            };
+
+            await publisher.PublishAsync(integrationEvent);
+        }
+
+        public static async Task PublishUserStripePaymentIntentSucceededIntegrationEventAsync(
+            this IServiceBusPublisher publisher,
+            UserId userId,
+            TransactionId transactionId
+        )
+        {
+            var integrationEvent = new UserStripePaymentIntentSucceededIntegrationEvent
+            {
+                UserId = userId,
+                TransactionId = transactionId
+            };
+
+            await publisher.PublishAsync(integrationEvent);
+        }
+
+        public static async Task PublishUserStripePaymentIntentPaymentFailedIntegrationEventAsync(
+            this IServiceBusPublisher publisher,
+            UserId userId,
+            TransactionId transactionId
+        )
+        {
+            var integrationEvent = new UserStripePaymentIntentPaymentFailedIntegrationEvent
+            {
+                UserId = userId,
+                TransactionId = transactionId
+            };
+
+            await publisher.PublishAsync(integrationEvent);
+        }
+
+        public static async Task PublishUserWithdrawSucceededIntegrationEventAsync(
             this IServiceBusPublisher publisher,
             UserId userId,
             TransactionDto transaction
         )
         {
-            var integrationEvent = new UserDepositSucceededIntegrationEvent
+            var integrationEvent = new UserWithdrawSucceededIntegrationEvent
             {
                 UserId = userId,
                 Transaction = transaction
@@ -41,39 +86,13 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Extensions
             await publisher.PublishAsync(integrationEvent);
         }
 
-        public static async Task PublishUserDepositFailedIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, TransactionDto transaction)
-        {
-            var integrationEvent = new UserDepositFailedIntegrationEvent
-            {
-                UserId = userId,
-                Transaction = transaction
-            };
-
-            await publisher.PublishAsync(integrationEvent);
-        }
-
-        public static async Task PublishUserWithdrawalSucceededIntegrationEventAsync(
+        public static async Task PublishUserWithdrawFailedIntegrationEventAsync(
             this IServiceBusPublisher publisher,
             UserId userId,
             TransactionDto transaction
         )
         {
-            var integrationEvent = new UserWithdrawalSucceededIntegrationEvent
-            {
-                UserId = userId,
-                Transaction = transaction
-            };
-
-            await publisher.PublishAsync(integrationEvent);
-        }
-
-        public static async Task PublishUserWithdrawalFailedIntegrationEventAsync(
-            this IServiceBusPublisher publisher,
-            UserId userId,
-            TransactionDto transaction
-        )
-        {
-            var integrationEvent = new UserWithdrawalFailedIntegrationEvent
+            var integrationEvent = new UserWithdrawFailedIntegrationEvent
             {
                 UserId = userId,
                 Transaction = transaction

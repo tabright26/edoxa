@@ -12,13 +12,11 @@ using Autofac;
 
 using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Grpc.Protos.Cashier.Enums;
-using eDoxa.Grpc.Protos.Payment.IntegrationEvents;
+using eDoxa.Grpc.Protos.Cashier.IntegrationEvents;
 using eDoxa.Grpc.Protos.Payment.Requests;
-using eDoxa.Grpc.Protos.Payment.Responses;
 using eDoxa.Grpc.Protos.Payment.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
-using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 using eDoxa.ServiceBus.Abstractions;
@@ -36,8 +34,6 @@ using Microsoft.AspNetCore.TestHost;
 
 using Moq;
 
-using Stripe;
-
 using Xunit;
 
 namespace eDoxa.Payment.IntegrationTests.Grpc.Services
@@ -48,66 +44,43 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
         {
         }
 
-        [Fact]
-        public async Task Deposit_ShouldBeOfTypeDepositResponse()
-        {
-            // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+        //[Fact] // FRANCIS: TODO
+        //public async Task Deposit_ShouldBeOfTypeDepositResponse()
+        //{
+        //    // Arrange
+        //    var userId = new UserId();
+        //    const string email = "test@edoxa.gg";
 
-            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email), new Claim(CustomClaimTypes.StripeCustomer, "customerId"))
-                .WithWebHostBuilder(
-                    builder =>
-                    {
-                        builder.ConfigureTestContainer<ContainerBuilder>(
-                            container =>
-                            {
-                                TestMock.ServiceBusPublisher.Setup(x => x.PublishAsync(It.IsAny<UserDepositSucceededIntegrationEvent>()))
-                                    .Returns(Task.CompletedTask);
+        //    var host = TestHost.WithClaimsFromBearerAuthentication(
+        //            new Claim(JwtClaimTypes.Subject, userId.ToString()),
+        //            new Claim(JwtClaimTypes.Email, email),
+        //            new Claim(CustomClaimTypes.StripeCustomer, "customerId"));
 
-                                container.RegisterInstance(TestMock.ServiceBusPublisher.Object).As<IServiceBusPublisher>();
+        //    var client = new PaymentService.PaymentServiceClient(host.CreateChannel());
 
-                                TestMock.StripeCustomerService.Setup(x => x.HasDefaultPaymentMethodAsync(It.IsAny<string>())).ReturnsAsync(true);
+        //    var request = new CreateStripePaymentIntentRequest
+        //    {
+        //        Transaction = new TransactionDto
+        //        {
+        //            Currency = new CurrencyDto
+        //            {
+        //                Type = EnumCurrencyType.Money,
+        //                Amount = 20
+        //            },
+        //            Description = "Test",
+        //            Id = new TransactionId(),
+        //            Status = EnumTransactionStatus.Pending,
+        //            Timestamp = DateTime.UtcNow.ToTimestamp(),
+        //            Type = EnumTransactionType.Deposit
+        //        }
+        //    };
 
-                                container.RegisterInstance(TestMock.StripeCustomerService.Object).As<IStripeCustomerService>();
+        //    // Act
+        //    var response = await client.CreateStripePaymentIntentAsync(request);
 
-                                TestMock.StripeInvoiceService.Setup(
-                                        x => x.CreateInvoiceAsync(
-                                            It.IsAny<string>(),
-                                            It.IsAny<string>(),
-                                            It.IsAny<long>(),
-                                            It.IsAny<string>()))
-                                    .ReturnsAsync(new Invoice());
-
-                                container.RegisterInstance(TestMock.StripeInvoiceService.Object).As<IStripeInvoiceService>();
-                            });
-                    });
-
-            var client = new PaymentService.PaymentServiceClient(host.CreateChannel());
-
-            var request = new DepositRequest
-            {
-                Transaction = new TransactionDto
-                {
-                    Currency = new CurrencyDto
-                    {
-                        Type = EnumCurrencyType.Money,
-                        Amount = 20
-                    },
-                    Description = "Test",
-                    Id = new TransactionId(),
-                    Status = EnumTransactionStatus.Pending,
-                    Timestamp = DateTime.UtcNow.ToTimestamp(),
-                    Type = EnumTransactionType.Deposit
-                }
-            };
-
-            // Act
-            var response = await client.DepositAsync(request);
-
-            //Assert
-            response.Should().BeOfType<DepositResponse>();
-        }
+        //    //Assert
+        //    response.Should().BeOfType<CreateStripePaymentIntentRequest>();
+        //}
 
         [Fact]
         public void Deposit_ShouldThrowRpcExceptionNoDefaultPayment()
@@ -136,7 +109,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
 
             var client = new PaymentService.PaymentServiceClient(host.CreateChannel());
 
-            var request = new DepositRequest
+            var request = new CreateStripePaymentIntentRequest
             {
                 Transaction = new TransactionDto
                 {
@@ -154,7 +127,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
             };
 
             // Act 
-            var func = new Func<Task>(async () => await client.DepositAsync(request));
+            var func = new Func<Task>(async () => await client.CreateStripePaymentIntentAsync(request));
 
             // Assert
             func.Should().Throw<RpcException>();
@@ -171,7 +144,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
 
             var client = new PaymentService.PaymentServiceClient(host.CreateChannel());
 
-            var request = new DepositRequest
+            var request = new CreateStripePaymentIntentRequest
             {
                 Transaction = new TransactionDto
                 {
@@ -189,14 +162,14 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
             };
 
             // Act
-            var func = new Func<Task>(async () => await client.DepositAsync(request));
+            var func = new Func<Task>(async () => await client.CreateStripePaymentIntentAsync(request));
 
             // Assert
             func.Should().Throw<RpcException>();
         }
 
         [Fact]
-        public void Withdrawal_ShouldThrowRpcExceptionAccountVerificationNeeded()
+        public void Withdraw_ShouldThrowRpcExceptionAccountVerificationNeeded()
         {
             // Arrange
             var userId = new UserId();
@@ -204,7 +177,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
 
             var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email));
 
-            var request = new WithdrawalRequest
+            var request = new CreatePaypalPayoutRequest
             {
                 Transaction = new TransactionDto
                 {
@@ -217,19 +190,19 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
                     Id = new TransactionId(),
                     Status = EnumTransactionStatus.Pending,
                     Timestamp = DateTime.UtcNow.ToTimestamp(),
-                    Type = EnumTransactionType.Withdrawal
+                    Type = EnumTransactionType.Withdraw
                 }
             };
 
             var client = new PaymentService.PaymentServiceClient(host.CreateChannel());
 
             // Act Assert
-            var func = new Func<Task>(async () => await client.WithdrawalAsync(request));
+            var func = new Func<Task>(async () => await client.CreatePaypalPayoutAsync(request));
             func.Should().Throw<RpcException>();
         }
 
         [Fact]
-        public void Withdrawal_ShouldThrowRpcExceptionWithInternalStatus()
+        public void Withdraw_ShouldThrowRpcExceptionWithInternalStatus()
         {
             // Arrange
             var userId = new UserId();
@@ -237,7 +210,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
 
             var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email));
 
-            var request = new WithdrawalRequest
+            var request = new CreatePaypalPayoutRequest
             {
                 Transaction = new TransactionDto
                 {
@@ -250,14 +223,14 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
                     Id = new TransactionId(),
                     Status = EnumTransactionStatus.Pending,
                     Timestamp = DateTime.UtcNow.ToTimestamp(),
-                    Type = EnumTransactionType.Withdrawal
+                    Type = EnumTransactionType.Withdraw
                 }
             };
 
             var client = new PaymentService.PaymentServiceClient(host.CreateChannel());
 
             // Act 
-            var func = new Func<Task>(async () => await client.WithdrawalAsync(request));
+            var func = new Func<Task>(async () => await client.CreatePaypalPayoutAsync(request));
 
             // Assert
             func.Should().Throw<RpcException>();

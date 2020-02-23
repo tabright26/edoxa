@@ -5,11 +5,11 @@ import TransactionHistory from ".";
 import { UserTransactionState } from "store/root/user/transactionHistory/types";
 import {
   TRANSACTION_STATUS_SUCCEEDED,
-  TRANSACTION_TYPE_WITHDRAWAL,
+  TRANSACTION_TYPE_WITHDRAW,
   TRANSACTION_TYPE_DEPOSIT,
   TRANSACTION_TYPE_CHARGE,
   CURRENCY_TYPE_MONEY
-} from "types";
+} from "types/cashier";
 
 it("renders without crashing", () => {
   // Arrange
@@ -45,12 +45,11 @@ it("renders without crashing", () => {
           amount: 100
         },
         description: "test",
-        type: TRANSACTION_TYPE_WITHDRAWAL,
+        type: TRANSACTION_TYPE_WITHDRAW,
         status: TRANSACTION_STATUS_SUCCEEDED
       }
     ],
-    loading: false,
-    error: null
+    loading: false
   };
 
   const store: any = {

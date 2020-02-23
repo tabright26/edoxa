@@ -8,7 +8,7 @@ Array [
     TRANSACTION HISTORY
   </h5>,
   <div
-    className="card-accent-primary mt-4 mb-3 card"
+    className="card-accent-primary mb-3 card"
   >
     <div
       className="table-responsive"

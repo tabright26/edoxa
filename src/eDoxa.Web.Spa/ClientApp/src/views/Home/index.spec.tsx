@@ -2,20 +2,17 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Home from ".";
+import store from "store";
+import { MemoryRouter } from "react-router-dom";
 
 it("renders without crashing", () => {
-  // Arrange
-  const store: any = {
-    getState: () => {},
-    dispatch: action => {},
-    subscribe: () => {}
-  };
-
   // Act
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Home />
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
       </Provider>
     )
     .toJSON();

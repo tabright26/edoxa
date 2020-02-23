@@ -74,7 +74,7 @@ Array [
     <a
       aria-label={null}
       className="btn btn-outline-primary btn-sm"
-      href="http://192.168.0.116:5000/Identity/Account/Register"
+      href="/account/register"
       onClick={[Function]}
     >
       Register

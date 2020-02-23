@@ -8,26 +8,16 @@
 
 using System.ComponentModel.DataAnnotations;
 
-using eDoxa.Seedwork.Application.AppSettings;
-using eDoxa.Seedwork.Application.AppSettings.Options;
-
-using IdentityServer4.Models;
+using eDoxa.Grpc.Protos.Cashier.Options;
+using eDoxa.Seedwork.Application.Options;
 
 namespace eDoxa.Cashier.Api.Infrastructure
 {
-    public class CashierAppSettings : IHasApiResourceAppSettings<EndpointsOptions>
+    public class CashierAppSettings
     {
         [Required]
-        public ApiResource ApiResource { get; set; }
+        public AuthorityOptions Authority { get; set; }
 
-        [Required]
-        public string Authority { get; set; }
-
-        [Required]
-        public EndpointsOptions Endpoints { get; set; }
-    }
-
-    public sealed class EndpointsOptions : AuthorityEndpointsOptions
-    {
+        public IntegrationEventOptions IntegrationEvent { get; set; }
     }
 }

@@ -11,13 +11,18 @@ Array [
     className="card-accent-primary my-4 card"
   >
     <div
-      className="d-flex card-header"
+      className="card-header"
     >
       <strong
-        className="text-uppercase my-auto"
+        className="d-block text-uppercase"
       >
         DOXATAG
       </strong>
+      <small
+        className="d-block mt-2 text-muted"
+      >
+        The DoxaTag is your alias
+      </small>
     </div>
     <div
       className="card-body"

@@ -6,7 +6,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Infrastructure.Data.Storage;
@@ -18,6 +20,7 @@ using eDoxa.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.Infrastructure.CsvHelper.Extensions;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -40,11 +43,69 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data
         protected override async Task SeedDevelopmentAsync()
         {
             await this.SeedTestChallengesAsync();
+
+            //await this.SeedProductionAsync();
         }
-        
+
         protected override async Task SeedStagingAsync()
         {
             await this.SeedChallengesAsync();
+        }
+
+        protected override async Task SeedProductionAsync()
+        {
+            var scoring = new Scoring(
+                new Dictionary<string, float>
+                {
+                    ["Kills"] = 4.5F,
+                    ["Deaths"] = -4F,
+                    ["Assists"] = 3.5F,
+                    ["TotalDamageDealtToChampions"] = 0.0009F,
+                    ["TotalDamageTaken"] = 0.00125F,
+                    ["TotalMinionsKilled"] = 0.04F,
+                    ["VisionScore"] = 0.38F,
+                    ["Winner"] = 20F
+                });
+
+            var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+
+            var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/Challenges.Production.csv"));
+
+            using var csvReader = file.OpenCsvReader();
+
+            var challenges = csvReader.GetRecords(
+                    new
+                    {
+                        Id = default(Guid),
+                        Name = default(string),
+                        Game = default(int),
+                        Entries = default(int),
+                        BestOf = default(int),
+                        Duration = default(long),
+                        State = default(int)
+                    })
+                .Select(
+                    record =>
+                    {
+                        var timeline = new ChallengeTimeline(
+                            new UtcNowDateTimeProvider(), 
+                            new ChallengeDuration(TimeSpan.FromSeconds(record.Duration)));
+
+                        return new Challenge(
+                            ChallengeId.FromGuid(record.Id),
+                            new ChallengeName(record.Name!),
+                            Game.FromValue(record.Game),
+                            new BestOf(record.BestOf),
+                            new Entries(record.Entries),
+                            timeline,
+                            scoring);
+                    });
+
+            Challenges.AddRange(
+                challenges.Where(challenge => Challenges.All(x => x.Id != challenge.Id))
+                    .Select(challenge => challenge.ToModel()));
+
+            await this.CommitAsync();
         }
 
         private async Task SeedTestChallengesAsync()

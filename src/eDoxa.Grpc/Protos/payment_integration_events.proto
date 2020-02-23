@@ -11,22 +11,27 @@ message UserStripeCustomerCreatedIntegrationEvent {
   string customer = 2;
 }
 
-message UserDepositSucceededIntegrationEvent {
+message UserStripePaymentIntentSucceededIntegrationEvent {
+  string userId = 1;
+  string transactionId = 2;
+}
+
+message UserStripePaymentIntentPaymentFailedIntegrationEvent {
+  string userId = 1;
+  string transactionId = 2;
+}
+
+message UserStripePaymentIntentCanceledIntegrationEvent {
+  string userId = 1;
+  string transactionId = 2;
+}
+
+message UserWithdrawSucceededIntegrationEvent {
   string userId = 1;
   cashier.TransactionDto transaction = 2;
 }
 
-message UserDepositFailedIntegrationEvent {
-  string userId = 1;
-  cashier.TransactionDto transaction = 2;
-}
-
-message UserWithdrawalSucceededIntegrationEvent {
-  string userId = 1;
-  cashier.TransactionDto transaction = 2;
-}
-
-message UserWithdrawalFailedIntegrationEvent {
+message UserWithdrawFailedIntegrationEvent {
   string userId = 1;
   cashier.TransactionDto transaction = 2;
 }

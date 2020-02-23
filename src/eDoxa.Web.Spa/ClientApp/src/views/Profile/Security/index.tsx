@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import PhonePanel from "components/Phone/Panel";
+import PhonePanel from "components/Service/Identity/Phone/Panel";
 
 const ProfileSecurity: FunctionComponent = () => (
   <>

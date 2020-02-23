@@ -72,21 +72,15 @@ namespace eDoxa.Identity.Api.Infrastructure
                 ClientName = "Web Spa",
                 AllowedCorsOrigins = new HashSet<string>
                 {
-                    appSettings.WebSpaUrl,
-                    "http://localhost:5300",
-                    "http://127.0.0.1:5300"
+                    appSettings.Client.Web.Endpoints.SpaUrl
                 },
                 PostLogoutRedirectUris = new HashSet<string>
                 {
-                    $"{appSettings.WebSpaUrl}/authentication/logout-callback",
-                    "http://localhost:5300/authentication/logout-callback",
-                    "http://127.0.0.1:5300/authentication/logout-callback"
+                    $"{appSettings.Client.Web.Endpoints.SpaUrl}/authentication/logout-callback"
                 },
                 RedirectUris = new HashSet<string>
                 {
-                    $"{appSettings.WebSpaUrl}/authentication/login-callback",
-                    "http://localhost:5300/authentication/login-callback",
-                    "http://127.0.0.1:5300/authentication/login-callback"
+                    $"{appSettings.Client.Web.Endpoints.SpaUrl}/authentication/login-callback"
                 },
                 RequireConsent = false,
                 AccessTokenType = AccessTokenType.Reference,
@@ -115,30 +109,30 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             if (environment.IsDevelopment())
             {
-                yield return ApiResources.IdentityApi.GetSwaggerClient(appSettings.Swagger.Endpoints.IdentityUrl);
+                yield return ApiResources.CashierApi.GetSwaggerClient(appSettings.Service.Endpoints.CashierUrl);
 
-                yield return ApiResources.PaymentApi.GetSwaggerClient(appSettings.Swagger.Endpoints.PaymentUrl);
+                yield return ApiResources.ChallengesApi.GetSwaggerClient(appSettings.Service.Endpoints.ChallengesUrl);
 
-                yield return ApiResources.CashierApi.GetSwaggerClient(appSettings.Swagger.Endpoints.CashierUrl);
+                yield return ApiResources.ClansApi.GetSwaggerClient(appSettings.Service.Endpoints.ClansUrl);
 
-                yield return ApiResources.NotificationsApi.GetSwaggerClient(appSettings.Swagger.Endpoints.NotificationsUrl);
+                yield return ApiResources.GamesApi.GetSwaggerClient(appSettings.Service.Endpoints.GamesUrl);
 
-                yield return ApiResources.ChallengesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ChallengesUrl);
+                yield return ApiResources.IdentityApi.GetSwaggerClient(appSettings.Service.Endpoints.IdentityUrl);
 
-                yield return ApiResources.GamesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.GamesUrl);
+                yield return ApiResources.NotificationsApi.GetSwaggerClient(appSettings.Service.Endpoints.NotificationsUrl);
 
-                yield return ApiResources.ClansApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ClansUrl);
+                yield return ApiResources.PaymentApi.GetSwaggerClient(appSettings.Service.Endpoints.PaymentUrl);
+
+                yield return ApiResources.CashierWebAggregator.GetSwaggerClient(
+                    appSettings.Aggregator.Web.Endpoints.CashierUrl,
+                    Scopes.CashierApi,
+                    Scopes.PaymentApi);
 
                 yield return ApiResources.ChallengesWebAggregator.GetSwaggerClient(
-                    appSettings.Swagger.Endpoints.ChallengesWebAggregatorUrl,
+                    appSettings.Aggregator.Web.Endpoints.ChallengesUrl,
                     Scopes.CashierApi,
                     Scopes.GamesApi,
                     Scopes.ChallengesApi);
-
-                yield return ApiResources.CashierWebAggregator.GetSwaggerClient(
-                    appSettings.Swagger.Endpoints.CashierWebAggregatorUrl,
-                    Scopes.CashierApi,
-                    Scopes.PaymentApi);
             }
         }
     }

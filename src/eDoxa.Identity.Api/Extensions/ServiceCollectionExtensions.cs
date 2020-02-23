@@ -34,11 +34,11 @@ namespace eDoxa.Identity.Api.Extensions
                     options =>
                     {
                         options.Password.RequireDigit = true;
-                        options.Password.RequiredLength = 8;
-                        options.Password.RequiredUniqueChars = 1;
                         options.Password.RequireLowercase = true;
-                        options.Password.RequireNonAlphanumeric = true;
                         options.Password.RequireUppercase = true;
+                        options.Password.RequireNonAlphanumeric = false;
+                        options.Password.RequiredLength = 8;
+                        options.Password.RequiredUniqueChars = 0;
                         options.Lockout.AllowedForNewUsers = false;
                         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                         options.Lockout.MaxFailedAccessAttempts = 5;
@@ -72,18 +72,20 @@ namespace eDoxa.Identity.Api.Extensions
 
         public static void AddCustomIdentityServer(this IServiceCollection services, IHostEnvironment environment, IdentityAppSettings appSettings)
         {
+            var spaUrl = appSettings.Client.Web.Endpoints.SpaUrl;
+
             services.AddIdentityServer(
                     options =>
                     {
-                        options.IssuerUri = appSettings.Endpoints.IdentityUrl;
-                        options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
+                        options.IssuerUri = appSettings.Authority.InternalUrl;
+                        options.Authentication.CookieLifetime = TimeSpan.FromHours(2); // TODO: Could be the reason why identity server is not working properly.
                         options.Events.RaiseInformationEvents = true;
                         options.Events.RaiseSuccessEvents = true;
                         options.Events.RaiseFailureEvents = true;
                         options.Events.RaiseErrorEvents = true;
-                        options.UserInteraction.LoginUrl = $"{appSettings.WebSpaUrl}/account/login";
+                        options.UserInteraction.LoginUrl = $"{spaUrl}/account/login";
                         options.UserInteraction.LoginReturnUrlParameter = "returnUrl";
-                        options.UserInteraction.LogoutUrl = $"{appSettings.WebSpaUrl}/account/logout";
+                        options.UserInteraction.LogoutUrl = $"{spaUrl}/account/logout";
                     })
                 .AddApiAuthorization<User, IdentityDbContext>(
                     options =>

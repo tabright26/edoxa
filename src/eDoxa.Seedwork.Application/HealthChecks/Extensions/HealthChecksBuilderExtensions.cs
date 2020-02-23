@@ -1,15 +1,14 @@
 ﻿// Filename: HealthChecksBuilderExtensions.cs
-// Date Created: 2019-12-18
+// Date Created: 2020-02-12
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Linq;
 
-using eDoxa.Seedwork.Application.AppSettings;
-using eDoxa.Seedwork.Application.AppSettings.Options;
 using eDoxa.Seedwork.Application.HealthChecks.Constants;
+using eDoxa.Seedwork.Application.Options;
 using eDoxa.Seedwork.Infrastructure.AzureKeyVault;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
@@ -56,13 +55,9 @@ namespace eDoxa.Seedwork.Application.HealthChecks.Extensions
             return builder.AddSqlServer(configuration.GetSqlServerConnectionString());
         }
 
-        public static IHealthChecksBuilder AddCustomIdentityServer<TEndpointsOptions>(
-            this IHealthChecksBuilder builder,
-            IHasEndpointsAppSettings<TEndpointsOptions> appSettings
-        )
-        where TEndpointsOptions : AuthorityEndpointsOptions
+        public static IHealthChecksBuilder AddCustomIdentityServer(this IHealthChecksBuilder builder, AuthorityOptions authority)
         {
-            return builder.AddIdentityServer(new Uri(appSettings.Endpoints.IdentityUrl));
+            return builder.AddIdentityServer(new Uri(authority.InternalUrl));
         }
 
         public static IHealthChecksBuilder AddCustomRedis(this IHealthChecksBuilder builder, IConfiguration configuration)

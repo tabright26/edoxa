@@ -8,7 +8,5 @@ namespace eDoxa.Notifications.Domain.Services
     public interface IRedirectService
     {
         string RedirectToWebSpa(string url = "/");
-
-        string RedirectToAuthority(string url = "/");
     }
 }

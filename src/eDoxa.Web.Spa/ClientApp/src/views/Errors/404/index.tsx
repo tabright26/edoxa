@@ -30,7 +30,7 @@ const Error404: FunctionComponent = () => (
             </InputGroupAddon>
             <Input type="text" placeholder="What are you looking for?" />
             <InputGroupAddon addonType="append">
-              <Button color="info">Search</Button>
+              <Button color="primary">Search</Button>
             </InputGroupAddon>
           </InputGroup>
         </Col>

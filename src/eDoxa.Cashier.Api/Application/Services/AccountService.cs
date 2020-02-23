@@ -369,9 +369,9 @@ namespace eDoxa.Cashier.Api.Application.Services
                 return await this.CreateDepositTransactionAsync(account, money, cancellationToken);
             }
 
-            if (type == TransactionType.Withdrawal)
+            if (type == TransactionType.Withdraw)
             {
-                return await this.CreateWithdrawalTransactionAsync(account, money, cancellationToken);
+                return await this.CreateWithdrawTransactionAsync(account, money, cancellationToken);
             }
 
             if (type == TransactionType.Charge)
@@ -438,7 +438,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             return result;
         }
 
-        private async Task<DomainValidationResult<ITransaction>> CreateWithdrawalTransactionAsync(
+        private async Task<DomainValidationResult<ITransaction>> CreateWithdrawTransactionAsync(
             IMoneyAccount account,
             Money money,
             CancellationToken cancellationToken = default
@@ -446,9 +446,9 @@ namespace eDoxa.Cashier.Api.Application.Services
         {
             var result = new DomainValidationResult<ITransaction>();
 
-            var transactionBundles = await this.FetchTransactionBundlesAsync(EnumTransactionType.Withdrawal, EnumCurrencyType.Money);
+            var transactionBundles = await this.FetchTransactionBundlesAsync(EnumTransactionType.Withdraw, EnumCurrencyType.Money);
 
-            if (transactionBundles.All(withdrawal => withdrawal.Currency.Amount != money.Amount))
+            if (transactionBundles.All(withdraw => withdraw.Currency.Amount != money.Amount))
             {
                 result.AddFailedPreconditionError(
                     $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
@@ -459,15 +459,15 @@ namespace eDoxa.Cashier.Api.Application.Services
                 result.AddFailedPreconditionError("Insufficient funds.");
             }
 
-            if (!account.IsWithdrawalAvailable())
+            if (!account.IsWithdrawAvailable())
             {
                 result.AddFailedPreconditionError(
-                    $"Withdrawal is unavailable until {account.LastWithdraw?.Add(MoneyAccountDecorator.WithdrawalInterval)}. For security reason we limit the number of financial transaction that can be done in {MoneyAccountDecorator.WithdrawalInterval.TotalHours} hours.");
+                    $"Withdraw is unavailable until {account.LastWithdraw?.Add(MoneyAccountDecorator.WithdrawInterval)}. For security reason we limit the number of financial transaction that can be done in {MoneyAccountDecorator.WithdrawInterval.TotalHours} hours.");
             }
 
             if (result.IsValid)
             {
-                var transaction = account.Withdrawal(money);
+                var transaction = account.Withdraw(money);
 
                 await _accountRepository.CommitAsync(true, cancellationToken);
 
