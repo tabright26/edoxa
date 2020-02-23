@@ -9,7 +9,7 @@ Array [
       className="col"
     >
       <div
-        className="my-4 card"
+        className="card"
       >
         <img
           className="card-img"

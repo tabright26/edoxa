@@ -28,7 +28,7 @@ const Payout: FunctionComponent<Props> = ({ payout }) => {
   let nextSize = 0;
   return (
     <Card className="text-center">
-      <CardHeader className="bg-gray-900">
+      <CardHeader>
         <strong className="text-uppercase">Payout</strong>
       </CardHeader>
       <Table

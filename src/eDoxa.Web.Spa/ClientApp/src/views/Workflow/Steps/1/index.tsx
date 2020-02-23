@@ -11,7 +11,7 @@ const Step1: FunctionComponent<WorkflowProps> = ({ nextWorkflowStep }) => (
       <Row className="justify-content-center">
         <Col>
           <Card>
-            <CardHeader className="my-auto bg-gray-900">
+            <CardHeader className="my-auto">
               <h4>
                 <strong className="text-uppercase">
                   LEAGUE OF LEGENDS AUTHENTICATIONS

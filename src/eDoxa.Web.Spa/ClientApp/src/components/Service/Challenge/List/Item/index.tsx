@@ -19,11 +19,7 @@ const Item: FunctionComponent<Props> = ({ challenge }) => (
       <CardBody>
         <Row>
           <Col md="3">
-            <ChallengeLogo
-              className="h-100 bg-gray-900"
-              height={150}
-              width={150}
-            />
+            <ChallengeLogo height={150} width={150} />
           </Col>
           <Col md="9">
             <ChallengeSummary challengeId={challenge.id} />

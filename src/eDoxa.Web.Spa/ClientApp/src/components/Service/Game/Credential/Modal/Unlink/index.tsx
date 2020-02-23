@@ -28,10 +28,7 @@ const Unlink: FunctionComponent<Props> = ({
   gameOptions
 }) => (
   <Modal backdrop="static" centered isOpen={show} toggle={handleHide}>
-    <ModalHeader
-      className="text-uppercase my-auto bg-gray-900"
-      toggle={handleHide}
-    >
+    <ModalHeader className="text-uppercase my-auto " toggle={handleHide}>
       Unlink your {gameOptions.displayName} credential?
     </ModalHeader>
     {show && (

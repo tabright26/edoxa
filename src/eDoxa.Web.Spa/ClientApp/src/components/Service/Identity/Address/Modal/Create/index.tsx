@@ -13,10 +13,7 @@ type Props = InnerProps & OutterProps;
 
 const Create: FunctionComponent<Props> = ({ show, handleHide }) => (
   <Modal backdrop="static" centered isOpen={show} toggle={handleHide}>
-    <ModalHeader
-      className="text-uppercase my-auto bg-gray-900"
-      toggle={handleHide}
-    >
+    <ModalHeader className="text-uppercase my-auto" toggle={handleHide}>
       Add new address
     </ModalHeader>
     <ModalBody>

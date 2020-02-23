@@ -23,7 +23,7 @@ type Props = InnerProps & OutterProps;
 
 const Link: FunctionComponent<Props> = ({ show, handleHide, gameOptions }) => (
   <Modal backdrop="static" centered isOpen={show} toggle={handleHide}>
-    <ModalHeader className="my-auto bg-gray-900" toggle={handleHide}>
+    <ModalHeader className="my-auto" toggle={handleHide}>
       <strong className="text-uppercase">
         {gameOptions.displayName} Authentications
       </strong>

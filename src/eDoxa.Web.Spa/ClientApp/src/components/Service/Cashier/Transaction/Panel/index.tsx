@@ -41,7 +41,7 @@ const Panel: FunctionComponent<Props> = ({
   }, [data]);
   return (
     <>
-      <Card className="card-accent-primary mt-4 mb-3">
+      <Card className="card-accent-primary mb-3">
         {loading ? <Loading /> : <List transactions={transactions} />}
       </Card>
       <Paginate

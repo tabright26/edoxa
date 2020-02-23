@@ -5,7 +5,7 @@ import { Discord } from "components/Shared/Social";
 
 export const Banner: FunctionComponent = () =>
   REACT_APP_BETA_ALERT_DISPLAYED === "true" ? (
-    <Alert className="mb-0 rounded-0 w-100 bg-primary text-light border-0">
+    <Alert className="mb-0 bg-primary rounded-0 w-100 border-0">
       <Container className="text-justify">
         Dear new eDoxa users, we welcome you to the Beta version of our eSport
         platform! The team wants to help unlock every gamer’s potential so that
@@ -20,7 +20,7 @@ export const Banner: FunctionComponent = () =>
           >
             Discord
           </Badge>
-        </Discord>
+        </Discord>{" "}
         server to provide feedback and suggestions about eDoxa.gg.
       </Container>
     </Alert>

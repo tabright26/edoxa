@@ -13,7 +13,7 @@ const Logo: FunctionComponent<Props> = ({
   height = 200,
   width = 200
 }) => (
-  <Card className={className}>
+  <Card className={`my-0 h-100 bg-gray-900 ${className}`}>
     <CardImg className="p-4 m-auto" src={logo} style={{ height, width }} />
   </Card>
 );

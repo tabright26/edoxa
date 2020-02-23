@@ -85,7 +85,7 @@ const Panel: FunctionComponent<any> = ({
   showCreateStripePaymentMethodModal,
   showUpdateStripePaymentMethodModal,
   showDeleteStripePaymentMethodModal,
-  paymentMethods: { data, loading, error }
+  paymentMethods: { data, loading }
 }) => (
   <Card className={`card-accent-primary ${className}`}>
     <CardHeader className="d-flex">

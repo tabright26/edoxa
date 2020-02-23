@@ -62,7 +62,7 @@ const Withdraw: FunctionComponent<Props> = ({
         </dl>
       </FormGroup>
     </ModalBody>
-    <ModalFooter className="bg-gray-800">
+    <ModalFooter>
       <Button.Submit loading={submitting} className="mr-2">
         Confirm
       </Button.Submit>

@@ -38,7 +38,8 @@ const Login: FunctionComponent = () => (
               </CardBody>
             </Card>
             <Card
-              className="text-white bg-primary py-5 d-md-down-none"
+              color="primary"
+              className="text-white py-5 d-md-down-none"
               style={{ width: "44%" }}
             >
               <CardBody className="text-center">

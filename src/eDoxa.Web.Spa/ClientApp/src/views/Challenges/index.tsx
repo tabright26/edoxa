@@ -28,7 +28,7 @@ const Challenges: FunctionComponent<Props> = ({ loadChallenges }) => {
     <>
       <Row>
         <Col>
-          <Card className="my-4">
+          <Card>
             <CardImg src={banner} height="200" />
             <CardImgOverlay className="d-flex">
               <img

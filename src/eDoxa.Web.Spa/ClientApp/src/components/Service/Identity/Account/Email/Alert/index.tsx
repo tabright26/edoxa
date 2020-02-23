@@ -18,8 +18,8 @@ const Alert: FunctionComponent<Props> = ({ emailVerified }) => {
   return (
     !emailVerified && (
       <ReactstrapAlert className="bg-primary border-primary mt-4 mb-0 d-flex">
-        <div className="d-inline my-auto">
-          Confirm your email address to activate all website functionality.
+        <div className="d-inline my-auto text-uppercase">
+          Please verify your account
         </div>
         {!(resendDate && timestamp < JSON.parse(resendDate)) && (
           <EmailForm.Resend className="d-inline" />

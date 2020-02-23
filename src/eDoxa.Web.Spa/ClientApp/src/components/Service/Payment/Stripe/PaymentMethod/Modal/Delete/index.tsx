@@ -20,10 +20,7 @@ const Delete: FunctionComponent<Props> = ({
   paymentMethod
 }) => (
   <Modal backdrop="static" centered isOpen={show} toggle={handleHide}>
-    <ModalHeader
-      className="text-uppercase my-auto bg-gray-900"
-      toggle={handleHide}
-    >
+    <ModalHeader className="text-uppercase my-auto" toggle={handleHide}>
       DELETE CREDIT CARD
     </ModalHeader>
     <ModalBody>

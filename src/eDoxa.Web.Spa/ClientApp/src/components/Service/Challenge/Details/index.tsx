@@ -45,15 +45,11 @@ const Details: FunctionComponent<Props> = ({ challenge, loadChallenge }) => {
       <GameCredentialModal.Unlink />
       <Row>
         <Col xs={{ size: 8, order: 1 }}>
-          <Card className="my-4">
+          <Card>
             <CardBody>
               <Row>
                 <Col md="3">
-                  <Logo
-                    className="h-100 bg-gray-900"
-                    height={150}
-                    width={150}
-                  />
+                  <Logo height={150} width={150} />
                 </Col>
                 <Col md="7">
                   <Summary challengeId={challenge.id} />
@@ -69,7 +65,7 @@ const Details: FunctionComponent<Props> = ({ challenge, loadChallenge }) => {
         <Col xs={{ size: 4, order: 2 }}>
           <Rules />
           <Payout />
-          <Scoring className="mb-0" />
+          <Scoring />
         </Col>
       </Row>
     </>

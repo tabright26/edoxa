@@ -84,7 +84,7 @@ const Deposit: FunctionComponent<Props> = ({
         )}
       </FormGroup>
     </ModalBody>
-    <ModalFooter className="bg-gray-800">
+    <ModalFooter>
       <Button.Submit
         loading={submitting}
         disabled={!hasPaymentMethod}

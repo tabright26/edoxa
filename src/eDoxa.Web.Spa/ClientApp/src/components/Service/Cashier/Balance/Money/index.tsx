@@ -16,6 +16,7 @@ const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
     <div className={className}>
       <Badge
         id="moneyPopover"
+        color="dark"
         className="bg-gray-900"
         style={{ width: "100px" }}
       >

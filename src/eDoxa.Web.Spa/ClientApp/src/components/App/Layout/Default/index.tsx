@@ -53,7 +53,7 @@ export const Default: FunctionComponent = () => {
           </Suspense>
         </AppAside>
       </div>
-      <AppFooter>
+      <AppFooter fixed>
         <Suspense fallback={<Loading />}>
           <Social className="mr-auto" />
           <Footer className="ml-auto" />

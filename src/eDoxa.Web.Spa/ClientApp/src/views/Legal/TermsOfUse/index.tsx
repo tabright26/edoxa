@@ -17,7 +17,7 @@ const TermsOfUse: FunctionComponent<LocalizeContextProps> = () => {
       {items.map(({ content, title }, index) => (
         <Card
           key={index}
-          className="card-accent-primary mt-4 mb-0 text-justify"
+          className="card-accent-primary text-justify"
         >
           <CardHeader className="text-uppercase">{title}</CardHeader>
           <CardBody>{content}</CardBody>

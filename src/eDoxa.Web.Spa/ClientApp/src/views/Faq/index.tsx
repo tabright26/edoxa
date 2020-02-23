@@ -75,7 +75,7 @@ const Faq: FunctionComponent = () => {
   return (
     <Row>
       <Col xs="12" sm="12" md="4" lg="3" xl="2">
-        <Card className="mt-4">
+        <Card>
           <CardHeader>
             <strong className="text-uppercase">Table of content</strong>
           </CardHeader>

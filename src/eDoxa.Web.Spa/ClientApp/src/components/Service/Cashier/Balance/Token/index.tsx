@@ -15,6 +15,7 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
     <div className={className}>
       <Badge
         id="tokenPopover"
+        color="dark"
         className="bg-gray-900"
         style={{ width: "100px" }}
       >
