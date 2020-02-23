@@ -77,7 +77,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             var transaction = new Transaction(
                 new Money(500),
                 new TransactionDescription("Test"),
-                TransactionType.Withdrawal,
+                TransactionType.Withdraw,
                 new UtcNowDateTimeProvider());
 
             transaction.MarkAsSucceeded();
@@ -87,7 +87,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             var money = new Money(500);
 
             // Act Assert
-            var action = new Action(() => moneyAccountDecorator.Withdrawal(money));
+            var action = new Action(() => moneyAccountDecorator.Withdraw(money));
             action.Should().Throw<InvalidOperationException>();
         }
 

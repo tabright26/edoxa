@@ -30,7 +30,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             // Arrange
             var currency = Money.Twenty;
             var description = new TransactionDescription("Transaction to cancel");
-            var type = TransactionType.Withdrawal;
+            var type = TransactionType.Withdraw;
             var provider = new UtcNowDateTimeProvider();
 
             var transaction = new Transaction(
@@ -52,7 +52,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             // Arrange
             var currency = Money.Twenty;
             var description = new TransactionDescription("Transaction to cancel");
-            var type = TransactionType.Withdrawal;
+            var type = TransactionType.Withdraw;
             var provider = new UtcNowDateTimeProvider();
 
             var transaction = new Transaction(
@@ -168,7 +168,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             // Arrange
             var currency = Money.Twenty;
             var description = new TransactionDescription("Price to check");
-            var type = TransactionType.Withdrawal;
+            var type = TransactionType.Withdraw;
             var provider = new UtcNowDateTimeProvider();
 
             var transaction = new Transaction(
