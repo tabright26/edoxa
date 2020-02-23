@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>eDoxa.Seedwork.UnitTests</AssemblyName>
     <RootNamespace>eDoxa.Seedwork.UnitTests</RootNamespace>
-    <Nullable>Disable</Nullable>
+    <Nullable>Enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -24,10 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Seedwork.TestHelper\eDoxa.Seedwork.TestHelper.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Monitoring\appsettings.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

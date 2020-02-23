@@ -15,16 +15,9 @@ type OutterProps = {};
 
 type Props = InnerProps & OutterProps;
 
-const Create: FunctionComponent<Props> = ({
-  show,
-  handleHide,
-  actions
-}) => (
+const Create: FunctionComponent<Props> = ({ show, handleHide, actions }) => (
   <Modal backdrop="static" size="lg" isOpen={show} toggle={handleHide} centered>
-    <ModalHeader
-      className="text-uppercase my-auto bg-gray-900"
-      toggle={handleHide}
-    >
+    <ModalHeader className="text-uppercase my-auto" toggle={handleHide}>
       Create a new clan
     </ModalHeader>
     <ModalBody>

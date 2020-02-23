@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import Support from "components/Shared/Support";
 
 export type Item = {
   title: string;
@@ -134,12 +135,12 @@ export const items: Item[] = [
           under your account. It shall be a violation of these Terms of Use to
           allow any other person to use your account to participate in any
           contest. If you have reason to believe that someone is using your
-          account without your permission, you should contact us immediately at
-          support@edoxa.gg. We will not be responsible for any loss or damage
-          resulting from your failure to notify us of unauthorized use. If we
-          request registration information from you, you must provide us with
-          accurate and complete information and must update the information when
-          it changes.
+          account without your permission, you should contact us immediately at{" "}
+          <Support.EmailAddress />. We will not be responsible for any loss or
+          damage resulting from your failure to notify us of unauthorized use.
+          If we request registration information from you, you must provide us
+          with accurate and complete information and must update the information
+          when it changes.
         </li>
         <li>
           “Authorized Account Holder” is defined as the natural person from 18
@@ -655,10 +656,10 @@ export const items: Item[] = [
       <p className="mb-0">
         If members suspect that feedback left for them is in violation of the
         Site&#39;s feedback policy and constitutes abuse, they are encouraged to
-        email support@edoxa.gg to report this violation. eDoxa will also offer
-        the opportunity to members to withdraw feedback if both members mutually
-        agree to the removal of a specified comment or feedback rating. Both
-        members must email support@edoxa.gg.
+        email <Support.EmailAddress /> to report this violation. eDoxa will also
+        offer the opportunity to members to withdraw feedback if both members
+        mutually agree to the removal of a specified comment or feedback rating.
+        Both members must email <Support.EmailAddress />.
       </p>
     ]
   },
@@ -718,7 +719,7 @@ export const items: Item[] = [
     content: [
       <p className="mb-0">
         If you wish to report a violation of our Anti-Spam Policy, please
-        forward all evidence of abuse to support@edoxa.gg please refer
+        forward all evidence of abuse to <Support.EmailAddress /> please refer
         responsibly.
       </p>
     ]

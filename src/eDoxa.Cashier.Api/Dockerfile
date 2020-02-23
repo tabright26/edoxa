@@ -12,12 +12,6 @@ COPY . .
 WORKDIR /tmp/src/eDoxa.Cashier.Api
 RUN dotnet publish -c Release -o /app
 
-FROM build AS unit-tests
-WORKDIR /tmp/test/eDoxa.Cashier.UnitTests
-
-FROM build AS integration-tests
-WORKDIR /tmp/test/eDoxa.Cashier.IntegrationTests
-
 FROM build AS publish
 
 FROM base AS final

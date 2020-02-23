@@ -47,8 +47,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using static eDoxa.Seedwork.Application.ApiResources;
-
 namespace eDoxa.Notifications.Api
 {
     public partial class Startup
@@ -67,12 +65,11 @@ namespace eDoxa.Notifications.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            AppSettings = configuration.GetAppSettings<NotificationsAppSettings>(NotificationsApi);
         }
 
         public IConfiguration Configuration { get; }
 
-        private NotificationsAppSettings AppSettings { get; }
+        private NotificationsAppSettings AppSettings => Configuration.Get<NotificationsAppSettings>();
     }
 
     public partial class Startup
@@ -81,11 +78,11 @@ namespace eDoxa.Notifications.Api
         {
             services.AddSendgrid(Configuration);
 
-            services.AddAppSettings<NotificationsAppSettings>(Configuration);
+            services.AddOptions<NotificationsAppSettings>().Bind(Configuration).ValidateDataAnnotations();
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
-                .AddCustomIdentityServer(AppSettings)
+                .AddCustomIdentityServer(AppSettings.Authority)
                 .AddCustomAzureKeyVault(Configuration)
                 .AddCustomSqlServer(Configuration)
                 .AddCustomAzureBlobStorage(Configuration)
@@ -113,8 +110,8 @@ namespace eDoxa.Notifications.Api
                 .AddIdentityServerAuthentication(
                     options =>
                     {
-                        options.ApiName = AppSettings.ApiResource.Name;
-                        options.Authority = AppSettings.Endpoints.IdentityUrl;
+                        options.ApiName = ApiResources.NotificationsApi.Name;
+                        options.Authority = AppSettings.Authority.InternalUrl;
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
@@ -157,14 +154,14 @@ namespace eDoxa.Notifications.Api
         {
             this.ConfigureServices(services);
 
-            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, ApiResources.NotificationsApi, AppSettings.Authority);
         }
 
         public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber)
         {
             this.Configure(application, subscriber);
 
-            application.UseSwagger(AppSettings);
+            application.UseSwagger(ApiResources.NotificationsApi);
         }
     }
 
@@ -172,7 +169,7 @@ namespace eDoxa.Notifications.Api
     {
         public void ConfigureTestServices(IServiceCollection services)
         {
-            services.AddAppSettings<NotificationsAppSettings>(Configuration);
+            services.Configure<NotificationsAppSettings>(Configuration);
 
             services.AddCustomDbContext<NotificationsDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 

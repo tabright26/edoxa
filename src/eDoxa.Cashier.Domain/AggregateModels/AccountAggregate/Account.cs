@@ -51,7 +51,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
             moneyAccount.Payout(Money.Twenty).MarkAsSucceeded(); // 435
 
-            moneyAccount.Withdrawal(Money.OneHundred).MarkAsSucceeded(); // 335
+            moneyAccount.Withdraw(Money.OneHundred).MarkAsSucceeded(); // 335
 
             moneyAccount.Charge(Money.Ten).MarkAsSucceeded(); // 325
 

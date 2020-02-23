@@ -25,7 +25,7 @@ const Withdraw: FunctionComponent<Props> = ({
   description
 }) => (
   <Modal backdrop="static" centered isOpen={show} toggle={handleHide}>
-    <ModalHeader toggle={handleHide} className="my-auto bg-gray-900">
+    <ModalHeader toggle={handleHide} className="my-auto">
       <span className="d-block text-uppercase">{title}</span>
       {description && <ModalSubtitle>{description}</ModalSubtitle>}
     </ModalHeader>

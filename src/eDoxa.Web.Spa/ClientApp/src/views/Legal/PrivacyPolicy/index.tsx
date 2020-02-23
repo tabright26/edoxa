@@ -6,7 +6,7 @@ const PrivacyPolicy: FunctionComponent = () => (
   <Container>
     <h5 className="text-uppercase my-4">Privacy Policy</h5>
     {items.map((item, index) => (
-      <Card key={index} className="card-accent-primary mt-4 mb-0 text-justify">
+      <Card key={index} className="card-accent-primary text-justify">
         {item.title && (
           <CardHeader className="text-uppercase">{item.title}</CardHeader>
         )}

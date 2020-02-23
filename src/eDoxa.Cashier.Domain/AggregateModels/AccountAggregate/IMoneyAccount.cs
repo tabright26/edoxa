@@ -22,12 +22,12 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         ITransaction Promotion(Money amount, TransactionMetadata? metadata = null);
 
-        ITransaction Withdrawal(Money amount);
+        ITransaction Withdraw(Money amount);
 
         bool HaveSufficientMoney(Money money);
 
         bool IsDepositAvailable();
 
-        bool IsWithdrawalAvailable();
+        bool IsWithdrawAvailable();
     }
 }

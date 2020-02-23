@@ -43,8 +43,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using static eDoxa.Seedwork.Application.ApiResources;
-
 namespace eDoxa.Clans.Api
 {
     public partial class Startup
@@ -63,24 +61,23 @@ namespace eDoxa.Clans.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            AppSettings = configuration.GetAppSettings<ClansAppSettings>(ClansApi);
         }
 
         public IConfiguration Configuration { get; }
 
-        private ClansAppSettings AppSettings { get; }
+        private ClansAppSettings AppSettings => Configuration.Get<ClansAppSettings>();
     }
 
     public partial class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAppSettings<ClansAppSettings>(Configuration);
+            services.AddOptions<ClansAppSettings>().Bind(Configuration).ValidateDataAnnotations();
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
                 .AddCustomAzureKeyVault(Configuration)
-                .AddCustomIdentityServer(AppSettings)
+                .AddCustomIdentityServer(AppSettings.Authority)
                 .AddCustomAzureBlobStorage(Configuration)
                 .AddCustomAzureServiceBusTopic(Configuration)
                 .AddCustomSqlServer(Configuration);
@@ -107,8 +104,8 @@ namespace eDoxa.Clans.Api
                 .AddIdentityServerAuthentication(
                     options =>
                     {
-                        options.ApiName = AppSettings.ApiResource.Name;
-                        options.Authority = AppSettings.Endpoints.IdentityUrl;
+                        options.ApiName = ApiResources.ClansApi.Name;
+                        options.Authority = AppSettings.Authority.InternalUrl;
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
@@ -151,14 +148,14 @@ namespace eDoxa.Clans.Api
         {
             this.ConfigureServices(services);
 
-            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, ApiResources.ClansApi, AppSettings.Authority);
         }
 
         public void ConfigureDevelopment(IApplicationBuilder application)
         {
             this.Configure(application);
 
-            application.UseSwagger(AppSettings);
+            application.UseSwagger(ApiResources.ClansApi);
         }
     }
 
@@ -166,7 +163,7 @@ namespace eDoxa.Clans.Api
     {
         public void ConfigureTestServices(IServiceCollection services)
         {
-            services.AddAppSettings<ClansAppSettings>(Configuration);
+            services.Configure<ClansAppSettings>(Configuration);
 
             services.AddCustomDbContext<ClansDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 

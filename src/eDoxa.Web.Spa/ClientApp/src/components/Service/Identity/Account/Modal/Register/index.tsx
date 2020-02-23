@@ -14,7 +14,7 @@ type Props = InnerProps & OutterProps;
 
 const Register: FunctionComponent<Props> = ({ show, handleHide }) => (
   <Modal backdrop="static" centered isOpen={show} toggle={handleHide}>
-    <ModalHeader className="bg-gray-900" toggle={handleHide}>
+    <ModalHeader toggle={handleHide}>
       <h3 className="text-light">
         <strong className="text-uppercase">
           REGISTER{" "}

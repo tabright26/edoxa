@@ -1,8 +1,8 @@
-﻿// Filename: UserWithdrawalFailedIntegrationEventHandler.cs
-// Date Created: 2019-12-16
+﻿// Filename: UserWithdrawFailedIntegrationEventHandler.cs
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
@@ -16,18 +16,18 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
 {
-    public sealed class UserWithdrawalFailedIntegrationEventHandler : IIntegrationEventHandler<UserWithdrawalFailedIntegrationEvent>
+    public sealed class UserWithdrawFailedIntegrationEventHandler : IIntegrationEventHandler<UserWithdrawFailedIntegrationEvent>
     {
         private readonly IAccountService _accountService;
         private readonly ILogger _logger;
 
-        public UserWithdrawalFailedIntegrationEventHandler(IAccountService accountService, ILogger<UserWithdrawalFailedIntegrationEventHandler> logger)
+        public UserWithdrawFailedIntegrationEventHandler(IAccountService accountService, ILogger<UserWithdrawFailedIntegrationEventHandler> logger)
         {
             _accountService = accountService;
             _logger = logger;
         }
 
-        public async Task HandleAsync(UserWithdrawalFailedIntegrationEvent integrationEvent)
+        public async Task HandleAsync(UserWithdrawFailedIntegrationEvent integrationEvent)
         {
             var userId = integrationEvent.UserId.ParseEntityId<UserId>();
 

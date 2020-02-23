@@ -6,7 +6,7 @@ export const TRANSACTION_TYPE_DEPOSIT = "Deposit";
 export const TRANSACTION_TYPE_REWARD = "Reward";
 export const TRANSACTION_TYPE_CHARGE = "Charge";
 export const TRANSACTION_TYPE_PAYOUT = "Payout";
-export const TRANSACTION_TYPE_WITHDRAWAL = "Withdrawal";
+export const TRANSACTION_TYPE_WITHDRAW = "Withdraw";
 export const TRANSACTION_TYPE_PROMOTION = "Promotion";
 export const TRANSACTION_TYPE_ALL = "All";
 
@@ -29,7 +29,7 @@ export type TransactionType =
   | typeof TRANSACTION_TYPE_REWARD
   | typeof TRANSACTION_TYPE_CHARGE
   | typeof TRANSACTION_TYPE_PAYOUT
-  | typeof TRANSACTION_TYPE_WITHDRAWAL
+  | typeof TRANSACTION_TYPE_WITHDRAW
   | typeof TRANSACTION_TYPE_PROMOTION
   | typeof TRANSACTION_TYPE_ALL;
 

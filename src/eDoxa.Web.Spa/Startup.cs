@@ -27,24 +27,23 @@ namespace eDoxa.Web.Spa
             TelemetryDebugWriter.IsTracingDisabled = true;
         }
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
-            HostingEnvironment = hostingEnvironment;
-            AppSettings = configuration.GetAppSettings<WebSpaAppSettings>();
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
 
-        public IWebHostEnvironment HostingEnvironment { get; }
+        public IWebHostEnvironment Environment { get; }
 
-        public WebSpaAppSettings AppSettings { get; }
+        public WebSpaAppSettings AppSettings => Configuration.Get<WebSpaAppSettings>();
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<WebSpaAppSettings>(Configuration);
+            services.AddOptions<WebSpaAppSettings>().Bind(Configuration).ValidateDataAnnotations();
 
-            services.AddHealthChecks().AddCustomSelfCheck().AddCustomIdentityServer(AppSettings).AddCustomAzureKeyVault(Configuration);
+            services.AddHealthChecks().AddCustomSelfCheck().AddCustomIdentityServer(AppSettings.Authority).AddCustomAzureKeyVault(Configuration);
 
             services.AddCustomDataProtection(Configuration, AppServices.WebSpa);
 
@@ -78,9 +77,9 @@ namespace eDoxa.Web.Spa
                 {
                     builder.Options.SourcePath = "ClientApp";
 
-                    if (HostingEnvironment.IsDevelopment())
+                    if (Environment.IsDevelopment())
                     {
-                        builder.UseProxyToSpaDevelopmentServer(AppSettings.WebSpaClientUrl);
+                        builder.UseProxyToSpaDevelopmentServer(AppSettings.Client.Web.Endpoints.SpaUrl);
                     }
                 });
         }

@@ -29,7 +29,7 @@ namespace eDoxa.Identity.Api.Services
         private readonly IAuthorizeRequestValidator _validator;
         private readonly IUserSession _userSession;
         private readonly ILogger _logger;
-        private readonly IOptionsSnapshot<IdentityAppSettings> _options;
+        private readonly IOptions<IdentityAppSettings> _options;
 
         public CustomReturnUrlParser(IAuthorizeRequestValidator validator, IUserSession userSession, ILogger<CustomReturnUrlParser> logger, IOptionsSnapshot<IdentityAppSettings> options)
         {
@@ -39,7 +39,7 @@ namespace eDoxa.Identity.Api.Services
             _options = options;
         }
 
-        public IdentityAppSettings OptionsSnapshot => _options.Value;
+        public IdentityAppSettings Options => _options.Value;
 
         public async Task<AuthorizationRequest?> ParseAsync(string returnUrl)
         {
@@ -67,7 +67,7 @@ namespace eDoxa.Identity.Api.Services
             // had to add returnUrl.StartsWith("http://localhost:5000")
             // because when UI and API are not on the same host, the URL is not local
             // the condition here should be changed to either use configuration or just match domain
-            if (returnUrl.IsLocalUrl() || returnUrl.StartsWith(OptionsSnapshot.Authority))
+            if (returnUrl.IsLocalUrl() || returnUrl.StartsWith(Options.Authority.ExternalUrl))
             {
                 var index = returnUrl.IndexOf('?');
 

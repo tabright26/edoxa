@@ -8,19 +8,18 @@
 
 using System.ComponentModel.DataAnnotations;
 
-using eDoxa.Seedwork.Application.AppSettings;
-using eDoxa.Seedwork.Application.AppSettings.Options;
+using eDoxa.Seedwork.Application.Options;
 
 namespace eDoxa.Web.Spa.Infrastructure
 {
-    public class WebSpaAppSettings : IHasAuthorityAppSettings, IHasEndpointsAppSettings<AuthorityEndpointsOptions>
+    public class WebSpaAppSettings
     {
         [Required]
-        public string Authority { get; set; }
-
-        public string WebSpaClientUrl { get; set; }
+        public AuthorityOptions Authority { get; set; }
 
         [Required]
-        public AuthorityEndpointsOptions Endpoints { get; set; }
+        public GatewayOptions Gateway { get; set; }
+
+        public ClientOptions Client { get; set; }
     }
 }

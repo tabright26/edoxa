@@ -40,8 +40,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using static eDoxa.Seedwork.Application.ApiResources;
-
 namespace eDoxa.Cashier.Web.Aggregator
 {
     public partial class Startup
@@ -61,26 +59,25 @@ namespace eDoxa.Cashier.Web.Aggregator
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            AppSettings = configuration.GetAppSettings<CashierWebAggregatorAppSettings>(CashierWebAggregator);
         }
 
         public IConfiguration Configuration { get; }
 
-        private CashierWebAggregatorAppSettings AppSettings { get; }
+        private CashierWebAggregatorAppSettings AppSettings => Configuration.Get<CashierWebAggregatorAppSettings>();
     }
 
     public partial class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAppSettings<CashierWebAggregatorAppSettings>(Configuration);
+            services.AddOptions<CashierWebAggregatorAppSettings>().Bind(Configuration).ValidateDataAnnotations();
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
                 .AddCustomAzureKeyVault(Configuration)
-                .AddCustomUrlGroup(AppSettings.Endpoints.IdentityUrl, AppServices.IdentityApi)
-                .AddCustomUrlGroup(AppSettings.Endpoints.CashierUrl, AppServices.CashierApi)
-                .AddCustomUrlGroup(AppSettings.Endpoints.PaymentUrl, AppServices.PaymentApi);
+                .AddCustomUrlGroup(AppSettings.Service.Endpoints.IdentityUrl, AppServices.IdentityApi)
+                .AddCustomUrlGroup(AppSettings.Service.Endpoints.CashierUrl, AppServices.CashierApi)
+                .AddCustomUrlGroup(AppSettings.Service.Endpoints.PaymentUrl, AppServices.PaymentApi);
 
             services.AddCustomCors();
 
@@ -96,8 +93,8 @@ namespace eDoxa.Cashier.Web.Aggregator
                 .AddIdentityServerAuthentication(
                     options =>
                     {
-                        options.ApiName = AppSettings.ApiResource.Name;
-                        options.Authority = AppSettings.Endpoints.IdentityUrl;
+                        options.ApiName = ApiResources.CashierWebAggregator.Name;
+                        options.Authority = AppSettings.Authority.InternalUrl;
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
@@ -106,19 +103,19 @@ namespace eDoxa.Cashier.Web.Aggregator
 
             services.AddTransient<AccessTokenDelegatingHandler>();
 
-            services.AddGrpcClient<CashierService.CashierServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.CashierUrl}:81"))
+            services.AddGrpcClient<CashierService.CashierServiceClient>(options => options.Address = new Uri(AppSettings.Grpc.Service.Endpoints.CashierUrl))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddRetryPolicyHandler()
                 .AddCircuitBreakerPolicyHandler();
 
-            services.AddGrpcClient<IdentityService.IdentityServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.IdentityUrl}:81"))
+            services.AddGrpcClient<IdentityService.IdentityServiceClient>(options => options.Address = new Uri(AppSettings.Grpc.Service.Endpoints.IdentityUrl))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddRetryPolicyHandler()
                 .AddCircuitBreakerPolicyHandler();
 
-            services.AddGrpcClient<PaymentService.PaymentServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.PaymentUrl}:81"))
+            services.AddGrpcClient<PaymentService.PaymentServiceClient>(options => options.Address = new Uri(AppSettings.Grpc.Service.Endpoints.PaymentUrl))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>();
         }
@@ -157,8 +154,8 @@ namespace eDoxa.Cashier.Web.Aggregator
 
             services.AddSwagger(
                 XmlCommentsFilePath,
-                AppSettings,
-                AppSettings,
+                ApiResources.CashierWebAggregator,
+                AppSettings.Authority,
                 Scopes.CashierApi,
                 Scopes.PaymentApi);
         }
@@ -167,7 +164,7 @@ namespace eDoxa.Cashier.Web.Aggregator
         {
             this.Configure(application);
 
-            application.UseSwagger(AppSettings);
+            application.UseSwagger(ApiResources.CashierWebAggregator);
         }
     }
 

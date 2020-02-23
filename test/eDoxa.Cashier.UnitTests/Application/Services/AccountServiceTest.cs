@@ -363,7 +363,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         }
 
         [Fact]
-        public async Task WithdrawalAsync_WithCurrencyMoney_ShouldBeOfTypeValidationResult()
+        public async Task WithdrawAsync_WithCurrencyMoney_ShouldBeOfTypeValidationResult()
         {
             // Arrange
             var account = new Account(new UserId());
@@ -389,7 +389,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 moneyAccount,
                 Money.OneHundred.Amount,
                 CurrencyType.Money,
-                TransactionType.Withdrawal,
+                TransactionType.Withdraw,
                 metadata);
 
             // Assert
@@ -399,7 +399,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         }
 
         [Fact]
-        public async Task WithdrawalAsync_WithEmptyAccountBalance_ShouldBeOfTypeValidationResultWithErrors()
+        public async Task WithdrawAsync_WithEmptyAccountBalance_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
             var account = new Account(new UserId());
@@ -417,7 +417,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 account,
                 Money.Twenty.Amount,
                 CurrencyType.Money,
-                TransactionType.Withdrawal,
+                TransactionType.Withdraw,
                 metadata);
 
             // Assert
@@ -427,7 +427,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         }
 
         [Fact]
-        public async Task WithdrawalAsync_WithWrongBundle_ShouldBeOfTypeValidationResultWithErrors()
+        public async Task WithdrawAsync_WithWrongBundle_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
             var account = new Account(new UserId());
@@ -445,7 +445,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 account,
                 Money.Twenty.Amount,
                 CurrencyType.Money,
-                TransactionType.Withdrawal,
+                TransactionType.Withdraw,
                 metadata);
 
             // Assert

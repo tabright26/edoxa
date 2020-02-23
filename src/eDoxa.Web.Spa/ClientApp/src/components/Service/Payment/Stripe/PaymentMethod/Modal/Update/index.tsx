@@ -20,10 +20,7 @@ const Update: FunctionComponent<Props> = ({
   paymentMethod
 }) => (
   <Modal backdrop="static" centered size="lg" isOpen={show} toggle={handleHide}>
-    <ModalHeader
-      className="text-uppercase my-auto bg-gray-900"
-      toggle={handleHide}
-    >
+    <ModalHeader className="text-uppercase my-auto" toggle={handleHide}>
       UPDATE CREDIT CARD
     </ModalHeader>
     <ModalBody>

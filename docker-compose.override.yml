@@ -24,36 +24,39 @@ services:
     ports:
       - "5400:80"
 
+  stripe:
+    command: --api-key sk_test_xRMH8A7bagp2Auj7YPqNihlY listen --forward-to=http://${HOST:-localhost}:5202/payment/api/stripe/webhook --latest
+      
   identity-api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${IDENTITY_SQLSERVER_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000
-      - WebSpaUrl=http://${HOST:-localhost}:5300
-      - Endpoints__IdentityUrl=http://identity-api
+      - Authority__InternalUrl=http://identity-api
+      - Authority__ExternalUrl=http://${HOST:-localhost}:5000
+      - Service__Endpoints__CashierUrl=http://${HOST:-localhost}:5002 
+      - Service__Endpoints__ChallengesUrl=http://${HOST:-localhost}:5003
+      - Service__Endpoints__ClansUrl=http://${HOST:-localhost}:5010
+      - Service__Endpoints__GamesUrl=http://${HOST:-localhost}:5005
+      - Service__Endpoints__IdentityUrl=http://${HOST:-localhost}:5000
+      - Service__Endpoints__NotificationsUrl=http://${HOST:-localhost}:5011
+      - Service__Endpoints__PaymentUrl=http://${HOST:-localhost}:5001
+      - Aggregator__Web__Endpoints__CashierUrl=http://${HOST:-localhost}:5302
+      - Aggregator__Web__Endpoints__ChallengesUrl=http://${HOST:-localhost}:5303
+      - Client__Web__Endpoints__SpaUrl=http://${HOST:-localhost}:5300
       - Serilog__Sink__Seq=http://seq
-      - Swagger__Endpoints__IdentityUrl=http://${HOST:-localhost}:5000
-      - Swagger__Endpoints__PaymentUrl=http://${HOST:-localhost}:5001
-      - Swagger__Endpoints__CashierUrl=http://${HOST:-localhost}:5002 
-      - Swagger__Endpoints__NotificationsUrl=http://${HOST:-localhost}:5011
-      - Swagger__Endpoints__ChallengesUrl=http://${HOST:-localhost}:5003
-      - Swagger__Endpoints__GamesUrl=http://${HOST:-localhost}:5005
-      - Swagger__Endpoints__ClansUrl=http://${HOST:-localhost}:5010
-      - Swagger__Endpoints__ChallengesWebAggregatorUrl=http://${HOST:-localhost}:5303
-      - Swagger__Endpoints__CashierWebAggregatorUrl=http://${HOST:-localhost}:5302
     ports:
       - "5000:80"
       - "9000:81"
 
   cashier-api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CASHIER_SQLSERVER_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity-api
+      - Authority__InternalUrl=http://identity-api
+      - Authority__ExternalUrl=http://${HOST:-localhost}:5000
       - Serilog__Sink__Seq=http://seq
     ports:
       - "5002:80"
@@ -61,11 +64,11 @@ services:
 
   challenges-api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CHALLENGES_SQLSERVER_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity-api
+      - Authority__InternalUrl=http://identity-api
+      - Authority__ExternalUrl=http://${HOST:-localhost}:5000
       - Serilog__Sink__Seq=http://seq
     ports:
       - "5003:80"
@@ -73,11 +76,11 @@ services:
 
   clans-api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CLANS_SQLSERVER_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity-api
+      - Authority__InternalUrl=http://identity-api
+      - Authority__ExternalUrl=http://${HOST:-localhost}:5000
       - Serilog__Sink__Seq=http://seq
     ports:
       - "5010:80"
@@ -85,12 +88,12 @@ services:
 
   games-api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${GAMES_SQLSERVER_CONNECTIONSTRING}    
-      - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity-api
+      - Authority__InternalUrl=http://identity-api
+      - Authority__ExternalUrl=http://${HOST:-localhost}:5000
       - Serilog__Sink__Seq=http://seq
       - LeagueOfLegends__ApiKey=RGAPI-819334ce-d2da-403c-ba4c-1d8c017e69ee
     ports:
@@ -99,12 +102,12 @@ services:
 
   notifications-api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${NOTIFICATIONS_SQLSERVER_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000
-      - WebSpaUrl=http://${HOST:-localhost}:5300
-      - Endpoints__IdentityUrl=http://identity-api    
+      - Authority__InternalUrl=http://identity-api
+      - Authority__ExternalUrl=http://${HOST:-localhost}:5000
+      - Client__Web__Endpoints__SpaUrl=http://${HOST:-localhost}:5300
       - Serilog__Sink__Seq=http://seq
     ports:
       - "5011:80"
@@ -112,10 +115,10 @@ services:
 
   payment-api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity-api
+      - Authority__InternalUrl=http://identity-api
+      - Authority__ExternalUrl=http://${HOST:-localhost}:5000
       - Serilog__Sink__Seq=http://seq
     ports:
       - "5001:80"
@@ -123,37 +126,72 @@ services:
 
   challenges-workers:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__SqlServer=${WORKERS_SQLSERVER_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
-      - Endpoints__ChallengesUrl=http://challenges-api
-      - Endpoints__GamesUrl=http://games-api
+      - Service__Endpoints__CashierUrl=http://cashier-api:80 
+      - Service__Endpoints__ChallengesUrl=http://challenges-api:80
+      - Service__Endpoints__ClansUrl=http://clans-api:80
+      - Service__Endpoints__GamesUrl=http://games-api:80
+      - Service__Endpoints__IdentityUrl=http://identity-api:80
+      - Service__Endpoints__NotificationsUrl=http://notifications-api:80
+      - Service__Endpoints__PaymentUrl=http://payment-api:80
+      - Grpc__Service__Endpoints__CashierUrl=http://cashier-api:81 
+      - Grpc__Service__Endpoints__ChallengesUrl=http://challenges-api:81
+      - Grpc__Service__Endpoints__ClansUrl=http://clans-api:81
+      - Grpc__Service__Endpoints__GamesUrl=http://games-api:81
+      - Grpc__Service__Endpoints__IdentityUrl=http://identity-api:81
+      - Grpc__Service__Endpoints__NotificationsUrl=http://notifications-api:81
+      - Grpc__Service__Endpoints__PaymentUrl=http://payment-api:81
       - Serilog__Sink__Seq=http://seq
     ports:
       - "5403:80"
 
   cashier-web-aggregator:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity-api
-      - Endpoints__CashierUrl=http://cashier-api
-      - Endpoints__PaymentUrl=http://payment-api
+      - Authority__InternalUrl=http://identity-api
+      - Authority__ExternalUrl=http://${HOST:-localhost}:5000
+      - Service__Endpoints__CashierUrl=http://cashier-api:80 
+      - Service__Endpoints__ChallengesUrl=http://challenges-api:80
+      - Service__Endpoints__ClansUrl=http://clans-api:80
+      - Service__Endpoints__GamesUrl=http://games-api:80
+      - Service__Endpoints__IdentityUrl=http://identity-api:80
+      - Service__Endpoints__NotificationsUrl=http://notifications-api:80
+      - Service__Endpoints__PaymentUrl=http://payment-api:80
+      - Grpc__Service__Endpoints__CashierUrl=http://cashier-api:81 
+      - Grpc__Service__Endpoints__ChallengesUrl=http://challenges-api:81
+      - Grpc__Service__Endpoints__ClansUrl=http://clans-api:81
+      - Grpc__Service__Endpoints__GamesUrl=http://games-api:81
+      - Grpc__Service__Endpoints__IdentityUrl=http://identity-api:81
+      - Grpc__Service__Endpoints__NotificationsUrl=http://notifications-api:81
+      - Grpc__Service__Endpoints__PaymentUrl=http://payment-api:81
       - Serilog__Sink__Seq=http://seq
     ports:
       - "5302:80"
 
   challenges-web-aggregator:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity-api
-      - Endpoints__CashierUrl=http://cashier-api
-      - Endpoints__ChallengesUrl=http://challenges-api
-      - Endpoints__GamesUrl=http://games-api
+      - Authority__InternalUrl=http://identity-api
+      - Authority__ExternalUrl=http://${HOST:-localhost}:5000
+      - Service__Endpoints__CashierUrl=http://cashier-api:80 
+      - Service__Endpoints__ChallengesUrl=http://challenges-api:80
+      - Service__Endpoints__ClansUrl=http://clans-api:80
+      - Service__Endpoints__GamesUrl=http://games-api:80
+      - Service__Endpoints__IdentityUrl=http://identity-api:80
+      - Service__Endpoints__NotificationsUrl=http://notifications-api:80
+      - Service__Endpoints__PaymentUrl=http://payment-api:80
+      - Grpc__Service__Endpoints__CashierUrl=http://cashier-api:81 
+      - Grpc__Service__Endpoints__ChallengesUrl=http://challenges-api:81
+      - Grpc__Service__Endpoints__ClansUrl=http://clans-api:81
+      - Grpc__Service__Endpoints__GamesUrl=http://games-api:81
+      - Grpc__Service__Endpoints__IdentityUrl=http://identity-api:81
+      - Grpc__Service__Endpoints__NotificationsUrl=http://notifications-api:81
+      - Grpc__Service__Endpoints__PaymentUrl=http://payment-api:81
       - Serilog__Sink__Seq=http://seq
     ports:
       - "5303:80"
@@ -174,7 +212,7 @@ services:
 
   web-status:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - HealthChecks__Endpoints__0__Name=Identity API
       - HealthChecks__Endpoints__0__Uri=http://identity-api/health
       - HealthChecks__Endpoints__1__Name=Payment API

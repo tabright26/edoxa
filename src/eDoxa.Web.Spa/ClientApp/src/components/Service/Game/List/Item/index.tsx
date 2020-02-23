@@ -48,7 +48,7 @@ const Item: FunctionComponent<Props> = ({
   const filter = !isAuthenticated ? "grayscale(100%)" : null;
   return (
     <Card
-      className="p-0 col-6"
+      className="p-0 my-0 col-6"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       onClick={() =>

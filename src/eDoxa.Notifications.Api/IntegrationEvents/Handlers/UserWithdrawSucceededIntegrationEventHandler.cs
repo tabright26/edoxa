@@ -1,4 +1,4 @@
-﻿// Filename: UserWithdrawalFailedIntegrationEventHandler.cs
+﻿// Filename: UserWithdrawSucceededIntegrationEventHandler.cs
 // Date Created: 2019-12-26
 // 
 // ================================================
@@ -17,12 +17,12 @@ using Microsoft.Extensions.Options;
 
 namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
 {
-    public sealed class UserWithdrawalFailedIntegrationEventHandler : IIntegrationEventHandler<UserWithdrawalFailedIntegrationEvent>
+    public sealed class UserWithdrawSucceededIntegrationEventHandler : IIntegrationEventHandler<UserWithdrawSucceededIntegrationEvent>
     {
         private readonly IUserService _userService;
         private readonly IOptions<SendgridOptions> _options;
 
-        public UserWithdrawalFailedIntegrationEventHandler(IUserService userService, IOptionsSnapshot<SendgridOptions> options)
+        public UserWithdrawSucceededIntegrationEventHandler(IUserService userService, IOptionsSnapshot<SendgridOptions> options)
         {
             _userService = userService;
             _options = options;
@@ -30,9 +30,9 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
 
         private SendgridOptions Options => _options.Value;
 
-        public async Task HandleAsync(UserWithdrawalFailedIntegrationEvent integrationEvent)
+        public async Task HandleAsync(UserWithdrawSucceededIntegrationEvent integrationEvent)
         {
-            await _userService.SendEmailAsync(integrationEvent.UserId.ParseEntityId<UserId>(), Options.Templates.UserWithdrawalFailed, integrationEvent);
+            await _userService.SendEmailAsync(integrationEvent.UserId.ParseEntityId<UserId>(), Options.Templates.UserWithdrawSucceeded, integrationEvent);
         }
     }
 }

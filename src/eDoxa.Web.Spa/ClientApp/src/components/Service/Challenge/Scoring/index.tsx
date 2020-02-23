@@ -25,7 +25,7 @@ type Props = InnerProps & OutterProps;
 
 const Scoring: FunctionComponent<Props> = ({ scoring, className }) => (
   <Card className={className}>
-    <CardHeader className="text-center bg-gray-900">
+    <CardHeader className="text-center">
       <strong className="text-uppercase">Scoring legend</strong>
     </CardHeader>
     <Table striped bordered hover size="sm" className="m-0">

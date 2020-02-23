@@ -169,7 +169,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
         }
 
         [Fact]
-        public void Withdrawal_ShouldThrowRpcExceptionAccountVerificationNeeded()
+        public void Withdraw_ShouldThrowRpcExceptionAccountVerificationNeeded()
         {
             // Arrange
             var userId = new UserId();
@@ -190,7 +190,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
                     Id = new TransactionId(),
                     Status = EnumTransactionStatus.Pending,
                     Timestamp = DateTime.UtcNow.ToTimestamp(),
-                    Type = EnumTransactionType.Withdrawal
+                    Type = EnumTransactionType.Withdraw
                 }
             };
 
@@ -202,7 +202,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
         }
 
         [Fact]
-        public void Withdrawal_ShouldThrowRpcExceptionWithInternalStatus()
+        public void Withdraw_ShouldThrowRpcExceptionWithInternalStatus()
         {
             // Arrange
             var userId = new UserId();
@@ -223,7 +223,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
                     Id = new TransactionId(),
                     Status = EnumTransactionStatus.Pending,
                     Timestamp = DateTime.UtcNow.ToTimestamp(),
-                    Type = EnumTransactionType.Withdrawal
+                    Type = EnumTransactionType.Withdraw
                 }
             };
 

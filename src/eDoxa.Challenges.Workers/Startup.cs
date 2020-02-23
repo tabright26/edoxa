@@ -1,8 +1,8 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-12-26
+// Date Created: 2020-02-12
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 
@@ -44,25 +44,26 @@ namespace eDoxa.Challenges.Workers
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            AppSettings = configuration.GetAppSettings<ChallengesWorkersAppSettings>();
         }
 
         public IConfiguration Configuration { get; }
 
-        private ChallengesWorkersAppSettings AppSettings { get; }
+        private ChallengesWorkersAppSettings AppSettings => Configuration.Get<ChallengesWorkersAppSettings>();
     }
 
     public partial class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions<ChallengesWorkersAppSettings>().Bind(Configuration).ValidateDataAnnotations();
+
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
                 .AddCustomAzureKeyVault(Configuration)
                 .AddCustomRedis(Configuration)
                 .AddCustomSqlServer(Configuration)
-                .AddCustomUrlGroup(AppSettings.Endpoints.ChallengesUrl, AppServices.ChallengesApi)
-                .AddCustomUrlGroup(AppSettings.Endpoints.GamesUrl, AppServices.GamesApi);
+                .AddCustomUrlGroup(AppSettings.Service.Endpoints.ChallengesUrl, AppServices.ChallengesApi)
+                .AddCustomUrlGroup(AppSettings.Service.Endpoints.GamesUrl, AppServices.GamesApi);
 
             services.AddDbContext<HangfireDbContext>(
                 builder => builder.UseSqlServer(
@@ -92,17 +93,19 @@ namespace eDoxa.Challenges.Workers
 
             services.AddMvc();
 
-            services.AddGrpcClient<GameService.GameServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.GamesUrl}:81"))
+            services.AddGrpcClient<GameService.GameServiceClient>(options => options.Address = new Uri(AppSettings.Grpc.Service.Endpoints.GamesUrl))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddRetryPolicyHandler()
                 .AddCircuitBreakerPolicyHandler();
 
-            services.AddGrpcClient<ChallengeService.ChallengeServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.ChallengesUrl}:81"))
-                .ConfigureChannel(options =>
-                {
-                    options.Credentials = ChannelCredentials.Insecure;
-                    options.MaxReceiveMessageSize = 1000000000;
-                })
+            services.AddGrpcClient<ChallengeService.ChallengeServiceClient>(
+                    options => options.Address = new Uri(AppSettings.Grpc.Service.Endpoints.ChallengesUrl))
+                .ConfigureChannel(
+                    options =>
+                    {
+                        options.Credentials = ChannelCredentials.Insecure;
+                        options.MaxReceiveMessageSize = 1000000000;
+                    })
                 .AddRetryPolicyHandler()
                 .AddCircuitBreakerPolicyHandler();
         }
@@ -110,7 +113,6 @@ namespace eDoxa.Challenges.Workers
         public void ConfigureContainer(ContainerBuilder builder)
         {
         }
-
         public void Configure(IApplicationBuilder application)
         {
             application.UseCustomPathBase();
@@ -120,6 +122,14 @@ namespace eDoxa.Challenges.Workers
             application.UseEndpoints(endpoints => endpoints.MapCustomHealthChecks());
 
             application.UseCustomHangfireDashboard();
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureStaging(IApplicationBuilder application)
+        {
+            this.ConfigureProduction(application);
         }
     }
 
@@ -137,14 +147,6 @@ namespace eDoxa.Challenges.Workers
                         service => service.SynchronizeChallengesAsync(EnumGame.LeagueOfLegends),
                         Cron.Hourly);
                 });
-        }
-    }
-
-    public partial class Startup
-    {
-        public void ConfigureStaging(IApplicationBuilder application)
-        {
-            this.ConfigureProduction(application);
         }
     }
 }

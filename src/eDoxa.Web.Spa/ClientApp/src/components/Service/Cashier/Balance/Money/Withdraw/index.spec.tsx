@@ -1,7 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import Withdrawal from ".";
+import Withdraw from ".";
 import store from "store";
 
 it("renders without crashing", () => {
@@ -9,7 +9,7 @@ it("renders without crashing", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Withdrawal />
+        <Withdraw />
       </Provider>
     )
     .toJSON();

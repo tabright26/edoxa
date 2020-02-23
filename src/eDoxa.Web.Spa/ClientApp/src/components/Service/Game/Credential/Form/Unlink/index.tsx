@@ -35,7 +35,7 @@ const Unlink: FunctionComponent<Props> = ({
       You can unlink your League of Legends credentials one month after linking
       your account.
     </ModalBody>
-    <ModalFooter className="bg-gray-800">
+    <ModalFooter>
       <Button type="submit" size="sm" color="primary" className="mr-2">
         Yes
       </Button>

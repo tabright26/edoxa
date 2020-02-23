@@ -10,7 +10,7 @@ import { withdrawTransaction } from "store/actions/cashier";
 import {
   CurrencyType,
   TransactionBundleId,
-  TRANSACTION_TYPE_WITHDRAWAL
+  TRANSACTION_TYPE_WITHDRAW
 } from "types/cashier";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import TransactionField from "components/Service/Cashier/Transaction/Field";
@@ -44,7 +44,7 @@ const Withdraw: FunctionComponent<Props> = ({
       <TransactionField.Bundle
         name="bundleId"
         currencyType={currencyType}
-        transactionType={TRANSACTION_TYPE_WITHDRAWAL}
+        transactionType={TRANSACTION_TYPE_WITHDRAW}
       />
       <FormGroup>
         <dl className="row mb-0">
@@ -62,7 +62,7 @@ const Withdraw: FunctionComponent<Props> = ({
         </dl>
       </FormGroup>
     </ModalBody>
-    <ModalFooter className="bg-gray-800">
+    <ModalFooter>
       <Button.Submit loading={submitting} className="mr-2">
         Confirm
       </Button.Submit>

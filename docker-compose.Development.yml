@@ -16,9 +16,11 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000
-      - WebSpaClientUrl=http://${HOST:-localhost}:3000
-      - Endpoints__IdentityUrl=http://identity-api
+      - Authority__InternalUrl=http://identity-api
+      - Authority__ExternalUrl=http://${HOST:-localhost}:5000
+      - Gateway__Web__Endpoints__CashierUrl=http://cashier-web-gateway
+      - Gateway__Web__Endpoints__ChallengesUrl=http://challenges-web-gateway
+      - Client__Web__Endpoints__SpaUrl=http://${HOST:-localhost}:3000
       - Serilog__Sink__Seq=http://seq
     ports:
       - "5300:80"

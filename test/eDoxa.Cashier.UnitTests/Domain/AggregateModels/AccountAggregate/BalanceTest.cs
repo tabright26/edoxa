@@ -31,7 +31,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             yield return MarkAsFailed(new TransactionBuilder(TransactionType.Deposit, Money.FiveHundred).Build());
             yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Charge, Money.Fifty).Build());
             yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Payout, Money.OneHundred).Build());
-            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Withdrawal, Money.Fifty).Build());
+            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Withdraw, Money.Fifty).Build());
             yield return MarkAsFailed(new TransactionBuilder(TransactionType.Charge, Token.FiveThousand).Build());
             yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Deposit, Token.OneThousand).Build());
             yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Payout, Token.TwoThousandFiveHundred).Build());

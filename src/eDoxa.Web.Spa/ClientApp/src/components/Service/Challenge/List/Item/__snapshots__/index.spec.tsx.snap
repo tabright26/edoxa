@@ -21,7 +21,7 @@ exports[`renders without crashing 1`] = `
         className="col-md-3"
       >
         <div
-          className="h-100 bg-gray-900 card"
+          className="my-0 h-100 bg-gray-900 null card"
         >
           <img
             className="p-4 m-auto card-img"

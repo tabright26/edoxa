@@ -29,8 +29,8 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Extensions
             subscriber.Subscribe<UserDepositSucceededIntegrationEvent, UserDepositSucceededIntegrationEventHandler>();
             subscriber.Subscribe<UserGameCredentialAddedIntegrationEvent, UserGameCredentialAddedIntegrationEventHandler>();
             subscriber.Subscribe<UserGameCredentialRemovedIntegrationEvent, UserGameCredentialRemovedIntegrationEventHandler>();
-            subscriber.Subscribe<UserWithdrawalFailedIntegrationEvent, UserWithdrawalFailedIntegrationEventHandler>();
-            subscriber.Subscribe<UserWithdrawalSucceededIntegrationEvent, UserWithdrawalSucceededIntegrationEventHandler>();
+            subscriber.Subscribe<UserWithdrawFailedIntegrationEvent, UserWithdrawFailedIntegrationEventHandler>();
+            subscriber.Subscribe<UserWithdrawSucceededIntegrationEvent, UserWithdrawSucceededIntegrationEventHandler>();
             subscriber.Subscribe<UserEmailConfirmationTokenGeneratedIntegrationEvent, UserEmailConfirmationTokenGeneratedIntegrationEventHandler>();
             subscriber.Subscribe<UserPasswordResetTokenGeneratedIntegrationEvent, UserPasswordResetTokenGeneratedIntegrationEventHandler>();
             subscriber.Subscribe<ChallengeParticipantRegisteredIntegrationEvent, ChallengeParticipantRegisteredIntegrationEventHandler>();

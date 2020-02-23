@@ -1,4 +1,4 @@
-﻿// Filename: UserWithdrawalSucceededIntegrationEventHandlerTest.cs
+﻿// Filename: UserWithdrawSucceededIntegrationEventHandlerTest.cs
 // Date Created: 2019-12-26
 // 
 // ================================================
@@ -29,9 +29,9 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class UserWithdrawalSucceededIntegrationEventHandlerTest : UnitTest
+    public sealed class UserWithdrawSucceededIntegrationEventHandlerTest : UnitTest
     {
-        public UserWithdrawalSucceededIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+        public UserWithdrawSucceededIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
             testData,
             testMapper,
             testValidator)
@@ -39,13 +39,13 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
         }
 
         [Fact]
-        public async Task HandleAsync_WhenUserWithdrawalSucceededIntegrationEventIsValid_ShouldBeCompletedTask()
+        public async Task HandleAsync_WhenUserWithdrawSucceededIntegrationEventIsValid_ShouldBeCompletedTask()
         {
             // Arrange
             var userId = new UserId();
             var account = new Account(userId, new List<ITransaction>());
 
-            var mockLogger = new MockLogger<UserWithdrawalSucceededIntegrationEventHandler>();
+            var mockLogger = new MockLogger<UserWithdrawSucceededIntegrationEventHandler>();
 
             TestMock.AccountService.Setup(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
@@ -60,9 +60,9 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                 .ReturnsAsync(new DomainValidationResult<ITransaction>())
                 .Verifiable();
 
-            var handler = new UserWithdrawalSucceededIntegrationEventHandler(TestMock.AccountService.Object, mockLogger.Object);
+            var handler = new UserWithdrawSucceededIntegrationEventHandler(TestMock.AccountService.Object, mockLogger.Object);
 
-            var integrationEvent = new UserWithdrawalSucceededIntegrationEvent
+            var integrationEvent = new UserWithdrawSucceededIntegrationEvent
             {
                 UserId = userId,
                 Transaction = new TransactionDto
@@ -76,7 +76,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                         Amount = Money.Fifty.Amount
                     },
                     Timestamp = Timestamp.FromDateTime(DateTime.UtcNow),
-                    Type = EnumTransactionType.Withdrawal
+                    Type = EnumTransactionType.Withdraw
                 }
             };
 

@@ -46,8 +46,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using static eDoxa.Seedwork.Application.ApiResources;
-
 namespace eDoxa.Challenges.Api
 {
     public partial class Startup
@@ -66,25 +64,24 @@ namespace eDoxa.Challenges.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            AppSettings = configuration.GetAppSettings<ChallengesAppSettings>(ChallengesApi);
         }
 
-        private ChallengesAppSettings AppSettings { get; }
-
         public IConfiguration Configuration { get; }
+
+        private ChallengesAppSettings AppSettings => Configuration.Get<ChallengesAppSettings>();
     }
 
     public partial class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAppSettings<ChallengesAppSettings>(Configuration);
+            services.AddOptions<ChallengesAppSettings>().Bind(Configuration).ValidateDataAnnotations();
 
             services.Configure<ChallengesApiOptions>(Configuration.GetSection("Api"));
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
-                .AddCustomIdentityServer(AppSettings)
+                .AddCustomIdentityServer(AppSettings.Authority)
                 .AddCustomAzureKeyVault(Configuration)
                 .AddCustomSqlServer(Configuration)
                 .AddCustomAzureServiceBusTopic(Configuration);
@@ -109,8 +106,8 @@ namespace eDoxa.Challenges.Api
                 .AddIdentityServerAuthentication(
                     options =>
                     {
-                        options.ApiName = AppSettings.ApiResource.Name;
-                        options.Authority = AppSettings.Endpoints.IdentityUrl;
+                        options.ApiName = ApiResources.ChallengesApi.Name;
+                        options.Authority = AppSettings.Authority.InternalUrl;
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
@@ -155,14 +152,14 @@ namespace eDoxa.Challenges.Api
         {
             this.ConfigureServices(services);
 
-            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, ApiResources.ChallengesApi, AppSettings.Authority);
         }
 
         public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber)
         {
             this.Configure(application, subscriber);
 
-            application.UseSwagger(AppSettings);
+            application.UseSwagger(ApiResources.ChallengesApi);
         }
     }
 
@@ -170,7 +167,7 @@ namespace eDoxa.Challenges.Api
     {
         public void ConfigureTestServices(IServiceCollection services)
         {
-            services.AddAppSettings<ChallengesAppSettings>(Configuration);
+            services.Configure<ChallengesAppSettings>(Configuration);
 
             services.Configure<ChallengesApiOptions>(Configuration.GetSection("Api"));
 

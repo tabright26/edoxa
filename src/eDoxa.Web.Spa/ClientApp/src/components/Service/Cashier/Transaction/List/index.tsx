@@ -31,7 +31,7 @@ const List: FunctionComponent<Props> = ({ transactions }) => (
           </td>
           <td className="my-auto">{transaction.type}</td>
           <td className="my-auto">
-            <Badge className="bg-gray-900 w-100">
+            <Badge color="dark" className="bg-gray-900 w-100">
               <Format.Currency
                 currency={transaction.currency}
                 alignment="justify"

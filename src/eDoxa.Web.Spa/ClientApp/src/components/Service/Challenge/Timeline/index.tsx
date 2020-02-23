@@ -25,7 +25,7 @@ type Props = InnerProps & OutterProps;
 
 const Timeline: FunctionComponent<Props> = ({ state, timeline }) => (
   <>
-    <span className="text-uppercase btn btn-block text-light bg-dark">
+    <span className="text-uppercase btn btn-block text-light bg-gray-900">
       Timeline
     </span>
     <Item

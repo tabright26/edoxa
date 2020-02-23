@@ -3,8 +3,8 @@ import { Card, CardHeader, CardBody } from "reactstrap";
 import Register from "components/Service/Challenge/Register";
 
 const Rules: FunctionComponent = () => (
-  <Card className="my-4">
-    <CardHeader className="bg-gray-900 text-center">
+  <Card>
+    <CardHeader className="text-center">
       <strong className="text-uppercase">Rules</strong>
     </CardHeader>
     <CardBody className="text-justify">
