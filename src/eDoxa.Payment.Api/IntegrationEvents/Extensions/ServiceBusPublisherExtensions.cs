@@ -71,13 +71,13 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Extensions
             await publisher.PublishAsync(integrationEvent);
         }
 
-        public static async Task PublishUserWithdrawalSucceededIntegrationEventAsync(
+        public static async Task PublishUserWithdrawSucceededIntegrationEventAsync(
             this IServiceBusPublisher publisher,
             UserId userId,
             TransactionDto transaction
         )
         {
-            var integrationEvent = new UserWithdrawalSucceededIntegrationEvent
+            var integrationEvent = new UserWithdrawSucceededIntegrationEvent
             {
                 UserId = userId,
                 Transaction = transaction
@@ -86,13 +86,13 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Extensions
             await publisher.PublishAsync(integrationEvent);
         }
 
-        public static async Task PublishUserWithdrawalFailedIntegrationEventAsync(
+        public static async Task PublishUserWithdrawFailedIntegrationEventAsync(
             this IServiceBusPublisher publisher,
             UserId userId,
             TransactionDto transaction
         )
         {
-            var integrationEvent = new UserWithdrawalFailedIntegrationEvent
+            var integrationEvent = new UserWithdrawFailedIntegrationEvent
             {
                 UserId = userId,
                 Transaction = transaction

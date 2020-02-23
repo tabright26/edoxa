@@ -12,7 +12,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
     public sealed class MoneyAccountDecorator : AccountDecorator, IMoneyAccount
     {
         public static readonly TimeSpan DepositInterval = TimeSpan.FromDays(1);
-        public static readonly TimeSpan WithdrawalInterval = TimeSpan.FromDays(1);
+        public static readonly TimeSpan WithdrawInterval = TimeSpan.FromDays(1);
 
         public MoneyAccountDecorator(IAccount account) : base(account)
         {
@@ -32,7 +32,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
         public DateTime? LastWithdraw =>
             Transactions.Where(
                     transaction => transaction.Currency.Type == CurrencyType.Money &&
-                                   transaction.Type == TransactionType.Withdrawal &&
+                                   transaction.Type == TransactionType.Withdraw &&
                                    transaction.Status == TransactionStatus.Succeeded)
                 .OrderByDescending(transaction => transaction.Timestamp)
                 .FirstOrDefault()
@@ -92,14 +92,14 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return transaction;
         }
 
-        public ITransaction Withdrawal(Money amount)
+        public ITransaction Withdraw(Money amount)
         {
             if (!this.CanWithdraw(amount))
             {
                 throw new InvalidOperationException();
             }
 
-            var builder = new TransactionBuilder(TransactionType.Withdrawal, amount);
+            var builder = new TransactionBuilder(TransactionType.Withdraw, amount);
 
             var transaction = builder.Build();
 
@@ -113,9 +113,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return !(LastDeposit.HasValue && LastDeposit.Value.Add(DepositInterval) >= DateTime.UtcNow);
         }
 
-        public bool IsWithdrawalAvailable()
+        public bool IsWithdrawAvailable()
         {
-            return !(LastWithdraw.HasValue && LastWithdraw.Value.Add(WithdrawalInterval) >= DateTime.UtcNow);
+            return !(LastWithdraw.HasValue && LastWithdraw.Value.Add(WithdrawInterval) >= DateTime.UtcNow);
         }
 
         public bool HaveSufficientMoney(Money money)
@@ -135,7 +135,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         private bool CanWithdraw(Money money)
         {
-            return this.HaveSufficientMoney(money) && this.IsWithdrawalAvailable();
+            return this.HaveSufficientMoney(money) && this.IsWithdrawAvailable();
         }
     }
 }

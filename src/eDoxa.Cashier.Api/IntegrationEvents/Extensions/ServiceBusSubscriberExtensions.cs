@@ -20,8 +20,8 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
             subscriber.Subscribe<UserStripePaymentIntentSucceededIntegrationEvent, UserStripePaymentIntentSucceededIntegrationEventHandler>();
             subscriber.Subscribe<UserStripePaymentIntentPaymentFailedIntegrationEvent, UserStripePaymentIntentPaymentFailedIntegrationEventHandler>();
             subscriber.Subscribe<UserStripePaymentIntentCanceledIntegrationEvent, UserStripePaymentIntentCanceledIntegrationEventHandler>();
-            subscriber.Subscribe<UserWithdrawalSucceededIntegrationEvent, UserWithdrawalSucceededIntegrationEventHandler>();
-            subscriber.Subscribe<UserWithdrawalFailedIntegrationEvent, UserWithdrawalFailedIntegrationEventHandler>();
+            subscriber.Subscribe<UserWithdrawSucceededIntegrationEvent, UserWithdrawSucceededIntegrationEventHandler>();
+            subscriber.Subscribe<UserWithdrawFailedIntegrationEvent, UserWithdrawFailedIntegrationEventHandler>();
             subscriber.Subscribe<ChallengeSynchronizedIntegrationEvent, ChallengeSynchronizedIntegrationEventHandler>();
             subscriber.Subscribe<ChallengeParticipantRegisteredIntegrationEvent, ChallengeParticipantRegisteredIntegrationEventHandler>();
             subscriber.Subscribe<RegisterChallengeParticipantFailedIntegrationEvent, RegisterChallengeParticipantFailedIntegrationEventHandler>();

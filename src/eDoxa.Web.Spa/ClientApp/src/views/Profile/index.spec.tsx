@@ -68,7 +68,7 @@ it("renders without crashing", () => {
   //         amount: 100
   //       },
   //       description: "test",
-  //       type: TRANSACTION_TYPE_WITHDRAWAL,
+  //       type: TRANSACTION_TYPE_WITHDRAW,
   //       status: TRANSACTION_STATUS_SUCCEEDED,
   //       id: "3"
   //     }

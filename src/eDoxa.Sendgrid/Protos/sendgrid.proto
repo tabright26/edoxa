@@ -33,7 +33,7 @@ message SendgridOptions {
     string userDepositFailed = 13;
     string userDepositSucceeded = 14;
     string userPasswordResetTokenGenerated = 15;
-    string userWithdrawalFailed = 16;
-    string userWithdrawalSucceeded = 17;
+    string userWithdrawFailed = 16;
+    string userWithdrawSucceeded = 17;
   }
 }

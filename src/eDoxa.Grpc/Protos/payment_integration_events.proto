@@ -26,12 +26,12 @@ message UserStripePaymentIntentCanceledIntegrationEvent {
   string transactionId = 2;
 }
 
-message UserWithdrawalSucceededIntegrationEvent {
+message UserWithdrawSucceededIntegrationEvent {
   string userId = 1;
   cashier.TransactionDto transaction = 2;
 }
 
-message UserWithdrawalFailedIntegrationEvent {
+message UserWithdrawFailedIntegrationEvent {
   string userId = 1;
   cashier.TransactionDto transaction = 2;
 }

@@ -1,4 +1,4 @@
-﻿// Filename: UserWithdrawalFailedIntegrationEventHandlerTest.cs
+﻿// Filename: UserWithdrawSucceededIntegrationEventHandlerTest.cs
 // Date Created: 2019-12-26
 // 
 // ================================================
@@ -24,23 +24,23 @@ using Xunit;
 
 namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class UserWithdrawalFailedIntegrationEventHandlerTest : UnitTest
+    public sealed class UserWithdrawSucceededIntegrationEventHandlerTest : UnitTest
     {
-        public UserWithdrawalFailedIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
+        public UserWithdrawSucceededIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
         {
         }
 
         [Fact]
-        public async Task HandleAsync_WhenUserWithdrawalFailedIntegrationEventIsValid_ShouldBeCompletedTask()
+        public async Task HandleAsync_WhenUserWithdrawSucceededIntegrationEventIsValid_ShouldBeCompletedTask()
         {
             // Arrange
             TestMock.UserService.Setup(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var handler = new UserWithdrawalFailedIntegrationEventHandler(TestMock.UserService.Object, TestMock.SendgridOptions.Object);
+            var handler = new UserWithdrawSucceededIntegrationEventHandler(TestMock.UserService.Object, TestMock.SendgridOptions.Object);
 
-            var integrationEvent = new UserWithdrawalFailedIntegrationEvent
+            var integrationEvent = new UserWithdrawSucceededIntegrationEvent
             {
                 Transaction = new TransactionDto
                 {
@@ -51,9 +51,9 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
                     },
                     Description = "test",
                     Id = new TransactionId(),
-                    Status = EnumTransactionStatus.Failed,
+                    Status = EnumTransactionStatus.Succeeded,
                     Timestamp = DateTime.UtcNow.ToTimestamp(),
-                    Type = EnumTransactionType.Withdrawal
+                    Type = EnumTransactionType.Withdraw
                 },
                 UserId = new UserId()
             };

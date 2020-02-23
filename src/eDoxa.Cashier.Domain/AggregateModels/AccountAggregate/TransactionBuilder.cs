@@ -107,7 +107,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                     return new TransactionDescription($"{money}");
                 }
 
-                if (TransactionType.Withdrawal == type)
+                if (TransactionType.Withdraw == type)
                 {
                     return new TransactionDescription($"{money}");
                 }
@@ -158,7 +158,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                     return money;
                 }
 
-                if (TransactionType.Charge == type || TransactionType.Withdrawal == type)
+                if (TransactionType.Charge == type || TransactionType.Withdraw == type)
                 {
                     return -money;
                 }

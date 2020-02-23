@@ -30,7 +30,7 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
         }
 
         [Fact]
-        public async Task FetchCustomerAsync_ShouldBeOfTypeOkObjectResult()
+        public async Task FindCustomerAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
             TestMock.StripeCustomerService.Setup(customerService => customerService.FindCustomerAsync(It.IsAny<string>()))
@@ -53,7 +53,7 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
             };
 
             // Act
-            var result = await customerController.FetchCustomerAsync();
+            var result = await customerController.FindCustomerAsync();
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

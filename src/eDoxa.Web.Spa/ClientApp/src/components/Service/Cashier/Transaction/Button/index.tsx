@@ -5,7 +5,7 @@ import {
   CurrencyType,
   TransactionType,
   TRANSACTION_TYPE_DEPOSIT,
-  TRANSACTION_TYPE_WITHDRAWAL
+  TRANSACTION_TYPE_WITHDRAW
 } from "types/cashier";
 import { connect, MapDispatchToProps } from "react-redux";
 import { show } from "redux-modal";
@@ -63,7 +63,7 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
           })
         );
       }
-      if (ownProps.transactionType === TRANSACTION_TYPE_WITHDRAWAL) {
+      if (ownProps.transactionType === TRANSACTION_TYPE_WITHDRAW) {
         dispatch(
           show(WITHDRAW_TRANSACTION_MODAL, {
             currencyType: ownProps.currencyType,

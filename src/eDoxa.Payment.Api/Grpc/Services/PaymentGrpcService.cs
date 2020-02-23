@@ -137,7 +137,7 @@ namespace eDoxa.Payment.Api.Grpc.Services
                     -request.Transaction.Currency.Amount.ToDecimal(),
                     request.Transaction.Description);
 
-                await _serviceBusPublisher.PublishUserWithdrawalSucceededIntegrationEventAsync(userId, request.Transaction);
+                await _serviceBusPublisher.PublishUserWithdrawSucceededIntegrationEventAsync(userId, request.Transaction);
 
                 var response = new CreatePaypalPayoutResponse();
 
@@ -147,9 +147,9 @@ namespace eDoxa.Payment.Api.Grpc.Services
             }
             catch (Exception exception)
             {
-                await _serviceBusPublisher.PublishUserWithdrawalFailedIntegrationEventAsync(userId, request.Transaction);
+                await _serviceBusPublisher.PublishUserWithdrawFailedIntegrationEventAsync(userId, request.Transaction);
 
-                var message = $"Failed to process withdrawal for the user '{email}'. (userId=\"{userId}\")";
+                var message = $"Failed to process withdraw for the user '{email}'. (userId=\"{userId}\")";
 
                 throw this.RpcExceptionWithInternalStatus(exception, message);
             }
