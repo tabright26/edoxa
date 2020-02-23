@@ -17,6 +17,7 @@ using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Paypal.Extensions;
 using eDoxa.Paypal.Services.Abstractions;
 using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Application.Authorization.Extensions;
 using eDoxa.Seedwork.Application.Autofac.Extensions;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.Cors.Extensions;
@@ -99,6 +100,8 @@ namespace eDoxa.Payment.Api
                 });
 
             services.AddCustomControllers<Startup>();
+
+            services.AddCustomAuthorization();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -183,6 +186,8 @@ namespace eDoxa.Payment.Api
                 });
 
             services.AddCustomControllers<Startup>();
+
+            services.AddCustomAuthorization();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 

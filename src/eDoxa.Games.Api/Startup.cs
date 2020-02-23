@@ -18,6 +18,7 @@ using eDoxa.Games.Infrastructure;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Grpc.Protos.Games.Options;
 using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Application.Authorization.Extensions;
 using eDoxa.Seedwork.Application.Autofac.Extensions;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.Cors.Extensions;
@@ -99,6 +100,8 @@ namespace eDoxa.Games.Api
             services.AddCustomProblemDetails();
 
             services.AddCustomControllers<Startup>();
+
+            services.AddCustomAuthorization();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -184,6 +187,8 @@ namespace eDoxa.Games.Api
             services.AddCustomProblemDetails();
 
             services.AddCustomControllers<Startup>();
+
+            services.AddCustomAuthorization();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 

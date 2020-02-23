@@ -16,6 +16,7 @@ using eDoxa.Clans.Api.Infrastructure;
 using eDoxa.Clans.Api.Infrastructure.Data;
 using eDoxa.Clans.Infrastructure;
 using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Application.Authorization.Extensions;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.Cors.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -93,6 +94,8 @@ namespace eDoxa.Clans.Api
             services.AddCustomProblemDetails();
 
             services.AddCustomControllers<Startup>();
+
+            services.AddCustomAuthorization();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -176,6 +179,8 @@ namespace eDoxa.Clans.Api
             services.AddCustomProblemDetails();
 
             services.AddCustomControllers<Startup>();
+
+            services.AddCustomAuthorization();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 

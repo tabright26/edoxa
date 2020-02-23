@@ -19,6 +19,7 @@ using eDoxa.Identity.Api.Infrastructure.Data;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Application.Authorization.Extensions;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.Cors.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -124,6 +125,8 @@ namespace eDoxa.Identity.Api
 
             services.AddCustomControllers<Startup>();
 
+            services.AddCustomAuthorization();
+
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
             services.AddCustomAutoMapper(typeof(Startup), typeof(IdentityDbContext));
@@ -224,6 +227,8 @@ namespace eDoxa.Identity.Api
             services.AddCustomProblemDetails();
 
             services.AddCustomControllers<Startup>();
+
+            services.AddCustomAuthorization();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
