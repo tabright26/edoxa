@@ -41,8 +41,4 @@
     <None Include="..\eDoxa.Storage\Files\Users.csv" Link="Setup\Users.csv" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Infrastructure\Data\Migrations\" />
-  </ItemGroup>
-
 </Project>
