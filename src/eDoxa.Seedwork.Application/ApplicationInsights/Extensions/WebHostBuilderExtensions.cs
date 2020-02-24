@@ -4,6 +4,9 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Seedwork.Application.ApplicationInsights.Initializers;
+
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,6 +21,7 @@ namespace eDoxa.Seedwork.Application.ApplicationInsights.Extensions
                 {
                     services.AddApplicationInsightsTelemetry();
                     services.AddApplicationInsightsKubernetesEnricher();
+                    services.AddSingleton<ITelemetryInitializer, RequestBodyInitializer>();
                 });
         }
     }
