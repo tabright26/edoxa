@@ -51,7 +51,7 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Extensions
         {
             var integrationEvent = new ChallengeParticipantRegisteredIntegrationEvent
             {
-                Participant = new ParticipantDto
+                Participant = new ChallengeParticipantDto
                 {
                     Id = participantId,
                     ChallengeId = challengeId,

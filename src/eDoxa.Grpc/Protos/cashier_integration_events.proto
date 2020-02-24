@@ -6,10 +6,6 @@ import "cashier_dtos.proto";
 
 package edoxa.services.cashier;
 
-message CreateChallengePayoutFailedIntegrationEvent {
-  string challengeId = 1;
-}
-
 message ChallengeClosedIntegrationEvent {
   string challengeId = 1;
   map<string, CurrencyDto> payoutPrizes = 2;

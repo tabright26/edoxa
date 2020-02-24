@@ -21,22 +21,19 @@ using eDoxa.Seedwork.Domain.Extensions;
 
 using Google.Protobuf.WellKnownTypes;
 
-using static eDoxa.Grpc.Protos.Challenges.Dtos.ChallengeDto.Types;
-using static eDoxa.Grpc.Protos.Challenges.Dtos.MatchDto.Types;
-
 namespace eDoxa.Challenges.Api.Application.Profiles
 {
     internal sealed class ChallengeProfile : Profile
     {
         public ChallengeProfile()
         {
-            this.CreateMap<Stat, StatDto>()
+            this.CreateMap<Stat, ChallengeMatchStatDto>()
                 .ForMember(stat => stat.Name, config => config.MapFrom<string>(stat => stat.Name))
                 .ForMember(stat => stat.Value, config => config.MapFrom<double>(stat => stat.Value))
                 .ForMember(stat => stat.Weighting, config => config.MapFrom<float>(stat => stat.Weighting))
                 .ForMember(stat => stat.Score, config => config.MapFrom<DecimalValue>(stat => stat.Score.ToDecimal()));
 
-            this.CreateMap<IMatch, MatchDto>()
+            this.CreateMap<IMatch, ChallengeMatchDto>()
                 .ForMember(match => match.Id, config => config.MapFrom(match => match.Id.ToString()))
                 .ForMember(match => match.ChallengeId, config => config.Ignore())
                 .ForMember(match => match.GameUuid, config => config.MapFrom(match => match.GameUuid.ToString()))
@@ -48,7 +45,7 @@ namespace eDoxa.Challenges.Api.Application.Profiles
                 .ForMember(match => match.ParticipantId, config => config.Ignore())
                 .ForMember(match => match.Stats, config => config.MapFrom(match => match.Stats));
 
-            this.CreateMap<Participant, ParticipantDto>()
+            this.CreateMap<Participant, ChallengeParticipantDto>()
                 .ForMember(participant => participant.Id, config => config.MapFrom(participant => participant.Id.ToString()))
                 .ForMember(participant => participant.UserId, config => config.MapFrom(participant => participant.UserId.ToString()))
                 .ForMember(participant => participant.Score, config => config.Ignore())
@@ -59,7 +56,7 @@ namespace eDoxa.Challenges.Api.Application.Profiles
                     config => config.MapFrom(participant => participant.SynchronizedAt.ToTimestampUtcOrNull()))
                 .ForMember(participant => participant.Matches, config => config.MapFrom(participant => participant.Matches));
 
-            this.CreateMap<ChallengeTimeline, TimelineDto>()
+            this.CreateMap<ChallengeTimeline, ChallengeTimelineDto>()
                 .ForMember(timeline => timeline.CreatedAt, config => config.MapFrom(timeline => timeline.CreatedAt.ToTimestampUtc()))
                 .ForMember(timeline => timeline.StartedAt, config => config.MapFrom(timeline => timeline.StartedAt.ToTimestampUtcOrNull()))
                 .ForMember(timeline => timeline.EndedAt, config => config.MapFrom(timeline => timeline.EndedAt.ToTimestampUtcOrNull()))
@@ -91,7 +88,7 @@ namespace eDoxa.Challenges.Api.Application.Profiles
                 BestOf = challenge.BestOf,
                 Entries = challenge.Entries,
                 SynchronizedAt = challenge.SynchronizedAt.ToTimestampUtcOrNull(),
-                Timeline = new TimelineDto
+                Timeline = new ChallengeTimelineDto
                 {
                     CreatedAt = challenge.Timeline.CreatedAt.ToTimestampUtc(),
                     StartedAt = challenge.Timeline.StartedAt.ToTimestampUtcOrNull(),
@@ -110,9 +107,9 @@ namespace eDoxa.Challenges.Api.Application.Profiles
             };
         }
 
-        public static ParticipantDto Map(IChallenge challenge, Participant participant)
+        public static ChallengeParticipantDto Map(IChallenge challenge, Participant participant)
         {
-            return new ParticipantDto
+            return new ChallengeParticipantDto
             {
                 Id = participant.Id,
                 UserId = participant.UserId,
@@ -127,9 +124,9 @@ namespace eDoxa.Challenges.Api.Application.Profiles
             };
         }
 
-        private static MatchDto Map(IChallenge challenge, Participant participant, IMatch match)
+        private static ChallengeMatchDto Map(IChallenge challenge, Participant participant, IMatch match)
         {
-            return new MatchDto
+            return new ChallengeMatchDto
             {
                 Id = match.Id,
                 ChallengeId = challenge.Id,
@@ -147,9 +144,9 @@ namespace eDoxa.Challenges.Api.Application.Profiles
             };
         }
 
-        private static StatDto Map(Stat stat)
+        private static ChallengeMatchStatDto Map(Stat stat)
         {
-            return new StatDto
+            return new ChallengeMatchStatDto
             {
                 Name = stat.Name,
                 Value = stat.Value,

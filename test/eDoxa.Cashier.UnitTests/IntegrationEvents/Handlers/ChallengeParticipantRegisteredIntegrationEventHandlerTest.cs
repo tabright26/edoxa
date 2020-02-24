@@ -61,7 +61,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             var integrationEvent = new ChallengeParticipantRegisteredIntegrationEvent
             {
-                Participant = new ParticipantDto
+                Participant = new ChallengeParticipantDto
                 {
                     ChallengeId = new ChallengeId(),
                     GamePlayerId = new PlayerId(),
@@ -71,13 +71,13 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                     Id = participantId,
                     Matches =
                     {
-                        new MatchDto
+                        new ChallengeMatchDto
                         {
                             Id = new MatchId(),
                             ParticipantId = participantId,
                             Score = DecimalValue.FromDecimal(10)
                         },
-                        new MatchDto
+                        new ChallengeMatchDto
                         {
                             Id = new MatchId(),
                             ParticipantId = participantId,

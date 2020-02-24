@@ -37,7 +37,7 @@ namespace eDoxa.Challenges.Api.Controllers
 
         [HttpGet("{participantId}")]
         [SwaggerOperation("Find a participant.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantDto))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeParticipantDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> FindParticipantAsync(ParticipantId participantId)
         {
@@ -48,7 +48,7 @@ namespace eDoxa.Challenges.Api.Controllers
                 return this.NotFound("Participant not found.");
             }
 
-            return this.Ok(_mapper.Map<ParticipantDto>(participant));
+            return this.Ok(_mapper.Map<ChallengeParticipantDto>(participant));
         }
     }
 }

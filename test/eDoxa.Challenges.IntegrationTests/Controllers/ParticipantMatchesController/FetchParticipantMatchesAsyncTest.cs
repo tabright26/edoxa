@@ -69,7 +69,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers.ParticipantMatchesContro
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var matchResponses = await response.Content.ReadAsJsonAsync<MatchDto[]>();
+            var matchResponses = await response.Content.ReadAsJsonAsync<ChallengeMatchDto[]>();
             matchResponses.Should().HaveCount(participant.Matches.Count);
         }
     }

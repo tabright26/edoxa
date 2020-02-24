@@ -34,6 +34,10 @@ message CreateChallengeRequest {
   games.ChallengeScoringDto scoring = 7;
 }
 
+message DeleteChallengeRequest {
+  string challengeId = 1;
+}
+
 message SynchronizeChallengeRequest {
   string challengeId = 1;
 }

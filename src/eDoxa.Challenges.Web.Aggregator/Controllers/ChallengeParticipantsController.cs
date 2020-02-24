@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -64,7 +63,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> RegisterChallengeParticipantAsync(string challengeId)
         {
-            var participantId = Guid.NewGuid().ToString();
+            var participantId = new ParticipantId();
 
             var findChallengeRequest = new FindChallengeRequest
             {

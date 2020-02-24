@@ -37,7 +37,7 @@ namespace eDoxa.Challenges.Api.Controllers
 
         [HttpGet("{matchId}")]
         [SwaggerOperation("Find a match.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MatchDto))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeMatchDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> FindMatchAsync(MatchId matchId)
         {
@@ -48,7 +48,7 @@ namespace eDoxa.Challenges.Api.Controllers
                 return this.NotFound("Match not found.");
             }
 
-            return this.Ok(_mapper.Map<MatchDto>(match));
+            return this.Ok(_mapper.Map<ChallengeMatchDto>(match));
         }
     }
 }

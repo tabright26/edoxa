@@ -81,16 +81,18 @@ namespace eDoxa.Challenges.Api.Grpc.Services
 
         public override async Task<FindChallengeResponse> FindChallenge(FindChallengeRequest request, ServerCallContext context)
         {
-            var challenge = await _challengeQuery.FindChallengeAsync(ChallengeId.Parse(request.ChallengeId));
+            var challengeId = request.ChallengeId.ParseEntityId<ChallengeId>();
 
-            if (challenge == null)
+            if (!await _challengeService.ChallengeExistsAsync(challengeId))
             {
                 throw context.NotFoundRpcException("Challenge not found.");
             }
 
+            var challenge = await _challengeQuery.FindChallengeAsync(challengeId);
+
             var response = new FindChallengeResponse
             {
-                Challenge = ChallengeProfile.Map(challenge)
+                Challenge = ChallengeProfile.Map(challenge!)
             };
 
             return context.Ok(response);
@@ -112,6 +114,32 @@ namespace eDoxa.Challenges.Api.Grpc.Services
             if (result.IsValid)
             {
                 var response = new CreateChallengeResponse
+                {
+                    Challenge = ChallengeProfile.Map(result.Response)
+                };
+
+                return context.Ok(response);
+            }
+
+            throw context.FailedPreconditionRpcException(result);
+        }
+
+        public override async Task<DeleteChallengeResponse> DeleteChallenge(DeleteChallengeRequest request, ServerCallContext context)
+        {
+            var challengeId = request.ChallengeId.ParseEntityId<ChallengeId>();
+
+            if (!await _challengeService.ChallengeExistsAsync(challengeId))
+            {
+                throw context.NotFoundRpcException("Challenge not found.");
+            }
+
+            var challenge = await _challengeService.FindChallengeAsync(challengeId);
+            
+            var result = await _challengeService.DeleteChallengeAsync(challenge);
+
+            if (result.IsValid)
+            {
+                var response = new DeleteChallengeResponse
                 {
                     Challenge = ChallengeProfile.Map(result.Response)
                 };

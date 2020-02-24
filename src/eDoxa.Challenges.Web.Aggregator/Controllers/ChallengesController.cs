@@ -2,7 +2,7 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
@@ -20,6 +20,9 @@ using eDoxa.Grpc.Protos.Games.Services;
 using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Grpc.Protos.Identity.Services;
 using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Domain.Extensions;
+
+using Grpc.Core;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -58,18 +61,28 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
         [SwaggerOperation("Fetch challenges.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeAggregate[]))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> FetchChallengesAsync(EnumGame game = EnumGame.None, EnumChallengeState state = EnumChallengeState.None, bool includeMatches = false)
+        public async Task<IActionResult> FetchChallengesAsync(
+            EnumGame game = EnumGame.None,
+            EnumChallengeState state = EnumChallengeState.None,
+            bool includeMatches = false
+        )
         {
-            var fetchDoxatagsResponse = await _identityServiceClient.FetchDoxatagsAsync(new FetchDoxatagsRequest());
+            var fetchDoxatagsRequest = new FetchDoxatagsRequest();
 
-            var fetchChallengePayoutsResponse = await _cashierServiceClient.FetchChallengePayoutsAsync(new FetchChallengePayoutsRequest());
+            var fetchDoxatagsResponse = await _identityServiceClient.FetchDoxatagsAsync(fetchDoxatagsRequest);
 
-            var fetchChallengesResponse = await _challengesServiceClient.FetchChallengesAsync(new FetchChallengesRequest
+            var fetchChallengePayoutsRequest = new FetchChallengePayoutsRequest();
+
+            var fetchChallengePayoutsResponse = await _cashierServiceClient.FetchChallengePayoutsAsync(fetchChallengePayoutsRequest);
+
+            var fetchChallengesRequest = new FetchChallengesRequest
             {
                 Game = game,
                 State = state,
                 IncludeMatches = includeMatches
-            });
+            };
+
+            var fetchChallengesResponse = await _challengesServiceClient.FetchChallengesAsync(fetchChallengesRequest);
 
             return this.Ok(ChallengeMapper.Map(fetchChallengesResponse.Challenges, fetchChallengePayoutsResponse.Payouts, fetchDoxatagsResponse.Doxatags));
         }
@@ -79,10 +92,10 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
         [SwaggerOperation("Create challenge.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeAggregate))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> CreateChallengeAsync([FromBody] CreateChallangeAggregateRequest request)
+        public async Task<IActionResult> CreateChallengeAsync([FromBody] Requests.CreateChallengeRequest request)
         {
             var fetchDoxatagsRequest = new FetchDoxatagsRequest();
-            
+
             var fetchDoxatagsResponse = await _identityServiceClient.FetchDoxatagsAsync(fetchDoxatagsRequest);
 
             var findChallengeScoringRequest = new FindChallengeScoringRequest
@@ -104,22 +117,34 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
 
             var createChallengeResponse = await _challengesServiceClient.CreateChallengeAsync(createChallengeRequest);
 
-            var challenge = createChallengeResponse.Challenge;
-
-            var createChallengePayoutRequest = new CreateChallengePayoutRequest
+            try
             {
-                ChallengeId = challenge.Id,
-                PayoutEntries = challenge.Entries / 2, // TODO
-                EntryFee = new CurrencyDto
+                var createChallengePayoutRequest = new CreateChallengePayoutRequest
                 {
-                    Amount = request.EntryFee.Amount,
-                    Type = request.EntryFee.Type
-                }
-            };
+                    ChallengeId = createChallengeResponse.Challenge.Id,
+                    PayoutEntries = createChallengeResponse.Challenge.Entries / 2, // TODO
+                    EntryFee = new CurrencyDto
+                    {
+                        Amount = request.EntryFee.Amount,
+                        Type = request.EntryFee.Type
+                    }
+                };
 
-            var createChallengePayoutResponse = await _cashierServiceClient.CreateChallengePayoutAsync(createChallengePayoutRequest);
+                var createChallengePayoutResponse = await _cashierServiceClient.CreateChallengePayoutAsync(createChallengePayoutRequest);
 
-            return this.Ok(ChallengeMapper.Map(challenge, createChallengePayoutResponse.Payout, fetchDoxatagsResponse.Doxatags));
+                return this.Ok(ChallengeMapper.Map(createChallengeResponse.Challenge, createChallengePayoutResponse.Payout, fetchDoxatagsResponse.Doxatags));
+            }
+            catch (RpcException exception)
+            {
+                var deleteChallengeRequest = new DeleteChallengeRequest
+                {
+                    ChallengeId = createChallengeResponse.Challenge.Id
+                };
+
+                await _challengesServiceClient.DeleteChallengeAsync(deleteChallengeRequest);
+
+                throw exception.Capture();
+            }
         }
 
         [AllowAnonymous]
@@ -131,34 +156,21 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
         {
             var fetchDoxatagsResponse = await _identityServiceClient.FetchDoxatagsAsync(new FetchDoxatagsRequest());
 
-            var findChallengePayoutResponse = await _cashierServiceClient.FindChallengePayoutAsync(
-                new FindChallengePayoutRequest
-                {
-                    ChallengeId = challengeId
-                });
+            var findChallengePayoutRequest = new FindChallengePayoutRequest
+            {
+                ChallengeId = challengeId
+            };
 
-            var findChallengeResponse = await _challengesServiceClient.FindChallengeAsync(
-                new FindChallengeRequest
-                {
-                    ChallengeId = challengeId
-                });
+            var findChallengePayoutResponse = await _cashierServiceClient.FindChallengePayoutAsync(findChallengePayoutRequest);
+
+            var findChallengeRequest = new FindChallengeRequest
+            {
+                ChallengeId = challengeId
+            };
+
+            var findChallengeResponse = await _challengesServiceClient.FindChallengeAsync(findChallengeRequest);
 
             return this.Ok(ChallengeMapper.Map(findChallengeResponse.Challenge, findChallengePayoutResponse.Payout, fetchDoxatagsResponse.Doxatags));
         }
-
-        //[Microsoft.AspNetCore.Authorization.Authorize(Roles = AppRoles.Admin)]
-        //[HttpPost("{challengeId}")]
-        //[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel))]
-        //[SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        //public async Task<IActionResult> SynchronizeChallengeAsync(Guid challengeId)
-        //{
-        //    var doxatagsFromIdentityService = await _identityService.FetchDoxatagsAsync();
-
-        //    var challengeFromCashierService = await _cashierService.FindChallengeAsync(challengeId);
-
-        //    var challengeFromChallengesService = await _challengesService.SynchronizeChallengeAsync(challengeId);
-
-        //    return this.Ok(ChallengeTransformer.Transform(challengeFromChallengesService, challengeFromCashierService, doxatagsFromIdentityService));
-        //}
     }
 }

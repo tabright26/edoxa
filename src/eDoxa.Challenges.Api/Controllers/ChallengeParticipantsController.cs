@@ -39,7 +39,7 @@ namespace eDoxa.Challenges.Api.Controllers
 
         [HttpGet]
         [SwaggerOperation("Find the participants of a challenge.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantDto[]))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeParticipantDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> FetchChallengeParticipantsAsync(ChallengeId challengeId)
@@ -51,7 +51,7 @@ namespace eDoxa.Challenges.Api.Controllers
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IReadOnlyCollection<ParticipantDto>>(participants));
+            return this.Ok(_mapper.Map<IReadOnlyCollection<ChallengeParticipantDto>>(participants));
         }
     }
 }

@@ -12,6 +12,7 @@ service ChallengeService {
   rpc FetchChallenges(FetchChallengesRequest) returns (FetchChallengesResponse);
   rpc FindChallenge(FindChallengeRequest) returns (FindChallengeResponse);
   rpc CreateChallenge(CreateChallengeRequest) returns (CreateChallengeResponse);
+  rpc DeleteChallenge(DeleteChallengeRequest) returns (DeleteChallengeResponse);
   rpc SynchronizeChallenge(SynchronizeChallengeRequest) returns (SynchronizeChallengeResponse);
   rpc RegisterChallengeParticipant(RegisterChallengeParticipantRequest) returns (RegisterChallengeParticipantResponse);
   rpc SnapshotChallengeParticipant(SnapshotChallengeParticipantRequest) returns (SnapshotChallengeParticipantResponse);

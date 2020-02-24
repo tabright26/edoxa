@@ -6,15 +6,15 @@ import "challenges_dtos.proto";
 
 package edoxa.services.challenges;
 
-message ChallengeParticipantRegisteredIntegrationEvent {
-  ParticipantDto participant = 1;
+message ChallengeStartedIntegrationEvent {
+  ChallengeDto challenge = 1;
 }
 
 message ChallengeSynchronizedIntegrationEvent {
   string challengeId = 1;
-  repeated ParticipantDto scoreboard = 2;
+  repeated ChallengeParticipantDto scoreboard = 2;
 }
 
-message ChallengeStartedIntegrationEvent {
-  ChallengeDto challenge = 1;
+message ChallengeParticipantRegisteredIntegrationEvent {
+  ChallengeParticipantDto participant = 1;
 }

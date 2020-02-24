@@ -21,29 +21,29 @@ message ChallengeDto {
   int32 entries = 7;
   google.protobuf.Timestamp synchronizedAt = 8;
   map<string, float> scoring = 9;
-  TimelineDto timeline = 10;
-  repeated ParticipantDto participants = 11;
-
-  message TimelineDto {
-    google.protobuf.Timestamp createdAt = 1;
-	google.protobuf.Timestamp startedAt = 2;
-	google.protobuf.Timestamp endedAt = 3;
-	google.protobuf.Timestamp closedAt = 4;
-    google.protobuf.Duration duration = 5;
-  }
+  ChallengeTimelineDto timeline = 10;
+  repeated ChallengeParticipantDto participants = 11; 
 }
 
-message ParticipantDto {
+message ChallengeTimelineDto {
+  google.protobuf.Timestamp createdAt = 1;
+  google.protobuf.Timestamp startedAt = 2;
+  google.protobuf.Timestamp endedAt = 3;
+  google.protobuf.Timestamp closedAt = 4;
+  google.protobuf.Duration duration = 5;
+}
+
+message ChallengeParticipantDto {
   string id = 1;
   string userId = 2;
   string challengeId = 3;
   string gamePlayerId = 4;
   customTypes.DecimalValue score = 5;
   google.protobuf.Timestamp synchronizedAt = 6;
-  repeated MatchDto matches = 7;
+  repeated ChallengeMatchDto matches = 7;
 }
 
-message MatchDto {
+message ChallengeMatchDto {
   string id = 1;
   string challengeId = 2;
   string participantId = 3;
@@ -53,12 +53,12 @@ message MatchDto {
   google.protobuf.Timestamp gameEndedAt = 7;
   google.protobuf.Timestamp synchronizedAt = 8;
   customTypes.DecimalValue score = 9;
-  repeated StatDto stats = 10;
+  repeated ChallengeMatchStatDto stats = 10;
+}
 
-  message StatDto {
-	string name = 1;
-	double value = 2;
-	float weighting = 3;
-	customTypes.DecimalValue score = 4;
-  }
+message ChallengeMatchStatDto {
+  string name = 1;
+  double value = 2;
+  float weighting = 3;
+  customTypes.DecimalValue score = 4;
 }

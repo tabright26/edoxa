@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
@@ -25,7 +24,6 @@ using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.ServiceBus.Abstractions;
 
 using Grpc.Core;
 
@@ -36,21 +34,18 @@ namespace eDoxa.Cashier.Api.Grpc.Services
         private readonly IChallengeQuery _challengeQuery;
         private readonly IChallengeService _challengeService;
         private readonly IAccountService _accountService;
-        private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly IMapper _mapper;
 
         public CashierGrpcService(
             IChallengeQuery challengeQuery,
             IChallengeService challengeService,
             IAccountService accountService,
-            IServiceBusPublisher serviceBusPublisher,
             IMapper mapper
         )
         {
             _challengeQuery = challengeQuery;
             _challengeService = challengeService;
             _accountService = accountService;
-            _serviceBusPublisher = serviceBusPublisher;
             _mapper = mapper;
         }
 
@@ -194,10 +189,8 @@ namespace eDoxa.Cashier.Api.Grpc.Services
 
         public override async Task<CreateChallengePayoutResponse> CreateChallengePayout(CreateChallengePayoutRequest request, ServerCallContext context)
         {
-            var challengeId = request.ChallengeId.ParseEntityId<ChallengeId>();
-
             var result = await _challengeService.CreateChallengeAsync(
-                challengeId,
+                request.ChallengeId.ParseEntityId<ChallengeId>(),
                 new ChallengePayoutEntries(request.PayoutEntries),
                 new EntryFee(request.EntryFee.Amount, request.EntryFee.Type.ToEnumeration<CurrencyType>()));
 
@@ -210,8 +203,6 @@ namespace eDoxa.Cashier.Api.Grpc.Services
 
                 return context.Ok(response);
             }
-
-            await _serviceBusPublisher.PublishCreateChallengePayoutFailedIntegrationEventAsync(challengeId);
 
             throw context.FailedPreconditionRpcException(result);
         }

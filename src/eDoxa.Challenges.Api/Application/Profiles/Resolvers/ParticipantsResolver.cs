@@ -16,19 +16,19 @@ using Google.Protobuf.Collections;
 
 namespace eDoxa.Challenges.Api.Application.Profiles.Resolvers
 {
-    internal sealed class ParticipantsResolver : IMemberValueResolver<IChallenge, ChallengeDto, IReadOnlyCollection<Participant>, RepeatedField<ParticipantDto>>
+    internal sealed class ParticipantsResolver : IMemberValueResolver<IChallenge, ChallengeDto, IReadOnlyCollection<Participant>, RepeatedField<ChallengeParticipantDto>>
     {
-        public RepeatedField<ParticipantDto> Resolve(
+        public RepeatedField<ChallengeParticipantDto> Resolve(
             IChallenge challenge,
             ChallengeDto challengeResponse,
             IReadOnlyCollection<Participant> participants,
-            RepeatedField<ParticipantDto> participantResponses,
+            RepeatedField<ChallengeParticipantDto> participantResponses,
             ResolutionContext context
         )
         {
             foreach (var participant in participants)
             {
-                var participantResponse = context.Mapper.Map<ParticipantDto>(participant);
+                var participantResponse = context.Mapper.Map<ChallengeParticipantDto>(participant);
 
                 participantResponse.Score = participant.ComputeScore(challenge.BestOf)?.ToDecimal();
 
