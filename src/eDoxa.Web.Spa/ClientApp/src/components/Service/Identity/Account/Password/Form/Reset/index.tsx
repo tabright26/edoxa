@@ -14,22 +14,27 @@ import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { throwSubmissionError } from "utils/form/types";
 import { resetUserPassword } from "store/actions/identity";
-import { EMAIL_REQUIRED, PASSWORD_REQUIRED } from "utils/form/validators";
+import { PASSWORD_REQUIRED } from "utils/form/validators";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { MapStateToProps, connect } from "react-redux";
 import { RootState } from "store/types";
 import queryString, { ParseOptions } from "query-string";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { push } from "connected-react-router";
+import { UserId } from "types/identity";
 
 type FormData = {
   code: string;
-  email: string;
+  userId: UserId;
   password: string;
   newPassword: string;
 };
 
-type OwnProps = RouteComponentProps;
+type Params = {
+  userId: UserId;
+};
+
+type OwnProps = RouteComponentProps<Params>;
 
 type StateProps = {};
 
@@ -48,18 +53,7 @@ const Reset: FunctionComponent<Props> = ({
   <Form onSubmit={handleSubmit}>
     <ValidationSummary anyTouched={anyTouched} error={error} />
     <Field type="hidden" name="code" component={Input.Text} />
-    <InputGroup size="sm" className="mb-3">
-      <InputGroupAddon addonType="prepend">
-        <InputGroupText>@</InputGroupText>
-      </InputGroupAddon>
-      <Field
-        type="text"
-        name="email"
-        placeholder="Email"
-        autoComplete="email"
-        component={Input.Text}
-      />
-    </InputGroup>
+    <Field type="hidden" name="userId" component={Input.Text} />
     <InputGroup size="sm" className="mb-3">
       <InputGroupAddon addonType="prepend">
         <InputGroupText>
@@ -105,7 +99,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   };
   const { code } = queryString.parse(ownProps.location.search, options);
   return {
-    initialValues: { code }
+    initialValues: { code, userId: ownProps.match.params.userId }
   };
 };
 
@@ -129,9 +123,6 @@ const enhance = compose<InnerProps, OutterProps>(
     },
     validate: values => {
       const errors: FormErrors<FormData> = {};
-      if (!values.email) {
-        errors.email = EMAIL_REQUIRED;
-      }
       if (!values.password) {
         errors.password = PASSWORD_REQUIRED;
       } else if (values.password !== values.newPassword) {

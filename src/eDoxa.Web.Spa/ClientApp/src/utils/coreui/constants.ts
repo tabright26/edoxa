@@ -1,6 +1,7 @@
 import { questionGroups, QuestionGroupId } from "views/Faq/types";
 import { ChallengeId } from "types/challenges";
 import { ClanId } from "types/clans";
+import { UserId } from "types/identity";
 
 export function getDefaultPath(): string {
   return "/";
@@ -54,8 +55,8 @@ export function getPasswordForgotPath(): string {
   return "/password/forgot";
 }
 
-export function getPasswordResetPath(): string {
-  return "/password/reset";
+export function getPasswordResetPath(userId: UserId = ":userId"): string {
+  return `/password/reset/${userId}`;
 }
 
 export function getLegalTermsOfUsePath(): string {
