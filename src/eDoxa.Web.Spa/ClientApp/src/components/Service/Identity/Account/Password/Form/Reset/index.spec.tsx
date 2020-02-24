@@ -4,14 +4,8 @@ import { ReactWrapper } from "enzyme";
 import Reset from ".";
 import store from "store";
 import Input from "components/Shared/Input";
-import { EMAIL_REQUIRED } from "utils/form/validators";
 import { MemoryRouter } from "react-router-dom";
-import {
-  findFieldByName,
-  findSubmitButton,
-  findInputByName,
-  findFormFeedback
-} from "test/helper";
+import { findFieldByName, findSubmitButton } from "test/helper";
 
 const shallow = global["shallow"];
 const mount = global["mount"];
@@ -33,15 +27,6 @@ describe("<UserPasswordResetForm />", () => {
   });
 
   describe("defines password reset form fields", () => {
-    it("renders email field", () => {
-      const wrapper = createWrapper();
-      const field = findFieldByName(wrapper, "email");
-
-      expect(field.prop("type")).toBe("text");
-      expect(field.prop("placeholder")).toBe("Email");
-      expect(field.prop("component")).toBe(Input.Text);
-    });
-
     it("renders password field", () => {
       const wrapper = createWrapper();
       const field = findFieldByName(wrapper, "password");
@@ -66,19 +51,6 @@ describe("<UserPasswordResetForm />", () => {
 
       expect(submitButton.prop("type")).toBe("submit");
       expect(submitButton.text()).toBe("Reset");
-    });
-  });
-
-  describe("form validation", () => {
-    describe("email validation", () => {
-      it("shows error when email is set to blank", () => {
-        const wrapper = createWrapper();
-        const input = findInputByName(wrapper, "email");
-        input.simulate("blur");
-
-        const errorPresent = findFormFeedback(wrapper, EMAIL_REQUIRED);
-        expect(errorPresent).toBeTruthy();
-      });
     });
   });
 });
