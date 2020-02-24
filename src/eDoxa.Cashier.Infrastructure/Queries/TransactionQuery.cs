@@ -42,7 +42,8 @@ namespace eDoxa.Cashier.Infrastructure.Queries
                                where transaction.Account.Id == userId &&
                                      (currency == null || transaction.Currency == currency) &&
                                      (type == null || transaction.Type == type) &&
-                                     (status == null || transaction.Status == status)
+                                     (status == null || transaction.Status == status) &&
+                                     transaction.Status != TransactionStatus.Deleted.Value
                                orderby transaction.Timestamp descending
                                select transaction;
 

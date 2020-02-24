@@ -9,6 +9,8 @@ package edoxa.services.cashier;
 
 service CashierService {
   rpc CreateTransaction (CreateTransactionRequest) returns (CreateTransactionResponse);
+  rpc CancelTransaction (CancelTransactionRequest) returns (CancelTransactionResponse);
+  rpc DeleteTransaction (DeleteTransactionRequest) returns (DeleteTransactionResponse);
   rpc FetchChallengePayouts (FetchChallengePayoutsRequest) returns (FetchChallengePayoutsResponse);
   rpc FindChallengePayout (FindChallengePayoutRequest) returns (FindChallengePayoutResponse);
   rpc CreateChallengePayout (CreateChallengePayoutRequest) returns (CreateChallengePayoutResponse);

@@ -59,8 +59,6 @@ namespace eDoxa.Payment.Api.Grpc.Services
             ServerCallContext context
         )
         {
-            //try
-            //{
             var httpContext = context.GetHttpContext();
 
             var paymentIntentService = new PaymentIntentService();
@@ -89,36 +87,6 @@ namespace eDoxa.Payment.Api.Grpc.Services
             var message = $"A new payment {paymentIntent.Id} for {paymentIntent.Amount} {paymentIntent.Currency} was created";
 
             return context.Ok(response, message);
-
-            //if (!await _stripeCustomerService.HasDefaultPaymentMethodAsync(customerId))
-            //{
-            //    const string detail = "The user's Stripe Customer has no default payment method. The user's cannot process a deposit transaction.";
-
-            //    throw context.RpcException(new Status(StatusCode.FailedPrecondition, detail));
-            //}
-
-            //var invoice = await _stripeInvoiceService.CreateInvoiceAsync(
-            //    customerId,
-            //    request.Transaction.Id.ParseEntityId<TransactionId>(),
-            //    request.Transaction.Currency.ToCents(),
-            //    request.Transaction.Description);
-
-            //await _serviceBusPublisher.PublishUserDepositSucceededIntegrationEventAsync(userId, request.Transaction);
-
-            //var response = new DepositResponse();
-
-            //var message = $"A Stripe invoice '{invoice.Id}' was created for the user '{email}'. (userId=\"{userId}\")";
-
-            //return context.Ok(response, message);
-            //}
-            //catch (Exception exception)
-            //{
-            //    await _serviceBusPublisher.PublishUserDepositFailedIntegrationEventAsync(httpContext.GetUserId(), request.Transaction);
-
-            //    var message = $"Failed to process deposit for the user '{httpContext.GetEmail()}'. (userId=\"{httpContext.GetUserId()}\")";
-
-            //    throw this.RpcExceptionWithInternalStatus(exception, message);
-            //}
         }
 
         public override async Task<CreatePaypalPayoutResponse> CreatePaypalPayout(CreatePaypalPayoutRequest request, ServerCallContext context)

@@ -1,5 +1,5 @@
 ﻿// Filename: CashierGrpcService.cs
-// Date Created: 2019-12-26
+// Date Created: 2020-01-28
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -86,28 +86,78 @@ namespace eDoxa.Cashier.Api.Grpc.Services
                 switch (request.TransactionCase)
                 {
                     case CreateTransactionRequest.TransactionOneofCase.Bundle:
-                        {
-                            return await _accountService.CreateTransactionAsync(account!, request.Bundle, new TransactionMetadata(request.Metadata));
-                        }
+                    {
+                        return await _accountService.CreateTransactionAsync(account!, request.Bundle, new TransactionMetadata(request.Metadata));
+                    }
 
                     case CreateTransactionRequest.TransactionOneofCase.Custom:
-                        {
-                            return await _accountService.CreateTransactionAsync(
-                                account!,
-                                request.Custom.Currency.Amount,
-                                request.Custom.Currency.Type.ToEnumeration<CurrencyType>(),
-                                request.Custom.Type.ToEnumeration<TransactionType>(),
-                                new TransactionMetadata(request.Metadata));
-                        }
+                    {
+                        return await _accountService.CreateTransactionAsync(
+                            account!,
+                            request.Custom.Currency.Amount,
+                            request.Custom.Currency.Type.ToEnumeration<CurrencyType>(),
+                            request.Custom.Type.ToEnumeration<TransactionType>(),
+                            new TransactionMetadata(request.Metadata));
+                    }
                     default:
-                        {
-                            throw context.RpcException(
-                                new Status(
-                                    StatusCode.InvalidArgument,
-                                    $"The case ({request.TransactionCase}) is not supported for {nameof(this.CreateTransaction)}."));
-                        }
+                    {
+                        throw context.RpcException(
+                            new Status(
+                                StatusCode.InvalidArgument,
+                                $"The case ({request.TransactionCase}) is not supported for {nameof(this.CreateTransaction)}."));
+                    }
                 }
             }
+        }
+
+        public override async Task<CancelTransactionResponse> CancelTransaction(CancelTransactionRequest request, ServerCallContext context)
+        {
+            var httpContext = context.GetHttpContext();
+
+            var userId = httpContext.GetUserId();
+
+            var account = await _accountService.FindAccountOrNullAsync(userId);
+
+            if (account == null)
+            {
+                throw context.NotFoundRpcException("User account not found.");
+            }
+
+            var result = await _accountService.MarkAccountTransactionAsCanceledAsync(account!, request.TransactionId.ParseEntityId<TransactionId>());
+
+            if (result.IsValid)
+            {
+                var response = new CancelTransactionResponse();
+
+                return context.Ok(response);
+            }
+
+            throw context.FailedPreconditionRpcException(result);
+        }
+
+        public override async Task<DeleteTransactionResponse> DeleteTransaction(DeleteTransactionRequest request, ServerCallContext context)
+        {
+            var httpContext = context.GetHttpContext();
+
+            var userId = httpContext.GetUserId();
+
+            var account = await _accountService.FindAccountOrNullAsync(userId);
+
+            if (account == null)
+            {
+                throw context.NotFoundRpcException("User account not found.");
+            }
+
+            var result = await _accountService.DeleteTransactionAsync(account!, request.TransactionId.ParseEntityId<TransactionId>());
+
+            if (result.IsValid)
+            {
+                var response = new DeleteTransactionResponse();
+
+                return context.Ok(response);
+            }
+
+            throw context.FailedPreconditionRpcException(result);
         }
 
         public override async Task<FetchChallengePayoutsResponse> FetchChallengePayouts(FetchChallengePayoutsRequest request, ServerCallContext context)

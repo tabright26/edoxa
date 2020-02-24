@@ -17,6 +17,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
         public static readonly TransactionStatus Succeeded = new TransactionStatus(1 << 1, nameof(Succeeded));
         public static readonly TransactionStatus Failed = new TransactionStatus(1 << 2, nameof(Failed));
         public static readonly TransactionStatus Canceled = new TransactionStatus(1 << 3, nameof(Canceled));
+        public static readonly TransactionStatus Deleted = new TransactionStatus(1 << 4, nameof(Deleted));
 
         public TransactionStatus()
         {

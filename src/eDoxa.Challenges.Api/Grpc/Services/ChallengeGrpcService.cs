@@ -10,7 +10,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Application.Profiles;
-using eDoxa.Challenges.Api.IntegrationEvents.Extensions;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Domain.Services;
@@ -23,7 +22,6 @@ using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.ServiceBus.Abstractions;
 
 using Grpc.Core;
 
@@ -33,13 +31,11 @@ namespace eDoxa.Challenges.Api.Grpc.Services
     {
         private readonly IChallengeService _challengeService;
         private readonly IChallengeQuery _challengeQuery;
-        private readonly IServiceBusPublisher _serviceBusPublisher;
 
-        public ChallengeGrpcService(IChallengeService challengeService, IChallengeQuery challengeQuery, IServiceBusPublisher serviceBusPublisher)
+        public ChallengeGrpcService(IChallengeService challengeService, IChallengeQuery challengeQuery)
         {
             _challengeService = challengeService;
             _challengeQuery = challengeQuery;
-            _serviceBusPublisher = serviceBusPublisher;
         }
 
         public override async Task<FetchChallengeHistoryResponse> FetchChallengeHistory(FetchChallengeHistoryRequest request, ServerCallContext context)
@@ -186,11 +182,6 @@ namespace eDoxa.Challenges.Api.Grpc.Services
 
                 return context.Ok(response);
             }
-
-            await _serviceBusPublisher.PublishRegisterChallengeParticipantFailedIntegrationEventAsync(
-                challengeId,
-                userId,
-                request.ParticipantId.ParseEntityId<ParticipantId>());
 
             throw context.FailedPreconditionRpcException(result);
         }

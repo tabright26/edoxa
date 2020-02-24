@@ -61,25 +61,5 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Extensions
 
             await publisher.PublishAsync(integrationEvent);
         }
-
-        public static async Task PublishRegisterChallengeParticipantFailedIntegrationEventAsync(
-            this IServiceBusPublisher publisher,
-            ChallengeId challengeId,
-            UserId userId,
-            ParticipantId participantId
-        )
-        {
-            var integrationEvent = new RegisterChallengeParticipantFailedIntegrationEvent
-            {
-                Participant = new ParticipantDto
-                {
-                    Id = participantId,
-                    ChallengeId = challengeId,
-                    UserId = userId
-                }
-            };
-
-            await publisher.PublishAsync(integrationEvent);
-        }
     }
 }

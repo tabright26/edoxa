@@ -15,10 +15,6 @@ message ChallengeSynchronizedIntegrationEvent {
   repeated ParticipantDto scoreboard = 2;
 }
 
-message RegisterChallengeParticipantFailedIntegrationEvent {
-  ParticipantDto participant = 1;
-}
-
 message ChallengeStartedIntegrationEvent {
   ChallengeDto challenge = 1;
 }
