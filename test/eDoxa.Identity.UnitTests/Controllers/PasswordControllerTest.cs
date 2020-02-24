@@ -13,6 +13,7 @@ using eDoxa.Identity.Api.Controllers;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
@@ -40,7 +41,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Arrange
             var user = new User
             {
-                Id = Guid.NewGuid()
+                Id = new UserId()
             };
 
             TestMock.UserService.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
@@ -82,7 +83,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Arrange
             var user = new User
             {
-                Id = Guid.NewGuid()
+                Id = new UserId()
             };
 
             TestMock.UserService.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
@@ -103,7 +104,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
             var result = await controller.ResetPasswordAsync(
                 new ResetPasswordRequest
                 {
-                    Email = "admin@edoxa.gg",
+                    UserId = new UserId(),
                     Password = "Pass@word1",
                     Code = "Code"
                 });
@@ -122,7 +123,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Arrange
             var user = new User
             {
-                Id = Guid.NewGuid()
+                Id = new UserId()
             };
 
             TestMock.UserService.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
@@ -137,7 +138,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
             var result = await controller.ResetPasswordAsync(
                 new ResetPasswordRequest
                 {
-                    Email = "admin@edoxa.gg",
+                    UserId = new UserId(),
                     Password = "Pass@word1",
                     Code = "Code"
                 });
@@ -172,7 +173,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
             var result = await controller.ResetPasswordAsync(
                 new ResetPasswordRequest
                 {
-                    Email = "admin@edoxa.gg",
+                    UserId = new UserId(),
                     Password = "Pass@word1",
                     Code = "Code"
                 });

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Domain.Services;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
@@ -45,7 +46,7 @@ namespace eDoxa.Identity.Api.Controllers
             var user = await _userService.FindByEmailAsync(request.Email);
 
             // Don't reveal that the user does not exist or is not confirmed
-            if (user != null && await _userService.IsEmailConfirmedAsync(user))
+            if (user != null /*&& await _userService.IsEmailConfirmedAsync(user)*/)
             {
                 // For more information on how to enable account confirmation and password reset please 
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
@@ -63,7 +64,7 @@ namespace eDoxa.Identity.Api.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordRequest request)
         {
-            var user = await _userService.FindByEmailAsync(request.Email);
+            var user = await _userService.FindByIdAsync(request.UserId);
 
             if (user == null)
             {
@@ -80,7 +81,7 @@ namespace eDoxa.Identity.Api.Controllers
 
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(string.Empty, error.Description);
+                ModelState.AddModelError(DomainValidationError.FailedPreconditionPropertyName, error.Description);
             }
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));

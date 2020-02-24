@@ -38,7 +38,7 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(UserPasswordResetTokenGeneratedIntegrationEvent integrationEvent)
         {
-            var tokenUrl = $"{_redirectService.RedirectToWebSpa("/password/reset")}?code={integrationEvent.Code}";
+            var tokenUrl = $"{_redirectService.RedirectToWebSpa($"/password/reset/{integrationEvent.UserId}")}?code={integrationEvent.Code}";
 
             await _userService.SendEmailAsync(
                 integrationEvent.UserId.ParseEntityId<UserId>(),

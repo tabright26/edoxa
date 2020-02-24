@@ -49,27 +49,27 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
                 {"Shorting123", PasswordResetErrorDescriber.PasswordSpecial()}
             };
 
-        [Theory]
-        [MemberData(nameof(ValidEmails))]
-        public void Validate_WhenEmailIsValid_ShouldNotHaveValidationErrorFor(string email)
-        {
-            // Arrange
-            var validator = new ResetPasswordRequestValidator();
+        //[Theory]
+        //[MemberData(nameof(ValidEmails))]
+        //public void Validate_WhenEmailIsValid_ShouldNotHaveValidationErrorFor(string email)
+        //{
+        //    // Arrange
+        //    var validator = new ResetPasswordRequestValidator();
 
-            // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.Email, email);
-        }
+        //    // Act - Assert
+        //    validator.ShouldNotHaveValidationErrorFor(request => request.Email, email);
+        //}
 
-        [Theory]
-        [MemberData(nameof(InvalidEmails))]
-        public void Validate_WhenEmailIsInvalid_ShouldNotHaveValidationErrorFor(string email)
-        {
-            // Arrange
-            var validator = new ResetPasswordRequestValidator();
+        //[Theory]
+        //[MemberData(nameof(InvalidEmails))]
+        //public void Validate_WhenEmailIsInvalid_ShouldNotHaveValidationErrorFor(string email)
+        //{
+        //    // Arrange
+        //    var validator = new ResetPasswordRequestValidator();
 
-            // Act - Assert
-            validator.ShouldHaveValidationErrorFor(request => request.Email, email);
-        }
+        //    // Act - Assert
+        //    validator.ShouldHaveValidationErrorFor(request => request.Email, email);
+        //}
 
         [Theory]
         [MemberData(nameof(ValidPasswords))]
