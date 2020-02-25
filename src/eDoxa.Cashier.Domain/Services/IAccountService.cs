@@ -94,5 +94,11 @@ namespace eDoxa.Cashier.Domain.Services
             TransactionMetadata metadata,
             CancellationToken cancellationToken = default
         );
+
+        Task<DomainValidationResult<ITransaction>> DeleteTransactionAsync(
+            IAccount account,
+            TransactionId transactionId,
+            CancellationToken cancellationToken = default
+        );
     }
 }

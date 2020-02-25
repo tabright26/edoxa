@@ -3,35 +3,20 @@ import renderer from "react-test-renderer";
 import Reset from ".";
 import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import store from "store";
 
 it("renders correctly", () => {
-  const store: any = {
-    getState: (): any => {
-      return {
-        oidc: {
-          user: null
-        },
-        user: {
-          account: {
-            money: { balance: { available: 0, pending: 0 } },
-            token: { balance: { available: 0, pending: 0 } }
-          }
-        }
-      };
-    },
-    dispatch: (action: any): any => {},
-    subscribe: (): any => {}
-  };
+  // Act
   const tree = renderer
     .create(
-      <Provider
-        store={store}
-      >
+      <Provider store={store}>
         <MemoryRouter>
-          <Reset location={{ search: "?code=test" }} />
+          <Reset />
         </MemoryRouter>
       </Provider>
     )
     .toJSON();
+
+  // Assert
   expect(tree).toMatchSnapshot();
 });

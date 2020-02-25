@@ -43,7 +43,7 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
 
             var integrationEvent = new ChallengeParticipantRegisteredIntegrationEvent
             {
-                Participant = new ParticipantDto
+                Participant = new ChallengeParticipantDto
                 {
                     ChallengeId = new ChallengeId(),
                     GamePlayerId = "testId",
@@ -53,13 +53,13 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
                     UserId = new UserId(),
                     Matches =
                     {
-                        new MatchDto
+                        new ChallengeMatchDto
                         {
                             Id = new MatchId(),
                             ParticipantId = participantId,
                             Score = DecimalValue.FromDecimal(10)
                         },
-                        new MatchDto
+                        new ChallengeMatchDto
                         {
                             Id = new MatchId(),
                             ParticipantId = participantId,

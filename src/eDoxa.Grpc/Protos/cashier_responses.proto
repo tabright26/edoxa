@@ -21,3 +21,9 @@ message CreateChallengePayoutResponse {
 message CreateTransactionResponse {
   TransactionDto Transaction = 1;
 }
+
+message CancelTransactionResponse {
+}
+
+message DeleteTransactionResponse {
+}

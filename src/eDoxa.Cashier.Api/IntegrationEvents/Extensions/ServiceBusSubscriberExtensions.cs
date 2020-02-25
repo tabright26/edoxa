@@ -24,7 +24,6 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
             subscriber.Subscribe<UserWithdrawFailedIntegrationEvent, UserWithdrawFailedIntegrationEventHandler>();
             subscriber.Subscribe<ChallengeSynchronizedIntegrationEvent, ChallengeSynchronizedIntegrationEventHandler>();
             subscriber.Subscribe<ChallengeParticipantRegisteredIntegrationEvent, ChallengeParticipantRegisteredIntegrationEventHandler>();
-            subscriber.Subscribe<RegisterChallengeParticipantFailedIntegrationEvent, RegisterChallengeParticipantFailedIntegrationEventHandler>();
         }
     }
 }

@@ -65,7 +65,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers.ParticipantsController
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var participantResponse = await response.Content.ReadAsJsonAsync<ParticipantDto>();
+            var participantResponse = await response.Content.ReadAsJsonAsync<ChallengeParticipantDto>();
             participantResponse.Should().NotBeNull();
             participantResponse?.Id.Should().Be(participantId);
         }

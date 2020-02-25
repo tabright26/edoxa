@@ -31,35 +31,21 @@ exports[`renders correctly 1`] = `
       <div
         className="invalid-feedback"
       />
+      <input
+        className="form-control-sm form-control"
+        name="userId"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onDragStart={[Function]}
+        onDrop={[Function]}
+        onFocus={[Function]}
+        placeholder={null}
+        type="hidden"
+        value=""
+      />
       <div
-        className="mb-3 input-group input-group-sm"
-      >
-        <div
-          className="input-group-prepend"
-        >
-          <span
-            className="input-group-text"
-          >
-            @
-          </span>
-        </div>
-        <input
-          autoComplete="email"
-          className="form-control-sm form-control"
-          name="email"
-          onBlur={[Function]}
-          onChange={[Function]}
-          onDragStart={[Function]}
-          onDrop={[Function]}
-          onFocus={[Function]}
-          placeholder="Email"
-          type="text"
-          value=""
-        />
-        <div
-          className="invalid-feedback"
-        />
-      </div>
+        className="invalid-feedback"
+      />
       <div
         className="mb-3 input-group input-group-sm"
       >
@@ -90,7 +76,9 @@ exports[`renders correctly 1`] = `
         />
         <div
           className="invalid-feedback"
-        />
+        >
+          Password is required
+        </div>
       </div>
       <div
         className="mb-3 input-group input-group-sm"

@@ -51,27 +51,7 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Extensions
         {
             var integrationEvent = new ChallengeParticipantRegisteredIntegrationEvent
             {
-                Participant = new ParticipantDto
-                {
-                    Id = participantId,
-                    ChallengeId = challengeId,
-                    UserId = userId
-                }
-            };
-
-            await publisher.PublishAsync(integrationEvent);
-        }
-
-        public static async Task PublishRegisterChallengeParticipantFailedIntegrationEventAsync(
-            this IServiceBusPublisher publisher,
-            ChallengeId challengeId,
-            UserId userId,
-            ParticipantId participantId
-        )
-        {
-            var integrationEvent = new RegisterChallengeParticipantFailedIntegrationEvent
-            {
-                Participant = new ParticipantDto
+                Participant = new ChallengeParticipantDto
                 {
                     Id = participantId,
                     ChallengeId = challengeId,

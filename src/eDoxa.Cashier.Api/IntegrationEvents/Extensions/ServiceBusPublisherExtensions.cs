@@ -43,16 +43,6 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
             await publisher.PublishAsync(integrationEvent);
         }
 
-        public static async Task PublishCreateChallengePayoutFailedIntegrationEventAsync(this IServiceBusPublisher publisher, ChallengeId challengeId)
-        {
-            var integrationEvent = new CreateChallengePayoutFailedIntegrationEvent
-            {
-                ChallengeId = challengeId
-            };
-
-            await publisher.PublishAsync(integrationEvent);
-        }
-
         public static async Task PublishUserDepositSucceededIntegrationEventAsync(
             this IServiceBusPublisher publisher,
             UserId userId,

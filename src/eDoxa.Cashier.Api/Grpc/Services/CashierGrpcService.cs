@@ -1,5 +1,5 @@
 ﻿// Filename: CashierGrpcService.cs
-// Date Created: 2019-12-26
+// Date Created: 2020-01-28
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
@@ -25,7 +24,6 @@ using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.ServiceBus.Abstractions;
 
 using Grpc.Core;
 
@@ -36,21 +34,18 @@ namespace eDoxa.Cashier.Api.Grpc.Services
         private readonly IChallengeQuery _challengeQuery;
         private readonly IChallengeService _challengeService;
         private readonly IAccountService _accountService;
-        private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly IMapper _mapper;
 
         public CashierGrpcService(
             IChallengeQuery challengeQuery,
             IChallengeService challengeService,
             IAccountService accountService,
-            IServiceBusPublisher serviceBusPublisher,
             IMapper mapper
         )
         {
             _challengeQuery = challengeQuery;
             _challengeService = challengeService;
             _accountService = accountService;
-            _serviceBusPublisher = serviceBusPublisher;
             _mapper = mapper;
         }
 
@@ -86,28 +81,78 @@ namespace eDoxa.Cashier.Api.Grpc.Services
                 switch (request.TransactionCase)
                 {
                     case CreateTransactionRequest.TransactionOneofCase.Bundle:
-                        {
-                            return await _accountService.CreateTransactionAsync(account!, request.Bundle, new TransactionMetadata(request.Metadata));
-                        }
+                    {
+                        return await _accountService.CreateTransactionAsync(account!, request.Bundle, new TransactionMetadata(request.Metadata));
+                    }
 
                     case CreateTransactionRequest.TransactionOneofCase.Custom:
-                        {
-                            return await _accountService.CreateTransactionAsync(
-                                account!,
-                                request.Custom.Currency.Amount,
-                                request.Custom.Currency.Type.ToEnumeration<CurrencyType>(),
-                                request.Custom.Type.ToEnumeration<TransactionType>(),
-                                new TransactionMetadata(request.Metadata));
-                        }
+                    {
+                        return await _accountService.CreateTransactionAsync(
+                            account!,
+                            request.Custom.Currency.Amount,
+                            request.Custom.Currency.Type.ToEnumeration<CurrencyType>(),
+                            request.Custom.Type.ToEnumeration<TransactionType>(),
+                            new TransactionMetadata(request.Metadata));
+                    }
                     default:
-                        {
-                            throw context.RpcException(
-                                new Status(
-                                    StatusCode.InvalidArgument,
-                                    $"The case ({request.TransactionCase}) is not supported for {nameof(this.CreateTransaction)}."));
-                        }
+                    {
+                        throw context.RpcException(
+                            new Status(
+                                StatusCode.InvalidArgument,
+                                $"The case ({request.TransactionCase}) is not supported for {nameof(this.CreateTransaction)}."));
+                    }
                 }
             }
+        }
+
+        public override async Task<CancelTransactionResponse> CancelTransaction(CancelTransactionRequest request, ServerCallContext context)
+        {
+            var httpContext = context.GetHttpContext();
+
+            var userId = httpContext.GetUserId();
+
+            var account = await _accountService.FindAccountOrNullAsync(userId);
+
+            if (account == null)
+            {
+                throw context.NotFoundRpcException("User account not found.");
+            }
+
+            var result = await _accountService.MarkAccountTransactionAsCanceledAsync(account!, request.TransactionId.ParseEntityId<TransactionId>());
+
+            if (result.IsValid)
+            {
+                var response = new CancelTransactionResponse();
+
+                return context.Ok(response);
+            }
+
+            throw context.FailedPreconditionRpcException(result);
+        }
+
+        public override async Task<DeleteTransactionResponse> DeleteTransaction(DeleteTransactionRequest request, ServerCallContext context)
+        {
+            var httpContext = context.GetHttpContext();
+
+            var userId = httpContext.GetUserId();
+
+            var account = await _accountService.FindAccountOrNullAsync(userId);
+
+            if (account == null)
+            {
+                throw context.NotFoundRpcException("User account not found.");
+            }
+
+            var result = await _accountService.DeleteTransactionAsync(account!, request.TransactionId.ParseEntityId<TransactionId>());
+
+            if (result.IsValid)
+            {
+                var response = new DeleteTransactionResponse();
+
+                return context.Ok(response);
+            }
+
+            throw context.FailedPreconditionRpcException(result);
         }
 
         public override async Task<FetchChallengePayoutsResponse> FetchChallengePayouts(FetchChallengePayoutsRequest request, ServerCallContext context)
@@ -144,10 +189,8 @@ namespace eDoxa.Cashier.Api.Grpc.Services
 
         public override async Task<CreateChallengePayoutResponse> CreateChallengePayout(CreateChallengePayoutRequest request, ServerCallContext context)
         {
-            var challengeId = request.ChallengeId.ParseEntityId<ChallengeId>();
-
             var result = await _challengeService.CreateChallengeAsync(
-                challengeId,
+                request.ChallengeId.ParseEntityId<ChallengeId>(),
                 new ChallengePayoutEntries(request.PayoutEntries),
                 new EntryFee(request.EntryFee.Amount, request.EntryFee.Type.ToEnumeration<CurrencyType>()));
 
@@ -160,8 +203,6 @@ namespace eDoxa.Cashier.Api.Grpc.Services
 
                 return context.Ok(response);
             }
-
-            await _serviceBusPublisher.PublishCreateChallengePayoutFailedIntegrationEventAsync(challengeId);
 
             throw context.FailedPreconditionRpcException(result);
         }

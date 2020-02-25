@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,7 +17,10 @@ using eDoxa.Grpc.Protos.Games.Requests;
 using eDoxa.Grpc.Protos.Games.Services;
 using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Grpc.Protos.Identity.Services;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
+
+using Grpc.Core;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -61,7 +63,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> RegisterChallengeParticipantAsync(string challengeId)
         {
-            var participantId = Guid.NewGuid().ToString();
+            var participantId = new ParticipantId();
 
             var findChallengeRequest = new FindChallengeRequest
             {
@@ -105,18 +107,32 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
                 }
             };
 
-            await _cashierServiceClient.CreateTransactionAsync(createTransactionRequest);
+            var createTransactionResponse = await _cashierServiceClient.CreateTransactionAsync(createTransactionRequest);
 
-            var registerChallengeParticipantRequest = new RegisterChallengeParticipantRequest
+            try
             {
-                ChallengeId = challengeId,
-                GamePlayerId = findPlayerGameCredentialResponse.Credential.PlayerId,
-                ParticipantId = participantId
-            };
+                var registerChallengeParticipantRequest = new RegisterChallengeParticipantRequest
+                {
+                    ChallengeId = challengeId,
+                    GamePlayerId = findPlayerGameCredentialResponse.Credential.PlayerId,
+                    ParticipantId = participantId
+                };
 
-            var participant = await _challengesServiceClient.RegisterChallengeParticipantAsync(registerChallengeParticipantRequest);
+                var participant = await _challengesServiceClient.RegisterChallengeParticipantAsync(registerChallengeParticipantRequest);
 
-            return this.Ok(ChallengeMapper.Map(challengePayoutResponse.Payout.ChallengeId, participant.Participant, fetchDoxatagsResponse.Doxatags));
+                return this.Ok(ChallengeMapper.Map(challengePayoutResponse.Payout.ChallengeId, participant.Participant, fetchDoxatagsResponse.Doxatags));
+            }
+            catch (RpcException exception)
+            {
+                var deleteTransactionRequest = new DeleteTransactionRequest
+                {
+                    TransactionId = createTransactionResponse.Transaction.Id
+                };
+
+                await _cashierServiceClient.DeleteTransactionAsync(deleteTransactionRequest);
+
+                throw exception.Capture();
+            }
         }
     }
 }

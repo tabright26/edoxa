@@ -18,6 +18,7 @@ using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Grpc.Protos.Cashier.Options;
 using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Application.Authorization.Extensions;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.Cors.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -95,6 +96,8 @@ namespace eDoxa.Cashier.Api
             services.AddCustomProblemDetails();
 
             services.AddCustomControllers<Startup>();
+
+            services.AddCustomAuthorization();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -180,6 +183,8 @@ namespace eDoxa.Cashier.Api
             services.AddCustomProblemDetails();
 
             services.AddCustomControllers<Startup>();
+
+            services.AddCustomAuthorization();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 

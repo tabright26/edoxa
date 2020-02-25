@@ -54,6 +54,7 @@ namespace eDoxa.Identity.Api.Controllers
             return this.Ok(_mapper.Map<EmailDto>(user));
         }
 
+        [AllowAnonymous]
         [HttpGet("confirm")]
         [SwaggerOperation("Confirm user's email.")]
         [SwaggerResponse(StatusCodes.Status200OK)]

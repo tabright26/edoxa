@@ -39,7 +39,7 @@ namespace eDoxa.Challenges.Api.Controllers
 
         [HttpGet]
         [SwaggerOperation("Find the matches of a participant.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MatchDto[]))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeMatchDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> FetchParticipantMatchesAsync(ParticipantId participantId)
         {
@@ -50,7 +50,7 @@ namespace eDoxa.Challenges.Api.Controllers
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IReadOnlyCollection<MatchDto>>(matches));
+            return this.Ok(_mapper.Map<IReadOnlyCollection<ChallengeMatchDto>>(matches));
         }
     }
 }

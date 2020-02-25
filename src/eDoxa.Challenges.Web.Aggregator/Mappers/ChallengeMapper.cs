@@ -18,7 +18,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Mappers
 {
     public static class ChallengeMapper
     {
-        public static ParticipantAggregate Map(string challengeId, ParticipantDto participant, IEnumerable<DoxatagDto> doxatags)
+        public static ParticipantAggregate Map(string challengeId, ChallengeParticipantDto participant, IEnumerable<DoxatagDto> doxatags)
         {
             return new ParticipantAggregate
             {

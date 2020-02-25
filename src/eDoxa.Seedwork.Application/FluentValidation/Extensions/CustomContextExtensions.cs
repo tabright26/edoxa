@@ -1,5 +1,5 @@
 ﻿// Filename: CustomContextExtensions.cs
-// Date Created: 2020-01-16
+// Date Created: 2020-01-22
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -38,34 +38,34 @@ namespace eDoxa.Seedwork.Application.FluentValidation.Extensions
             switch (validationRule.Type)
             {
                 case FieldValidationRuleType.Required:
-                    {
-                        return !string.IsNullOrWhiteSpace(value);
-                    }
+                {
+                    return !string.IsNullOrWhiteSpace(value);
+                }
 
                 case FieldValidationRuleType.Regex:
-                    {
-                        return string.IsNullOrWhiteSpace(value) || new Regex(validationRule.Value).IsMatch(value);
-                    }
+                {
+                    return string.IsNullOrWhiteSpace(value) || new Regex(validationRule.Value).IsMatch(value);
+                }
 
                 case FieldValidationRuleType.Length:
-                    {
-                        return value.Length == Convert.ToInt32(validationRule.Value);
-                    }
+                {
+                    return value.Length == Convert.ToInt32(validationRule.Value);
+                }
 
                 case FieldValidationRuleType.MinLength:
-                    {
-                        return value.Length >= Convert.ToInt32(validationRule.Value);
-                    }
+                {
+                    return value.Length >= Convert.ToInt32(validationRule.Value);
+                }
 
                 case FieldValidationRuleType.MaxLength:
-                    {
-                        return value.Length <= Convert.ToInt32(validationRule.Value);
-                    }
+                {
+                    return value.Length <= Convert.ToInt32(validationRule.Value);
+                }
 
                 default:
-                    {
-                        throw new ArgumentOutOfRangeException();
-                    }
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
             }
         }
     }

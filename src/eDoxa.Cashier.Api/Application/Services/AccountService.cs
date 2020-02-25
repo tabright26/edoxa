@@ -323,6 +323,29 @@ namespace eDoxa.Cashier.Api.Application.Services
             return result;
         }
 
+        public async Task<DomainValidationResult<ITransaction>> DeleteTransactionAsync(IAccount account, TransactionId transactionId, CancellationToken cancellationToken = default)
+        {
+            var result = new DomainValidationResult<ITransaction>();
+
+            if (!account.TransactionExists(transactionId))
+            {
+                result.AddFailedPreconditionError("Transaction does not exists.");
+            }
+
+            if (result.IsValid)
+            {
+                var transaction = account.FindTransaction(transactionId);
+
+                transaction.Delete();
+
+                await _accountRepository.CommitAsync(true, cancellationToken);
+
+                return transaction.Cast<Transaction>();
+            }
+
+            return result;
+        }
+
         public async Task<IReadOnlyCollection<TransactionBundleDto>> FetchTransactionBundlesAsync(
             EnumTransactionType type = EnumTransactionType.All,
             EnumCurrencyType currencyType = EnumCurrencyType.All,

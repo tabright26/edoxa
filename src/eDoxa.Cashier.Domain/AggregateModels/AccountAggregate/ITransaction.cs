@@ -27,6 +27,8 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
         
         TransactionMetadata Metadata { get; }
 
+        void Delete();
+
         void MarkAsSucceeded();
 
         void MarkAsFailed();

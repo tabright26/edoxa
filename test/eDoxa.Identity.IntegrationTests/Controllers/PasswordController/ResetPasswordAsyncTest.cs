@@ -15,6 +15,7 @@ using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;
@@ -65,7 +66,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers.PasswordController
                     using var response = await this.ExecuteAsync(
                         new ResetPasswordRequest
                         {
-                            Email = "admin@edoxa.gg",
+                            UserId = new UserId(),
                             Password = "Pass@word1",
                             Code = code
                         });

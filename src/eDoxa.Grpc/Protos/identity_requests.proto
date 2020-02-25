@@ -52,7 +52,7 @@ message ForgotPasswordRequest {
 }
 
 message ResetPasswordRequest {
-  string email = 1;
+  string userId = 1;
   string password = 2;
   string code = 3;
 }

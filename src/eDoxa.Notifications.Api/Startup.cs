@@ -16,6 +16,7 @@ using eDoxa.Notifications.Api.Infrastructure.Data;
 using eDoxa.Notifications.Api.IntegrationEvents.Extensions;
 using eDoxa.Notifications.Infrastructure;
 using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Application.Authorization.Extensions;
 using eDoxa.Seedwork.Application.Autofac.Extensions;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.Cors.Extensions;
@@ -100,6 +101,8 @@ namespace eDoxa.Notifications.Api
 
             services.AddCustomControllers<Startup>();
 
+            services.AddCustomAuthorization();
+
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
             services.AddCustomAutoMapper(typeof(Startup));
@@ -182,6 +185,8 @@ namespace eDoxa.Notifications.Api
             services.AddCustomProblemDetails();
 
             services.AddCustomControllers<Startup>();
+
+            services.AddCustomAuthorization();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 

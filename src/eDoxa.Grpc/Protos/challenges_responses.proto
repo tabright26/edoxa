@@ -22,14 +22,18 @@ message CreateChallengeResponse {
   ChallengeDto challenge = 1;
 }
 
+message DeleteChallengeResponse {
+  ChallengeDto challenge = 1;
+}
+
 message SynchronizeChallengeResponse {
   ChallengeDto challenge = 1;
 }
 
 message RegisterChallengeParticipantResponse {
-  ParticipantDto participant = 1;
+  ChallengeParticipantDto participant = 1;
 }
 
 message SnapshotChallengeParticipantResponse {
-  ParticipantDto participant = 1;
+  ChallengeParticipantDto participant = 1;
 }

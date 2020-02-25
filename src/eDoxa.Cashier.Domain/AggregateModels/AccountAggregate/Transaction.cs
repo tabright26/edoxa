@@ -43,6 +43,16 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         public TransactionStatus Status { get; private set; }
 
+        public void Delete()
+        {
+            if (Status != TransactionStatus.Pending)
+            {
+                throw new InvalidOperationException();
+            }
+
+            Status = TransactionStatus.Deleted;
+        }
+
         public void MarkAsSucceeded()
         {
             if (Status != TransactionStatus.Pending)

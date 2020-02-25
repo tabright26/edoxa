@@ -17,6 +17,7 @@ using eDoxa.Grpc.Protos.Challenges.Services;
 using eDoxa.Grpc.Protos.Games.Services;
 using eDoxa.Grpc.Protos.Identity.Services;
 using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Application.Authorization.Extensions;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.Cors.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -86,6 +87,8 @@ namespace eDoxa.Challenges.Web.Aggregator
             services.AddCustomProblemDetails(options => options.MapRpcException());
 
             services.AddCustomControllers<Startup>();
+
+            services.AddCustomAuthorization();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -192,6 +195,8 @@ namespace eDoxa.Challenges.Web.Aggregator
             services.AddCustomProblemDetails(options => options.MapRpcException());
 
             services.AddCustomControllers<Startup>();
+
+            services.AddCustomAuthorization();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 

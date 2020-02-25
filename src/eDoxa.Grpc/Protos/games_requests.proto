@@ -20,7 +20,7 @@ message FetchChallengeMatchesRequest {
   EnumGame game = 1;
   google.protobuf.Timestamp startedAt = 2;
   google.protobuf.Timestamp endedAt = 3;
-  repeated challenges.ParticipantDto participants = 4;
+  repeated challenges.ChallengeParticipantDto participants = 4;
 }
 
 message FindPlayerGameCredentialRequest {

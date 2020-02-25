@@ -50,19 +50,28 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
         [SwaggerOperation("Fetch challenges.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeAggregate[]))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> FetchChallengesAsync(EnumGame game = EnumGame.None, EnumChallengeState state = EnumChallengeState.None, bool includeMatches = false)
+        public async Task<IActionResult> FetchChallengesAsync(
+            EnumGame game = EnumGame.None,
+            EnumChallengeState state = EnumChallengeState.None,
+            bool includeMatches = false
+        )
         {
-            var fetchDoxatagsResponse = await _identityServiceClient.FetchDoxatagsAsync(new FetchDoxatagsRequest());
+            var fetchDoxatagsRequest = new FetchDoxatagsRequest();
 
-            var fetchChallengePayoutsResponse = await _cashierServiceClient.FetchChallengePayoutsAsync(new FetchChallengePayoutsRequest());
+            var fetchDoxatagsResponse = await _identityServiceClient.FetchDoxatagsAsync(fetchDoxatagsRequest);
 
-            var fetchChallengesResponse = await _challengesServiceClient.FetchChallengeHistoryAsync(
-                new FetchChallengeHistoryRequest
-                {
-                    Game = game,
-                    State = state,
-                    IncludeMatches = includeMatches
-                });
+            var fetchChallengePayoutsRequest = new FetchChallengePayoutsRequest();
+
+            var fetchChallengePayoutsResponse = await _cashierServiceClient.FetchChallengePayoutsAsync(fetchChallengePayoutsRequest);
+
+            var fetchChallengeHistoryRequest = new FetchChallengeHistoryRequest
+            {
+                Game = game,
+                State = state,
+                IncludeMatches = includeMatches
+            };
+
+            var fetchChallengesResponse = await _challengesServiceClient.FetchChallengeHistoryAsync(fetchChallengeHistoryRequest);
 
             return this.Ok(ChallengeMapper.Map(fetchChallengesResponse.Challenges, fetchChallengePayoutsResponse.Payouts, fetchDoxatagsResponse.Doxatags));
         }

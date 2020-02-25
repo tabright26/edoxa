@@ -14,16 +14,6 @@ import "custom_types.proto";
 
 package edoxa.services.challenges;
 
-message CreateChallangeAggregateRequest {
-  string name = 1;
-  games.EnumGame game = 2;
-  EnumChallengeType type = 3;
-  int32 bestOf = 4;
-  int32 entries = 5;
-  int32 duration = 6;
-  cashier.CurrencyDto entryFee = 7;
-}
-
 message ChallengeAggregate {
   string id = 1;
   string name = 2;
@@ -33,7 +23,7 @@ message ChallengeAggregate {
   int32 bestOf = 6;
   int32 entries = 7;
   google.protobuf.Timestamp synchronizedAt = 8;
-  ChallengeDto.TimelineDto timeline = 9;
+  ChallengeTimelineDto timeline = 9;
   map<string, float> scoring = 10;
   cashier.ChallengePayoutDto payout = 11;
   repeated ParticipantAggregate participants = 12;
@@ -44,6 +34,6 @@ message ChallengeAggregate {
     string challengeId = 3;
     identity.DoxatagDto doxatag = 4;
     customTypes.DecimalValue score = 5;
-    repeated MatchDto matches = 6;
+    repeated ChallengeMatchDto matches = 6;
   }
 }

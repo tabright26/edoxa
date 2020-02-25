@@ -6,10 +6,14 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Web.Aggregator.Requests;
 using eDoxa.Grpc.Protos.Cashier.Requests;
 using eDoxa.Grpc.Protos.Cashier.Services;
 using eDoxa.Grpc.Protos.Payment.Requests;
 using eDoxa.Grpc.Protos.Payment.Services;
+using eDoxa.Seedwork.Domain.Extensions;
+
+using Grpc.Core;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -39,7 +43,7 @@ namespace eDoxa.Cashier.Web.Aggregator.Controllers
         [SwaggerOperation("Create a deposit transaction.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> PostAsync([FromBody] DepositTransactionRequest request)
+        public async Task<IActionResult> DepositAsync([FromBody] DepositTransactionRequest request)
         {
             var createTransactionRequest = new CreateTransactionRequest
             {
@@ -48,22 +52,36 @@ namespace eDoxa.Cashier.Web.Aggregator.Controllers
 
             var createTransactionResponse = await _cashierServiceClient.CreateTransactionAsync(createTransactionRequest);
 
-            var createStripePaymentIntentRequest = new CreateStripePaymentIntentRequest
+            try
             {
-                PaymentMethodId = request.PaymentMethodId,
-                Transaction = createTransactionResponse.Transaction
-            };
+                var createStripePaymentIntentRequest = new CreateStripePaymentIntentRequest
+                {
+                    PaymentMethodId = request.PaymentMethodId,
+                    Transaction = createTransactionResponse.Transaction
+                };
 
-            var createStripePaymentIntentResponse = await _paymentServiceClient.CreateStripePaymentIntentAsync(createStripePaymentIntentRequest);
+                var createStripePaymentIntentResponse = await _paymentServiceClient.CreateStripePaymentIntentAsync(createStripePaymentIntentRequest);
 
-            return this.Ok(createStripePaymentIntentResponse.ClientSecret);
+                return this.Ok(createStripePaymentIntentResponse.ClientSecret);
+            }
+            catch (RpcException exception)
+            {
+                var cancelTransactionRequest = new CancelTransactionRequest
+                {
+                    TransactionId = createTransactionResponse.Transaction.Id
+                };
+
+                await _cashierServiceClient.CancelTransactionAsync(cancelTransactionRequest);
+
+                throw exception.Capture();
+            }
         }
 
         [HttpPost("withdraw")]
         [SwaggerOperation("Create a withdraw transaction.")]
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> PostAsync([FromBody] WithdrawTransactionRequest request)
+        public async Task<IActionResult> WithdrawAsync([FromBody] WithdrawTransactionRequest request)
         {
             var createTransactionRequest = new CreateTransactionRequest
             {
@@ -72,15 +90,29 @@ namespace eDoxa.Cashier.Web.Aggregator.Controllers
 
             var createTransactionResponse = await _cashierServiceClient.CreateTransactionAsync(createTransactionRequest);
 
-            var createPaypalPayoutRequest = new CreatePaypalPayoutRequest
+            try
             {
-                Email = request.Email,
-                Transaction = createTransactionResponse.Transaction
-            };
+                var createPaypalPayoutRequest = new CreatePaypalPayoutRequest
+                {
+                    Email = request.Email,
+                    Transaction = createTransactionResponse.Transaction
+                };
 
-            await _paymentServiceClient.CreatePaypalPayoutAsync(createPaypalPayoutRequest);
+                await _paymentServiceClient.CreatePaypalPayoutAsync(createPaypalPayoutRequest);
 
-            return this.Ok();
+                return this.Ok();
+            }
+            catch (RpcException exception)
+            {
+                var cancelTransactionRequest = new CancelTransactionRequest
+                {
+                    TransactionId = createTransactionResponse.Transaction.Id
+                };
+
+                await _cashierServiceClient.CancelTransactionAsync(cancelTransactionRequest);
+
+                throw exception.Capture();
+            }
         }
     }
 }

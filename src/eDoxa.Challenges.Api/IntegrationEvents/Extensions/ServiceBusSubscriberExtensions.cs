@@ -15,7 +15,6 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Extensions
         public static void UseIntegrationEventSubscriptions(this IServiceBusSubscriber subscriber)
         {
             subscriber.Subscribe<ChallengeClosedIntegrationEvent, ChallengeClosedIntegrationEventHandler>();
-            subscriber.Subscribe<CreateChallengePayoutFailedIntegrationEvent, CreateChallengePayoutFailedIntegrationEventHandler>();
         }
     }
 }

@@ -114,7 +114,7 @@ namespace eDoxa.Games.IntegrationTests.Grpc.Services
                         EndedAt = endedAt.ToTimestamp(),
                         Participants =
                         {
-                            new ParticipantDto
+                            new ChallengeParticipantDto
                             {
                                 Id = new ParticipantId(),
                                 GamePlayerId = playerId
@@ -147,7 +147,7 @@ namespace eDoxa.Games.IntegrationTests.Grpc.Services
                 StartedAt = (DateTime.UtcNow - TimeSpan.FromDays(1)).ToTimestamp(),
                 Participants =
                 {
-                    new ParticipantDto
+                    new ChallengeParticipantDto
                     {
                         ChallengeId = new ChallengeId(),
                         GamePlayerId = "testID1",
@@ -156,7 +156,7 @@ namespace eDoxa.Games.IntegrationTests.Grpc.Services
                         SynchronizedAt = DateTime.UtcNow.ToTimestamp(),
                         UserId = new UserId()
                     },
-                    new ParticipantDto
+                    new ChallengeParticipantDto
                     {
                         ChallengeId = new ChallengeId(),
                         GamePlayerId = "testID2",
@@ -165,7 +165,7 @@ namespace eDoxa.Games.IntegrationTests.Grpc.Services
                         SynchronizedAt = DateTime.UtcNow.ToTimestamp(),
                         UserId = new UserId()
                     },
-                    new ParticipantDto
+                    new ChallengeParticipantDto
                     {
                         ChallengeId = new ChallengeId(),
                         GamePlayerId = "testID3",
